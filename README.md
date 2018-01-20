@@ -30,7 +30,7 @@ if __name__ == "__main__":
     genome.save()
 ````
 
-![img1](img/example1.png =300x300)
+![img1](img/example1.png)
 
 __Feature plot__ 
 
@@ -38,7 +38,7 @@ __Feature plot__
 
 __Example1__ Visualization of CDS, GC-skew and GC-amount from Genbank
 
-![img2](img/example2.png =300x300)
+![img2](img/example2.png)
 
 __Example2__ Visualization of large repeat sequences in the  genome
 
@@ -52,9 +52,9 @@ __Example2__ Visualization of large repeat sequences in the  genome
    ID_name2	NC_XXXX1	1500	2700
    ID_name2	NC_XXXX2	1200	2400
    ````
-![img3](img/example3.png =300x300)
+![img3](img/example3.png)
 
 __Example3__ Visualization of sequence duplication between chromosome.
 
-![img4](img/example4.png =300x300)
+![img4](img/example4.png)
 
