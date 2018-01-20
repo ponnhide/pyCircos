@@ -30,7 +30,7 @@ if __name__ == "__main__":
     genome.save()
 ````
 
-![img1](img/exmaple1.png)
+![img1](img/example1.png)
 
 __Feature plot__ 
 
