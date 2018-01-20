@@ -1,7 +1,7 @@
 import sys 
 import numpy as np
 sys.path.append("../../")
-import pycos as pycos
+import pycircos as pycircos
 from Bio import SeqIO
 import collections 
 import matplotlib.pyplot as plt
@@ -15,7 +15,7 @@ def read_link(f):
 
 if __name__ == "__main__":
     record_parse = SeqIO.parse(sys.argv[1],"genbank")
-    genome = pycos.GENOME()
+    genome = pycircos.GENOME()
     genome.read_locus(record_parse, interspace=0, bottom=300, height=50, plot=False)
     link_dict = read_link(sys.argv[2]) 
     for key,value in link_dict.items():

@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt 
 sys.path.append("../../")
-import pycos as pycos
+import pycircos
 from Bio import SeqIO
 
 #tab6 = ["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","#8C564D"] 
@@ -22,7 +22,7 @@ def read_link(f):
 
 if __name__ == "__main__":
     record_parse = SeqIO.parse(sys.argv[1],"genbank")
-    genome = pycos.GENOME()
+    genome = pycircos.GENOME()
     genome.read_locus(record_parse,interspace=0.02, bottom=790, height=30, requirement=lambda x: "NC_0032" in x, color_list=Set2)
     
     link_dict  = read_link(sys.argv[2]) 
