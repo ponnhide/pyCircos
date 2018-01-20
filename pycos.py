@@ -15,8 +15,8 @@ from Bio import SeqIO
 ###
 tab10 = ["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","8C564D","#E377C2","#7F7F7F","#BCBD22","#17BECF"]
 
-class PYCOS(object): 
-    def __init__(self,figsize=(8,8)):
+class GENOME(object): 
+    def __init__(self,figsize=(6,6)):
         self.figure = plt.figure(figsize=figsize)
         #Initial Settings, User cannnot touch the following settings 
         self.ax     = plt.subplot(111, polar=True)
@@ -232,13 +232,16 @@ class PYCOS(object):
             patch = mpatches.PathPatch(path, facecolor=color, alpha=alpha, linewidth=0, zorder=0)
             self.ax.add_patch(patch)
 
-    def save(self):
-        self.figure.savefig("test.pdf",bbox_inches="tight")
+    def save(self, file_name="test", format_type="pdf"):
+        if format_type == "pdf":
+            self.figure.savefig(file_name + ".pdf", bbox_inches="tight")
+        else:
+            self.figure.savefig(file_name + "." + format_type, bbox_inches="tight", dpi=600)
 
 if __name__ == "__main__":
     record_parse = SeqIO.parse(sys.argv[1],"genbank")
-    chuncos = PYCOS()
-    chuncos.locus_plot(record_parse,interspace=0.01,bottom = 850, height=50, requirement=lambda x: "NC_0032" in x)
+    chuncos = GENOME()
+    chuncos.read_locus(record_parse,interspace=0.01,bottom = 850, height=50, requirement=lambda x: "NC_0032" in x)
     chuncos.chord_plot(["NC_003279.8",0,4000000],["NC_003283.11",6000000,10000000],top=500) 
     chuncos.chord_plot(["NC_003280.10",2000000,4000000],["NC_003281.10",4000000,6000000],top=500,color="#FF7F0E") 
     chuncos.chord_plot(["NC_003282.8",2000000,4000000],["NC_003284.9",6000000,8000000],top=500,color="#2CA02C")
