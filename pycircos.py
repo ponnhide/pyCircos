@@ -54,9 +54,53 @@ class GENOME(object):
                 
         self.interspace = interspace * (self.sum_length)
         self.sum_length += self.interspace * (len(self.locus_dict.keys()))
-        self.theta = np.linspace(0.0, 2 * np.pi, self.sum_length, endpoint=True)
+        self.theta = np.linspace(0.0, 2 * np.pi, self.sum_length, endpoint=True) 
         
+        s = self.sum_length * (start * 1.0 / 360.0)
+        e = 0
         
+        if len(color_list) == 1:
+            color_list = color_list * len(self.locus_dict.keys()) 
+        
+        for i, Id in enumerate(self.locus_dict.keys()):
+            self.locus_dict[Id]["start"] = int(s) 
+            e   = s + (self.locus_dict[Id]["length"] * (end - start) * 1.0 / 360)
+            self.locus_dict[Id]["end"]   = int(e)
+            pos  = (s+e) * np.pi / self.sum_length
+            posl = (s+e) * np.pi / self.sum_length
+            post = -(posl + 0.5*np.pi)-np.pi 
+            if plot == True:
+                self.locus_dict[Id]["bar"] = self.ax.bar([pos,pos], [0,height], bottom=bottom, width=2.0*np.pi*(e-s)/self.sum_length, color=color_list[i], linewidth=1, edgecolor="k")
+                self.ax.bar([pos,pos], [0,height], bottom=bottom, width=2.0*np.pi*(e-s)/self.sum_length, color=color_list[i], linewidth=0, edgecolor=color_list[i])
+            self.locus_dict[Id]["color"] = color_list[i]
+            s = e + self.interspace
+    
+    def make_locus(self, name_list, length_list, record_name=None, interspace=0.01, plot=True, bottom=300, height=50, start=0, end=360, 
+            lw=1, color_list=["#E3E3E3"], features=False, circular=False, requirement=None):
+            
+        #The interspace is the space ratio between locus  
+        if record_name == None:
+            record_name = "Record" 
+        self.record_dict[record_name] = {}
+        self.record_dict[record_name]["record"]     = None
+        self.record_dict[record_name]["locus_dict"] = {}
+        
+        for locus_name, length in zip(name_list, length_list):
+            if requirement == None:
+                self.locus_dict[locus_name] = {} 
+                self.locus_dict[locus_name]["length"] = length
+                self.sum_length += self.locus_dict[locus_name]["length"]
+                self.record_dict[record_name]["locus_dict"][locus_name] = self.locus_dict[locus_name]
+
+            elif  requirement(locus_name) == True:
+                self.locus_dict[locus_name] = {} 
+                self.locus_dict[locus_name]["length"] = length
+                self.sum_length += self.locus_dict[locus_name]["length"]
+                self.record_dict[record_name]["locus_dict"][locus_name] = self.locus_dict[locus_name]
+                
+        self.interspace = interspace * (self.sum_length)
+        self.sum_length += self.interspace * (len(self.locus_dict.keys()))
+        self.theta = np.linspace(0.0, 2 * np.pi, self.sum_length, endpoint=True) 
         s = self.sum_length * (start * 1.0 / 360.0)
         e = 0
         
