@@ -10,15 +10,148 @@ import matplotlib.path    as mpath
 import matplotlib.patches as mpatches
 from Bio import SeqIO
 
-###
-#This circular plot is for multi locus genbank. YOU can win for circos 
-###
-tab10 = ["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","8C564D","#E377C2","#7F7F7F","#BCBD22","#17BECF"]
+def read_linkdata(f):
+    link_dict = collections.defaultdict(list)  
+    for line in open(f):
+        line   = line.rstrip().split("\t")
+        locus  = line[1]
+        values = list(map(int,line[2:]))
+        link_dict[line[0]].append([locus] + values)
+    return link_dict
 
-class GENOME(object): 
-    def __init__(self,figsize=(6,6)):
+class Gcircle(object):
+    colors = ["#4E79A7","#F2BE2B","#E15759","#76B7B2","#59A14F","#EDC948","#B07AA1","#FF9DA7","#9C755F","#BAB0AC"]
+    cmaps  = [plt.cm.Reds, plt.cm.Blues, plt.cm.Greens, plt.cm.Greys]  
+    def __init__(self):
+        self.locus_dict = collections.OrderedDict() 
+        self.interspace = np.pi / 60 
+        self.bottom      = 500 
+        self.height      = 50 
+        self.facecolor   = "#DDDDDD"
+        self.edgecolor   = "#000000"
+        self.linewidth   = 1.0 
+        self.markersize  = 2.0 
+        self.color_cycle = 0 
+        self.cmap_cycle  = 0
+
+    def add_locus(self, name, length, bottom=None, height=None, facecolor=None, edgecolor=None, linewidth=None, interspace=None):
+        self.locus_dict[name]                 = {}
+        self.locus_dict[name]["length"]       = length
+        self.locus_dict[name]["features"] = [] 
+        
+        if bottom is None:
+            self.locus_dict[name]["bottom"] = self.bottom
+        else:
+            self.locus_dict[name]["bottom"] = bottom
+        
+        if height is None:
+            self.locus_dict[name]["height"] = self.height 
+        else:
+            self.locus_dict[name]["height"] = height
+
+        if facecolor is None: 
+            self.locus_dict[name]["facecolor"] = self.facecolor 
+        else:
+            self.locus_dict[name]["facecolor"] = facecolor
+
+        if edgecolor is None:
+            self.locus_dict[name]["edgecolor"] = self.edgecolor
+        else:
+            self.locus_dict[name]["edgecolor"] = edgecolor
+
+        if interspace is None:
+            self.locus_dict[name]["linewidth"] = self.linewidth
+        else:
+            self.locus_dict[name]["linewidth"] = linewidth
+
+        if interspace is None:
+            self.locus_dict[name]["interspace"] = self.interspace
+        else:
+            self.locus_dict[name]["interspace"] = interspace 
+
+
+        sum_length       = sum(list(map(lambda x:  self.locus_dict[x]["length"], list(self.locus_dict.keys()))))
+        sum_interspace   = sum(list(map(lambda x:  self.locus_dict[x]["interspace"], list(self.locus_dict.keys()))))
+        self.theta_list  = np.linspace(0.0, 2 * np.pi - sum_interspace, sum_length, endpoint=True)
+        s = 0
+        sum_interspace = 0 
+        for key in self.locus_dict.keys():
+            self.locus_dict[key]["positions"] = sum_interspace + self.theta_list[s:s+self.locus_dict[key]["length"]+1]
+            if s+self.locus_dict[key]["length"]+1 > len(self.theta_list):
+                self.locus_dict[key]["positions"] = self.locus_dict[key]["positions"] + self.theta_list[:s+self.locus_dict[key]["length"] + 1- len(self.theta_list)]
+            s = s + self.locus_dict[key]["length"]
+            sum_interspace += self.locus_dict[key]["interspace"]
+
+    def read_locus(self, record_parse, interspace=None, bottom=None,  height=None, facecolor=None, edgecolor=None, linewidth=None, features=True, requirement=lambda x: True):
+        #The interspace is the space ration between locus  
+        for locus in record_parse:
+            if  requirement(locus.id) == True:
+                self.locus_dict[locus.id] = {} 
+                self.locus_dict[locus.id]["seq"] = str(locus.seq).upper()
+                self.locus_dict[locus.id]["length"] = len(str(locus.seq))
+                if features == True: 
+                    self.locus_dict[locus.id]["features"] = locus.features 
+                else:
+                    self.locus_dict[locus.id]["features"] = []
+        
+        if bottom is None:
+            bottom = self.bottom
+        
+        if height is None:
+            height = self.height 
+
+        if facecolor is None: 
+            facecolor = self.facecolor 
+
+        if edgecolor is None:
+            edgecolor = self.edgecolor
+
+        if linewidth is None:
+            linewidth = self.linewidth
+        
+        if interspace is None:
+            interspace = self.interspace 
+
+        if type(bottom) != list:
+            bottom = [bottom] * len(list(self.locus_dict.keys()))
+        
+        if type(height) != list:
+            height = [height] * len(list(self.locus_dict.keys()))
+        
+        if type(facecolor) != list:
+            facecolor = [facecolor] * len(list(self.locus_dict.keys()))
+        
+        if type(edgecolor) !=list:
+            edgecolor = [edgecolor] * len(list(self.locus_dict.keys()))
+        
+        if type(linewidth) != list:
+            linewidth = [linewidth] * len(list(self.locus_dict.keys()))
+
+        if type(interspace) != list:
+            interspace = [interspace] * len(list(self.locus_dict.keys()))
+   
+        for i, key in enumerate(list(self.locus_dict.keys())):
+            self.locus_dict[key]["bottom"]      = bottom[i] 
+            self.locus_dict[key]["height"]      = height[i]  
+            self.locus_dict[key]["facecolor"]   = facecolor[i]  
+            self.locus_dict[key]["edgecolor"]   = edgecolor[i]
+            self.locus_dict[key]["linewidth"]   = linewidth[i] 
+            self.locus_dict[key]["interspace"]  = interspace[i]  
+        
+        sum_length       = sum(list(map(lambda x:  self.locus_dict[x]["length"], list(self.locus_dict.keys()))))
+        sum_interspace   = sum(list(map(lambda x:  self.locus_dict[x]["interspace"], list(self.locus_dict.keys()))))
+        self.theta_list  = np.linspace(0.0, 2 * np.pi - sum_interspace, sum_length, endpoint=True)
+        s = 0
+        sum_interspace = 0 
+        for key in self.locus_dict.keys():
+            self.locus_dict[key]["positions"] = sum_interspace + self.theta_list[s:s+self.locus_dict[key]["length"]+1]
+            if s+self.locus_dict[key]["length"]+1 > len(self.theta_list):
+                self.locus_dict[key]["positions"] = self.locus_dict[key]["positions"] + self.theta_list[:s+self.locus_dict[key]["length"] + 1- len(self.theta_list)]
+            s = s + self.locus_dict[key]["length"]
+            sum_interspace += self.locus_dict[key]["interspace"]
+
+    def set_locus(self, figsize=(6, 6), lw=1): 
         self.figure = plt.figure(figsize=figsize)
-        #Initial Settings, User cannnot touch the following settings 
         self.ax     = plt.subplot(111, polar=True)
         self.ax.set_theta_zero_location("N")
         self.ax.set_theta_direction(-1)
@@ -27,124 +160,79 @@ class GENOME(object):
         self.ax.xaxis.set_ticks([])
         self.ax.xaxis.set_ticklabels([])
         self.ax.yaxis.set_ticks([])
-        self.ax.yaxis.set_ticklabels([])
-        
-        self.sum_length = 0
-        self.locus_dict  = collections.OrderedDict() 
-        self.record_dict = collections.OrderedDict()  
-        self.data = [] 
+        self.ax.yaxis.set_ticklabels([])  
+                
+        pre_e = 0 
+        for i, key in enumerate(self.locus_dict.keys()):
+            pos       = self.locus_dict[key]["positions"][0] 
+            width     = self.locus_dict[key]["positions"][-1] - self.locus_dict[key]["positions"][0]
+            height    = self.locus_dict[key]["height"]
+            bottom    = self.locus_dict[key]["bottom"]
+            facecolor = self.locus_dict[key]["facecolor"]
+            edgecolor = self.locus_dict[key]["edgecolor"]
+            linewidth = self.locus_dict[key]["linewidth"]
+            self.locus_dict[key]["bar"] = self.ax.bar([pos], [height], bottom=bottom, width=width, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, align="edge")
     
-    def read_locus(self, record_parse, record_name=None, interspace=0.01, plot=True, bottom=300, height=50, start=0, end=360, 
-            lw=1, color_list=["#E3E3E3"], features=True, circular=False, requirement=lambda x: "NC_" in x):
-        #The interspace is the space ration between locus  
-        if record_name == None:
-            record_name = "Record_" + str(len(self.record_dict.keys())) 
-        self.record_dict[record_name] = {}
-        self.record_dict[record_name]["record"]     = record_parse
-        self.record_dict[record_name]["locus_dict"] = {}
-        for locus in self.record_dict[record_name]["record"]:
-            if  requirement(locus.id) == True:
-                self.locus_dict[locus.id] = {} 
-                self.locus_dict[locus.id]["length"] = len(str(locus.seq))
-                self.locus_dict[locus.id]["seq"]    = str(locus.seq) 
-                if features == True: 
-                    self.locus_dict[locus.id]["features"] = locus.features 
-                self.sum_length += self.locus_dict[locus.id]["length"]
-                self.record_dict[record_name]["locus_dict"][locus.id] = self.locus_dict[locus.id]
-                
-        self.interspace = interspace * (self.sum_length)
-        self.sum_length += self.interspace * (len(self.locus_dict.keys()))
-        self.theta = np.linspace(0.0, 2 * np.pi, self.sum_length, endpoint=True) 
+    def add_feature(self, locus_name, start, end, strand, ftype="misc_feature", qualifiers={}):
+        if start > len(self.locus_dict[key]["positions"]) - 1:
+            raise ValueError("'start' value should be less than length of '{}'".format(locus_name)) 
         
-        s = self.sum_length * (start * 1.0 / 360.0)
-        e = 0
+        if end > len(self.locus_dict[key]["positions"]) - 1:
+            raise ValueError("'end' value should be less than length of '{}'".format(locus_name)) 
+
+        feat = SeqFeature(FeatureLocation(start, end, strand=strand), type=feature_type)
+        for key, value in qualifiers.items():
+            if type(value) == list or type(value) == tuple:
+                pass
+            else:
+                qualifiers[key] = [value] 
         
-        if len(color_list) == 1:
-            color_list = color_list * len(self.locus_dict.keys()) 
-        
-        for i, Id in enumerate(self.locus_dict.keys()):
-            self.locus_dict[Id]["start"] = int(s) 
-            e   = s + (self.locus_dict[Id]["length"] * (end - start) * 1.0 / 360)
-            self.locus_dict[Id]["end"]   = int(e)
-            pos  = (s+e) * np.pi / self.sum_length
-            posl = (s+e) * np.pi / self.sum_length
-            post = -(posl + 0.5*np.pi)-np.pi 
-            if plot == True:
-                self.locus_dict[Id]["bar"] = self.ax.bar([pos,pos], [0,height], bottom=bottom, width=2.0*np.pi*(e-s)/self.sum_length, color=color_list[i], linewidth=1, edgecolor="k")
-                self.ax.bar([pos,pos], [0,height], bottom=bottom, width=2.0*np.pi*(e-s)/self.sum_length, color=color_list[i], linewidth=0, edgecolor=color_list[i])
-            self.locus_dict[Id]["color"] = color_list[i]
-            s = e + self.interspace
+        feat.type = ftype
+        feat.qualifiers = qualifiers
+        self.locus_dict[locus_name]["features"].append(feat)   
     
-    def make_locus(self, name_list, length_list, record_name=None, interspace=0.01, plot=True, bottom=300, height=50, start=0, end=360, 
-            lw=1, color_list=["#E3E3E3"], features=False, circular=False, requirement=None):
-            
-        #The interspace is the space ratio between locus  
-        if record_name == None:
-            record_name = "Record" 
-        self.record_dict[record_name] = {}
-        self.record_dict[record_name]["record"]     = None
-        self.record_dict[record_name]["locus_dict"] = {}
-        
-        for locus_name, length in zip(name_list, length_list):
-            if requirement == None:
-                self.locus_dict[locus_name] = {} 
-                self.locus_dict[locus_name]["length"] = length
-                self.sum_length += self.locus_dict[locus_name]["length"]
-                self.record_dict[record_name]["locus_dict"][locus_name] = self.locus_dict[locus_name]
+    def plot_features(self, key, feat_type="CDS", bottom=500, height=50, facecolor=None, linewidth=0.0, edgecolor="k",  requirement=lambda x: 1):
+        if facecolor is None:
+            facecolor = Gcircle.colors[self.color_cycle % len(Gcircle.colors)] 
+            self.color_cycle += 1
 
-            elif  requirement(locus_name) == True:
-                self.locus_dict[locus_name] = {} 
-                self.locus_dict[locus_name]["length"] = length
-                self.sum_length += self.locus_dict[locus_name]["length"]
-                self.record_dict[record_name]["locus_dict"][locus_name] = self.locus_dict[locus_name]
-                
-        self.interspace = interspace * (self.sum_length)
-        self.sum_length += self.interspace * (len(self.locus_dict.keys()))
-        self.theta = np.linspace(0.0, 2 * np.pi, self.sum_length, endpoint=True) 
-        s = self.sum_length * (start * 1.0 / 360.0)
-        e = 0
-        
-        if len(color_list) == 1:
-            color_list = color_list * len(self.locus_dict.keys()) 
-        
-        for i, Id in enumerate(self.locus_dict.keys()):
-            self.locus_dict[Id]["start"] = int(s) 
-            e   = s + (self.locus_dict[Id]["length"] * (end - start) * 1.0 / 360)
-            self.locus_dict[Id]["end"]   = int(e)
-            pos  = (s+e) * np.pi / self.sum_length
-            posl = (s+e) * np.pi / self.sum_length
-            post = -(posl + 0.5*np.pi)-np.pi 
-            if plot == True:
-                self.locus_dict[Id]["bar"] = self.ax.bar([pos,pos], [0,height], bottom=bottom, width=2.0*np.pi*(e-s)/self.sum_length, color=color_list[i], linewidth=1, edgecolor="k")
-                self.ax.bar([pos,pos], [0,height], bottom=bottom, width=2.0*np.pi*(e-s)/self.sum_length, color=color_list[i], linewidth=0, edgecolor=color_list[i])
-            self.locus_dict[Id]["color"] = color_list[i]
-            s = e + self.interspace
+        positions = [] 
+        widths    = [] 
+        locus_info = self.locus_dict[key] 
+        for feat in locus_info["features"]:
+            if feat_type == feat.type and requirement(feat):
+                if feat.location.strand >= 0:
+                    s = int(feat.location.parts[0].start.position) 
+                    e = int(feat.location.parts[-1].end.position)
+                else:
+                    s = int(feat.location.parts[-1].start.position) 
+                    e = int(feat.location.parts[0].end.position)   
 
-    def plot_feature(self, feat_type="repeat_region", bottom=520, height=80, color="#C9BD74", requirement=lambda x: 1):
-        #example of requirement is lambda x: "SPADE" in x.qualifiers["note"][0]
-        feat_set = set([])
-        for Id in self.locus_dict.keys(): 
-            locus_info = self.locus_dict[Id]
-            for feat in locus_info["features"]:
-                feat_set.add(feat.type)
-                if feat_type == feat.type and requirement(feat):
-                    start = locus_info["start"] + feat.location.start
-                    end   = locus_info["start"] + feat.location.end
-                    pos   = 2 * start * np.pi / self.sum_length
-                    self.ax.bar([pos,pos], [0,height], bottom=bottom, width=2.0*np.pi*(end-start)/self.sum_length, color=color, linewidth=0) 
-                
-    def calc_gcamount(self, key, window_size=100000, slide_size=100000):
+                pos   = locus_info["positions"][s] 
+                width = locus_info["positions"][e] - pos    
+                positions.append(pos) 
+                widths.append(width)
+                #self.ax.axvspan(pos, pos+width, bottom, bottom+height, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor)
+        
+        self.ax.bar(positions, [height] * len(positions), bottom=bottom, width=widths, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, align="edge") 
+       
+    def calc_gcratio(self, key, window_size=1000, slide_size=None):
+        if slide_size is None:
+            slide_size = window_size
         seq = self.locus_dict[key]["seq"]
         gc_amounts = []
         for i in range(0,len(seq),slide_size):
             gc_amount = (seq[i:i+window_size].upper().count("G") + seq[i:i+window_size].upper().count("C")) * 1.0 / window_size
             gc_amounts.append(gc_amount)
         gc_amounts.append((seq[i:].upper().count("G") + seq[i:i+window_size].upper().count("C")) * 1.0 / (len(seq)-i))
-        self.locus_dict[key]["gc_amount"] = gc_amounts
+        self.locus_dict[key]["gc_ratio"] = gc_amounts
+        gc_amounts = np.array(gc_amounts)
         return gc_amounts
     
-    def calc_gcskew(self, key, window_size=100000, slide_size=100000):
+    def calc_gcskew(self, key, window_size=1000, slide_size=None):
         #(G-C)/(G+C) 
+        if slide_size is None:
+            slide_size = window_size
         seq = self.locus_dict[key]["seq"]
         gc_skews = []
         for i in range(0,len(seq),slide_size):
@@ -152,143 +240,222 @@ class GENOME(object):
             gc_skews.append(gc_skew)
         gc_skews.append((seq[i:].upper().count("G") - seq[i:].upper().count("C")) * 1.0 / (seq[i:].upper().count("G") + seq[i:].upper().count("C")) * 1.0)
         self.locus_dict[key]["gc_skew"] = gc_skews
+        gc_skews = np.array(gc_skews)
         return gc_skews 
 
-    def calc_cdsdensity(self, key, window_size=100000, plus=True, minus=True):
-        gene_num   = 0 
+    def calc_feature_density(self, key, feat_type="CDS", window_size=10000, requirement=lambda x: 1):
         sum_length = 0
-        gene_nums  = [] 
+        value   = 0
+        values  = [] 
         for feat in self.locus_dict[key]["features"]:
-            if feat.type == "CDS" and plus and minus:
-                gene_num += 1    
-            elif feat.type == "CDS" and feat.strand==1 and plus: 
-                gene_num += 1    
-            elif feat.type == "CDS" and feat.strand==-1 and minus: 
-                gene_num += 1    
+            if feat.type == feat_type and requirement(feat):
+                value += 1
+                if int(feat.location.parts[-1].end) - sum_length > window_size:
+                    value = value * 1.0/ window_size
+                    sum_length += window_size
+                    values.append(value) 
+                    value = 0 
 
-            if feat.type == "CDS" and int(feat.location.parts[-1].end) - sum_length > window_size:
-                gene_num = gene_num * 1000000 * 1.0/ window_size
-                sum_length += window_size
-                gene_nums.append(gene_num) 
-                gene_num = 0
+        value  = value * 1.0/(int(feat.location.parts[0].end) - sum_length)
+        values.append(value) 
+        return values
 
-        gene_num = gene_num * 1000000 * 1.0/(int(feat.location.parts[0].end) - sum_length)
-        gene_nums.append(gene_num) 
-        if plus and minus:
-            self.locus_dict[key]["cds_density"] = gene_nums
-        elif plus:
-            self.locus_dict[key]["cds_density_plus"] = gene_nums
+    def heatmap(self, locus_name, data, bottom=None, height=None, positions=None, linewidth=0.0, edgecolor="k", cmap=None):
+        start = self.locus_dict[locus_name]["positions"][0] 
+        end   = self.locus_dict[locus_name]["positions"][-1]
+        if positions == None:
+            positions = np.linspace(start, end, len(data), endpoint=False)
         else:
-            self.locus_dict[key]["cds_density_minus"] = gene_nums
-        return gene_nums
+            pass 
+        
+        if height is None:
+            height = self.height
+        if bottom is None:
+            bottom = self.bottom 
 
-    def plot_data(self, key, data, bottom=360, log=False, height=150, xaxes=False, yaxes=False, plot_style="normal", 
-            circular=False, lw=0.5, color="k", color1="#D62728", color2="#1F77B4", cmap=plt.cm.Reds):
-        #data is composed of # of locus data. It is like [[~],[~]] 
-        data = np.array(data)
-        if log == True:
-            if 0 in data:
-                data = np.log10(data+1)
-            else:
-                data = np.log10(data)
-        data = data * height / (np.max(np.abs(data)) - 0) 
-        theta = self.theta[self.locus_dict[key]["start"]:self.locus_dict[key]["end"]]
+        if cmap is None:
+            cmap = Gcircle.cmaps[self.cmap_cycle % len(Gcircle.cmaps)] 
+            self.cmap_cycle += 1
 
-        if len(data) != len(theta):
-            new_atheta = [theta[int(len(theta)*1.0/len(data) * j)] for j in range(len(data))]
-            data  = data + bottom                
-            theta = np.array(new_atheta)
+        width     = positions[1]-positions[0] 
+        max_value = max(data) 
+        min_value = min(data) 
+        bars = self.ax.bar(positions, height=[height] * len(positions), bottom=bottom, align="edge", width=width)  
+        for b, bar in enumerate(bars):
+            bar.set_facecolor(cmap(data[b]/(max_value-min_value)))
+            bar.set_linewidth(linewidth)
+            bar.set_edgecolor(edgecolor)
+        
+    def scatter_plot(self, locus_name, data, bottom=None, height=None, positions=None, markersize=2.0, facecolor=None, linewidth=0.0, edgecolor="k"):
+        start = self.locus_dict[locus_name]["positions"][0] 
+        end   = self.locus_dict[locus_name]["positions"][-1]
+        if positions == None:
+            positions = np.linspace(start, end, len(data), endpoint=False)
         else:
-            data  = data + bottom                
-            theta = np.array(atheta)
+            pass 
+        
+        if bottom is None:
+            bottom = self.bottom 
 
-        if circular == True:
-            np.append(data,data[0]) 
-            np.append(theta,theta[0]) 
+        if height is None:
+            top = bottom + self.height
+        else:
+            top = bottom + height       
+        
+        if markersize is None:
+            markersize = self.markersize
+        
+        if facecolor is None:
+            facecolor = Gcircle.colors[self.color_cycle % len(Gcircle.colors)] 
+            self.color_cycle += 1
 
-        pos = (self.theta[self.locus_dict[key]["start"]] + self.theta[self.locus_dict[key]["end"]-1]) * 0.5
-        if xaxes == True:
-            self.ax.bar([pos,pos], [0,3], bottom=bottom, width=self.theta[self.locus_dict[key]["end"]-1] - self.theta[self.locus_dict[key]["start"]], linewidth=0, color="k")
-       
-        if plot_style == "normal":
-            self.ax.plot(theta,data, color="k",lw=lw)
+        max_value = max(data) 
+        min_value = min(data)
+        data = np.array(data) - min_value
+        data = bottom + np.array(data * ((top - bottom) / (max_value - min_value)))
+        self.ax.scatter(positions, data, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, s=markersize)
+    
+    def line_plot(self, locus_name, data, bottom=None, height=None, positions=None, facecolor=None, linewidth=0.5, edgecolor="k", fill=False):
+        start = self.locus_dict[locus_name]["positions"][0] 
+        end   = self.locus_dict[locus_name]["positions"][-1]
+        if positions == None:
+            positions = np.linspace(start, end, len(data), endpoint=True)
+        else:
+            pass 
         
-        elif plot_style == "fill":  
-            self.ax.fill_between(theta,bottom,data,where=data>bottom, facecolor=color1)
-            self.ax.fill_between(theta,bottom,data,where=data<bottom, facecolor=color2)
+        if bottom is None:
+            bottom = seclf.bottom 
+        
+        if height is None:
+            top = bottom + self.height
+        else:
+            top = bottom + height
 
-        elif plot_style == "scatter":
-            self.ax.sactter(theta,data,where=data>bottom,s=2)
-        
-        elif plot_style == "heatmap":
-            cmaplist = [cmap(i) for i in range(256)]
-            width = (self.theta[self.locus_dict[key]["end"]-1] - self.theta[self.locus_dict[key]["start"]])  * 1.0 / data.size
-            for i, atheta in enumerate(theta):
-                index = 255.0 * (data[i]-min(data)) / (max(data)-min(data)) 
-                self.ax.bar([atheta, atheta], [0,height], bottom=bottom, width=width, linewidth=0, color=cmaplist[int(index)]) 
-                
+        if facecolor is None:
+            facecolor = Gcircle.colors[self.color_cycle % len(Gcircle.colors)] 
+            self.color_cycle += 1
 
-    def plot_ticks(self, bottom=900, height=20, width=0.001*np.pi, space=1000000, axes=False):
-        for i,key in enumerate(self.locus_dict.keys()):
-            locus_info = self.locus_dict[key]
-            locus_len  = locus_info["end"]-locus_info["start"] 
-            pos = (self.theta[self.locus_dict[key]["start"]] + self.theta[self.locus_dict[key]["end"]-1]) * 0.5
-            labelList  = [j for j in range(0,locus_len,space)]
-            
-            if axes == True:  
-                self.ax.bar([pos,pos], [0,2], bottom=bottom, color="k", width=2*np.pi*locus_len/self.sum_length, lw=0) 
-            
-            for j in range(1,len(labelList)):
-                thetal  = 2 * np.pi * (locus_info["start"] + labelList[j]) / self.sum_length
-                thetat  = -(thetal + 0.5*np.pi)-np.pi 
-                self.ax.bar([thetal,thetal], [0,height], bottom=bottom, color="k", width=width, linewidth=0) #tick
-                if thetal > 6:
-                    pass 
-                #else:
-                #    self.ax.text(0.48*np.cos(thetat)+0.5,0.48*np.sin(thetat)+0.5,str(labelList[j]/1000000.0) + "", horizontalalignment='center',rotation=(thetat-0.5*np.pi)*180/np.pi,verticalalignment='center',fontsize=15, transform=self.ax.transAxes) 
+        max_value = max(data) 
+        min_value = min(data)
+        data = np.array(data) - min_value
+        data = bottom + np.array(data * ((top - bottom) / (max_value - min_value)))
         
-    def chord_plot(self,start_list, end_list ,top=900, bottom=0, color="#1F77B4", alpha=0.5):
-        #srtart_list and end_list is composed of "locus_id", "start", "end". 
-        sstart = self.theta[self.locus_dict[start_list[0]]["start"]+start_list[1]] 
-        send   = self.theta[self.locus_dict[start_list[0]]["start"]+start_list[2]] 
+        if fill==False:
+            self.ax.plot(positions, data, color=facecolor, linewidth=linewidth)
         
-        ostart = self.theta[self.locus_dict[end_list[0]]["start"]+end_list[1]] 
-        oend   = self.theta[self.locus_dict[end_list[0]]["start"]+end_list[2]] 
+        elif fill==True:
+            if bottom >= 0:
+                self.ax.fill_between(positions, data, bottom, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor)
+            elif bottom < 0:
+                self.ax.fill_between(positions, bottom, data, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor)
+
+    def bar_plot(self, locus_name, data, bottom=None, height=None, positions=None, facecolor=None, linewidth=0.0, edgecolor="k"): 
+        start = self.locus_dict[locus_name]["positions"][0] 
+        end   = self.locus_dict[locus_name]["positions"][-1]
+        if positions == None:
+            positions = np.linspace(start, end, len(data), endpoint=False)
+        else:
+            pass 
         
-        z1 = top - top * math.cos(abs((send-sstart) * 0.5)) 
-        z2 = top - top * math.cos(abs((oend-ostart) * 0.5)) 
+        if bottom is None:
+            bottom = self.bottom 
+        
+        if height is None:
+            top = bottom + self.height
+        else:
+            top = bottom + height
+        
+        if facecolor is None:
+            facecolor = Gcircle.colors[self.color_cycle % len(Gcircle.colors)] 
+            self.color_cycle += 1
+        
+        width = positions[1] - positions[0] 
+        max_value = max(data) 
+        min_value = min(data)
+        data = np.array(data) - min_value
+        data = np.array(data * ((top - bottom) / (max_value - min_value)))
+        self.ax.bar(positions, data, bottom=bottom, facecolor=facecolor, width=width, linewidth=linewidth, edgecolor=edgecolor, align="edge")
+
+    def tick_plot(self, locus_name, ticks, bottom=800, length=10, spine=False, linewidth=0.5, tickwidth=None, color="k"):
+        if tickwidth is None:
+            tickwidth = linewidth
+        positions = self.locus_dict[locus_name]["positions"]
+        for tick in ticks:
+            self.ax.plot([positions[tick], positions[tick]], [bottom, bottom+length], color=color, linewidth=tickwidth)
+        if spine == True:
+            self.ax.plot(positions, [y] * len(positions), color=color, linewidth=linewidth)
+
+    def set_spine(self, locus_name, y=500, linewidth=0.5, color="k"):
+        positions = self.locus_dict[locus_name]["positions"]
+        self.ax.plot(positions, [y] * len(positions), color=color, linewidth=linewidth)
+
+    def chord_plot(self, start_list, end_list,  bottom=500, center=0, color="#1F77B4", alpha=0.5):
+        #start_list and end_list is composed of "locus_id", "start", "end". 
+        sstart = self.locus_dict[start_list[0]]["positions"][start_list[1]]
+        send   = self.locus_dict[start_list[0]]["positions"][start_list[2]+1]   
+        if len(start_list) == 4:
+            stop = int(start_list[3]) 
+        else:
+            stop = bottom
+
+        ostart = self.locus_dict[end_list[0]]["positions"][end_list[1]]
+        oend   = self.locus_dict[end_list[0]]["positions"][end_list[2]+1] 
+        if len(end_list) == 4:
+            etop = int(end_list[3]) 
+        else:
+            etop = bottom
+
+        z1 = stop - stop * math.cos(abs((send-sstart) * 0.5)) 
+        z2 = etop - etop * math.cos(abs((oend-ostart) * 0.5)) 
         if sstart == ostart: 
             pass 
         else:
             Path      = mpath.Path
-            path_data = [(Path.MOVETO,  (sstart, top)),
-                         (Path.CURVE3,  (sstart, bottom)),     
-                         (Path.CURVE3,  (oend,   top)),
-                         (Path.CURVE3,  ((ostart+oend)*0.5, top+z2)),
-                         (Path.CURVE3,  (ostart, top)),
-                         (Path.CURVE3,  (ostart, bottom)),
-                         (Path.CURVE3,  (send,   top)),
-                         (Path.CURVE3,  ((sstart+send)*0.5, top+z1)),
-                         (Path.CURVE3,  (sstart,   top)),
+            path_data = [(Path.MOVETO,  (sstart, stop)),
+                         (Path.CURVE3,  (sstart, center)),     
+                         (Path.CURVE3,  (oend,   etop)),
+                         (Path.CURVE3,  ((ostart+oend)*0.5, etop+z2)),
+                         (Path.CURVE3,  (ostart, etop)),
+                         (Path.CURVE3,  (ostart, center)),
+                         (Path.CURVE3,  (send,   stop)),
+                         (Path.CURVE3,  ((sstart+send)*0.5, stop+z1)),
+                         (Path.CURVE3,  (sstart, stop)),
                         ]
             codes, verts = list(zip(*path_data)) 
             path  = mpath.Path(verts, codes)
             patch = mpatches.PathPatch(path, facecolor=color, alpha=alpha, linewidth=0, zorder=0)
             self.ax.add_patch(patch)
-
-    def save(self, file_name="test", format_type="pdf"):
-        if format_type == "pdf":
+    
+    def save(self, file_name="test", format="pdf", dpi=None):
+        self.figure.patch.set_alpha(0.0) 
+        if format == "pdf" and dpi is None:
             self.figure.savefig(file_name + ".pdf", bbox_inches="tight")
         else:
-            self.figure.savefig(file_name + "." + format_type, bbox_inches="tight", dpi=600)
+            if dpi is None:
+                dpi = 600
+            self.figure.savefig(file_name + "." + format, bbox_inches="tight", dpi=dpi)
+        return self.figure 
 
 if __name__ == "__main__":
-    record_parse = SeqIO.parse(sys.argv[1],"genbank")
-    chuncos = GENOME()
-    chuncos.read_locus(record_parse,interspace=0.01,bottom = 850, height=50, requirement=lambda x: "NC_0032" in x)
-    chuncos.chord_plot(["NC_003279.8",0,4000000],["NC_003283.11",6000000,10000000],top=500) 
-    chuncos.chord_plot(["NC_003280.10",2000000,4000000],["NC_003281.10",4000000,6000000],top=500,color="#FF7F0E") 
-    chuncos.chord_plot(["NC_003282.8",2000000,4000000],["NC_003284.9",6000000,8000000],top=500,color="#2CA02C")
+    #record_parse = SeqIO.parse(sys.argv[1],"genbank")
+    chuncos = Gcircle()
+    #chuncos.interspace = np.pi/18
+    chuncos.add_locus("1", 1000)
+    chuncos.add_locus("2", 2000)
+    chuncos.add_locus("3", 3000)
+    chuncos.add_locus("4", 2000, bottom=100)
+    chuncos.add_locus("5", 5000)
+    chuncos.add_locus("5", 5000)
+
+    #chuncos.read_locus(record_parse, requirement=lambda x: "NC_0032" in x, bottom=[400,500,600,700,800,900])
+    #chuncos.read_locus(record_parse, requirement=lambda x: "NC_0032" in x)
+    
+    chuncos.set_locus()
+    #chuncos.chord_plot(["NC_003279.8", 0, 4000000, 500], ["NC_003283.11",6000000,10000000, 500]) 
+    #chuncos.chord_plot(["NC_003280.10", 2000000, 4000000, 100], ["NC_003281.10", 4000000, 6000000, 500], color="#FF7F0E") 
+    #chuncos.chord_plot(["NC_003282.8", 2000000, 4000000], ["NC_003284.9", 6000000, 8000000] ,  color="#2CA02C")
+
+    """
     for key in chuncos.locus_dict.keys():
         chuncos.calc_gcamount(key)
         chuncos.calc_gcskew(key)
@@ -299,8 +466,9 @@ if __name__ == "__main__":
         chuncos.plot_data(key, np.array(chuncos.locus_dict[key]["cds_density_minus"]), bottom=650, height=50, xaxes=False, yaxes=False, plot_style="heatmap", cmap=plt.cm.Blues) 
         chuncos.plot_data(key, np.array(chuncos.locus_dict[key]["cds_density"]), bottom=500, height=100, xaxes=False, yaxes=False, plot_style="fill", color1="#707070")
     chuncos.plot_ticks() 
+    """
+    
     chuncos.save()
     #plt.savefig("test.pdf",bbox_inches="tight")
-    #plt.savefig(sys.argv[1]+".pdf")
 
 

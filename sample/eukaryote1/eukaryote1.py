@@ -26,7 +26,7 @@ if __name__ == "__main__":
     genome.read_locus(record_parse,interspace=0.02, bottom=790, height=30, requirement=lambda x: "NC_0032" in x, color_list=Set2)
     
     link_dict  = read_link(sys.argv[2]) 
-    locus_keys = genome.locus_dict.keys()  
+    locus_keys = list(genome.locus_dict.keys()) 
     
     for key,value in link_dict.items():
         genome.chord_plot(value[0],value[1],top=700, color=Set2[locus_keys.index(value[0][0])] ,alpha=0.8) 

@@ -1,5 +1,4 @@
 # pyCircos
-
 Circos is one of the most famous genome feature and similarity visualisation software. It is based on perl.  However, the execution requires so complicated process  and many extra argument files. At least, I cannot understand and execute the visualization processes. On the other hand, the file format for description of genome features have been organised. For examples, Fasta, GenBank, GFF have been used as general argument format for many genome and sequence analysis software. Here, I give python matplotlib based circular genome visualization package which is PyCircos (pseudonym). It enable to represent genome  features by only input of Genbank format file. By using comparative genome analysis result  by using BLAST or LAST, you can visualize multi genomic locus similarity easily with simple python script. 
 
 ### Dependencies
@@ -10,51 +9,30 @@ Circos is one of the most famous genome feature and similarity visualisation sof
 
 ### Usage
 
-__Locus plot__ 
+__Example 0__  
+(sample/locus_plot/how_to_use.ipynb)
 
 ````python
 import sys 
-import matplotlib 
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt 
-from Bio import SeqIO
+import numpy as np
 sys.path.append("../../")
-import pycos as pycos
-
-Set2  = plt.cm.Set2
-Set2  = [Set2(i) for i in range(6)]
-if __name__ == "__main__":
-    record_parse = SeqIO.parse("","genbank")
-    genome = pycos.GENOME()
-    genome.read_locus(record_parse, interspace=0.02, bottom=800, height=80, requirement=lambda x: "NC_0032" in x, color_list=Set2)    
-    genome.save()
+from pycircos import *
+#Set locus 
+gcircle = Gcircle()
+gcircle.add_locus("1", 1000, bottom=900, height=100) #name, length, bottom (0<=bottom<=1000), height (0<=bottom<=1000)
+gcircle.add_locus("2", 2000, bottom=900, height=100, facecolor="#ED665D")
+gcircle.add_locus("3", 3000, bottom=900, height=100, facecolor="#6DCCDA")
+gcircle.add_locus("4", 2000, bottom=800, height=100, facecolor="#ED97CA")
+gcircle.add_locus("5", 5000, bottom=950, height=50, facecolor="#EDC948")
+gcircle.set_locus() #Creat figure object
+gcircle.save() 
 ````
+<img src="img/example0.png" width="300x300">
 
-![img1](img/example1.png)
+__Example 1__  
+Visualization of CDS, GC-skew and GC-amount from Genbank (sample/prokayote1/prokaryote_1.ipynb)
+<img src="img/example1.png" width="400x400">
 
-__Feature plot__ 
-
-
-
-__Example1__ Visualization of CDS, GC-skew and GC-amount from Genbank
-
-![img2](img/example2.png)
-
-__Example2__ Visualization of large repeat sequences in the  genome
-
-1. Please prepare the self local alignment result  using BLAST or LAST or other software.
-
-2. Please make a file like the following example from the above result.
-
-   ````
-   ID_name1	NC_XXXX1	1000	2000
-   ID_name1	NC_XXXX1	8000	9000
-   ID_name2	NC_XXXX1	1500	2700
-   ID_name2	NC_XXXX2	1200	2400
-   ````
-![img3](img/example3.png)
-
-__Example3__ Visualization of sequence duplication between chromosome.
-
-![img4](img/example4.png)
-
+__Example 2__  
+Visualization of homology links in the genome (sample/prokayote2/prokaryote_2.ipynb)
+<img src="img/example2.png" width="400x400">
