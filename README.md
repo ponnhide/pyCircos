@@ -1,4 +1,4 @@
-# pyCirco
+# pyCircos
 Circos is one of the most famous software for the visualization of genomic similarities and features. However, the execution requires such a complicated process and many extra input files. The software is also written based on Perl; it limits the integration with the other software for biological analysis. On the other hand, many biological data analysis packages are described in Python, although there are no python packages to visualize Circos like a plot. The file format such as GenBank, GFF for describing genomic annotations has been organized. Therefore, if these formatted files could be used as input for the visualization, complicated extra files are not needed to prepare. Here, it provides a python matplotlib based circular genome visualization package, PyCircos (pseudonym). It enables us to represent genome features by only input of the Genbank format file. Also, by the entry of comparative genome analysis results by using BLAST or LAST, users can easily visualize multi genomic locus similarity with a simple python script.
 
 ### Dependencies
