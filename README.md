@@ -22,7 +22,7 @@ Go to the ```sample/tutorial/``` directory and execute the following code
 python how_to_use.py 
 ````
 
-If the script can work correctly, you can "test.pdf" as output in the directory.
+If the script can work correctly, you can find the "test.pdf" as output in the directory.
 
 __Example 0__  
 (sample/tutorial/how_to_use.py)
