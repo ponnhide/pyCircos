@@ -8,12 +8,12 @@ Circos is one of the most famous genome feature and similarity visualisation sof
 - Biopython
 
 ### Installation
-1. Download the github packages using the following single command.
+1. Download the github packages using the following single command.  
    ```git clone https://github.com/ponnhide/pyCircos/blob/master/pycircos.py```
 
-2. Install the necessary Python packages using the following commands.
-   ```pip install matplotlib```
-   ```pip install biopython```
+2. Install the necessary Python packages using the following commands.  
+   ```pip install matplotlib```  
+   ```pip install biopython```  
 
 ### Example code
 Go to the ```sample/tutorial/``` directory and execute the following code
