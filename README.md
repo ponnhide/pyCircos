@@ -9,7 +9,7 @@ Circos is one of the most famous software for the visualization of genomic simil
 
 ### Installation
 1. Download the github packages using the following single command.  
-   ```git clone https://github.com/ponnhide/pyCircos/blob/master/pycircos.py```
+   ```git clone https://github.com/ponnhide/pyCircos/blob/master/pyCircos.py```
 
 2. Install the necessary Python packages using the following commands.  
    ```pip install matplotlib```  
