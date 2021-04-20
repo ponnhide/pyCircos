@@ -19,7 +19,7 @@ def read_linkdata(f):
         link_dict[line[0]].append([locus] + values)
     return link_dict
 
-class Gcircle(object):
+class Gcircle:
     colors = ["#4E79A7","#F2BE2B","#E15759","#76B7B2","#59A14F","#EDC948","#B07AA1","#FF9DA7","#9C755F","#BAB0AC"]
     cmaps  = [plt.cm.Reds, plt.cm.Blues, plt.cm.Greens, plt.cm.Greys]  
     def __init__(self):
@@ -35,8 +35,8 @@ class Gcircle(object):
         self.cmap_cycle  = 0
 
     def add_locus(self, name, length, bottom=None, height=None, facecolor=None, edgecolor=None, linewidth=None, interspace=None):
-        self.locus_dict[name]                 = {}
-        self.locus_dict[name]["length"]       = length
+        self.locus_dict[name]             = {}
+        self.locus_dict[name]["length"]   = length
         self.locus_dict[name]["features"] = [] 
         
         if bottom is None:
