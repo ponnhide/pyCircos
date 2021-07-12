@@ -34,10 +34,11 @@ class Gcircle:
         self.color_cycle = 0 
         self.cmap_cycle  = 0
 
-    def add_locus(self, name, length, bottom=None, height=None, facecolor=None, edgecolor=None, linewidth=None, interspace=None):
+    def add_locus(self, name, length, bottom=None, height=None, facecolor=None, edgecolor=None, linewidth=None, interspace=None, show_label=True):
         self.locus_dict[name]             = {}
         self.locus_dict[name]["length"]   = length
-        self.locus_dict[name]["features"] = [] 
+        self.locus_dict[name]["features"] = []
+        self.locus_dict[name]["show_label"] = show_label
         
         if bottom is None:
             self.locus_dict[name]["bottom"] = self.bottom
@@ -172,6 +173,9 @@ class Gcircle:
             edgecolor = self.locus_dict[key]["edgecolor"]
             linewidth = self.locus_dict[key]["linewidth"]
             self.locus_dict[key]["bar"] = self.ax.bar([pos], [height], bottom=bottom, width=width, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, align="edge")
+            if self.locus_dict[key].get("show_label"):
+                self.ax.text(pos + width/2, bottom + height/2, key, rotation=0, ha='center', va='center')
+
     
     def add_feature(self, locus_name, start, end, strand, ftype="misc_feature", qualifiers={}):
         if start > len(self.locus_dict[key]["positions"]) - 1:
