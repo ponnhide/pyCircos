@@ -1,8 +1,9 @@
 # pyCircos
-Circos is one of the most famous software for the visualization of genomic similarities and features. However, the execution requires such a complicated process and many extra input files. The software is also written based on Perl; it limits the integration with the other software for biological analysis. Various biological data analysis packages are described in Python. However, there are no python packages to visualize a Circos plot. The file format such as GenBank, GFF for describing genomic annotations has been organized. Therefore, if these formatted files could be used as input for the visualization, complicated extra files are not needed to prepare. Here, it provides a python matplotlib based circular genome visualization package, PyCircos (pseudonym). It enables us to represent genome features by only input of the Genbank format file. Also, by the entry of comparative genome analysis results by using BLAST or LAST, users can easily visualize multi genomic locus similarity with a simple python script.
+Circos is one of the most popular software for visualizing genomic similarities and features. However, its execution process is complicated. Additionally, Circos is written in Perl, which limits its integration with other software for biological analysis.
+On the other hand, various software packages have been developed for biological data analysis using Python. Therefore, by combining these packages, researchers can complete most of the required analysis. Nevertheless, Python lacks a library for drawing Circos plots (even though Circos software has been published for more than a decade).
+Here, we provide a python matplotlib based circular genome visualization package '"pyCircos," which can represent genomic features from a GenBank format file input. Therefore pyCircos does not require preparing a complicated config file. The genomic similarities among multiple-locus or genomes also can be visualized with a simple python script.
 
 ### Dependencies
-
 - python 3.6.2 later
 - matplotlib 3.0.0 later
 - Biopython
