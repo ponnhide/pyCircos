@@ -490,7 +490,7 @@ class Gcircle:
                     data = np.array(data) - (base_value - raxis_range[0])
                 else:
                     data = [raxis_range[1]-raxis_range[0]] * len(data) 
-                self.ax.bar(positions, data, width=width, bottom=base_value, color=facecolor, linewidth=linewidth, edgecolor=edgecolor) 
+                self.ax.bar(positions, data, width=width, bottom=base_value, color=facecolor, linewidth=linewidth, edgecolor=edgecolor, align="edge") 
     
         if spine == True:
             self.setspine(garc_id, raxis_range)
@@ -542,7 +542,7 @@ class Gcircle:
         facecolors = [] 
         for d in data:
             facecolors.append(cmap(d/(max_value-min_value)))
-        self.ax.bar(positions, height=[height] * len(positions), width=width, bottom=bottom, color=facecolors, edgecolor=edgecolor, linewidth=linewidth)  
+        self.ax.bar(positions, height=[height] * len(positions), width=width, bottom=bottom, color=facecolors, edgecolor=edgecolor, linewidth=linewidth, align="edge")  
 
         if spine == True:
             self.setspine(garc_id, raxis_range)
