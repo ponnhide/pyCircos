@@ -139,7 +139,7 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Numerical data to be drawn by bar plots. 
   - **positions**: *list* or *numpy.ndarray* (default: None)  
     Same parameter with *positions* of lineplot(). The center of the base bases become in *positions*.
-  - **width**: *float*  or *list* of *float* (default: 1.0)  
+  - **width**: *float*  or *list* of *float* (default: *garc\_object.size/len(data)*)  
     Width(s) of the bars.
   - **raxis_range**: *tuple* *(top=int, bottom=int)* (default: (550, 650))   
     Same parameter with *raxis_range* of lineplot().
@@ -163,9 +163,9 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Same parameter with *garc_id* of lineplot().
   - **data**: *list* or numpy.ndarray (default: *None*)  
     Numerical data to be visualized by color scale. Two dimensional array can also be taken.
-  - **positions**: *list* or *numpy.ndarray* (default: None)   
+  - **positions**: *list* or *numpy.ndarray* (default: *None*)   
     Same parameter with *positions* of lineplot().
-  - **width**: *float*  or *list* of *float* (default: 1.0)  
+  - **width**: *float*  or *list* of *float* (default: *garc\_object.size/len(data)*)  
     Width(s) of the bars.
   - **raxis_range**: *tuple* *(top=int, bottom=int)* (default: (550, 650))   
     Same parameter with *raxis_range* of lineplot()

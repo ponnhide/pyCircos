@@ -412,7 +412,7 @@ class Gcircle:
         if spine == True:
             self.setspine(garc_id, raxis_range)
     
-    def barplot(self, garc_id, data, positions=None, raxis_range=(550, 600), rlim=None, base_value=None, facecolor=None, edgecolor="#303030", width=1.0, linewidth=0.0, spine=False):  
+    def barplot(self, garc_id, data, positions=None, width=None, raxis_range=(550, 600), rlim=None, base_value=None, facecolor=None, edgecolor="#303030", linewidth=0.0, spine=False):  
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1]
         size  = self._garc_dict[garc_id].size - 1
@@ -424,11 +424,13 @@ class Gcircle:
             for p in positions:
                 new_positions.append(start + ((end-start) * p/size))
             positions = new_positions
-
-        if type(width) == float or type(width) == int:
-            width = [(end-start) * w/size] * len(data)  
+        
+        if width is None:
+            width = [positions[1] - positions[0]] * len(data) 
+        elif type(width) == float or type(width) == int:
+            width = [(end-start) * width/size] * len(data)  
         else:
-            new_width=[]
+            new_width = [] 
             for w in width:
                 new_w = (end-start) * w/size
                 new_width.append(new_w) 
@@ -495,7 +497,7 @@ class Gcircle:
         if spine == True:
             self.setspine(garc_id, raxis_range)
     
-    def heatmap(self, garc_id, data, positions=None, width=0.0, raxis_range=(550, 600), cmap=None, vmin=None, vmax=None, edgecolor="#303030", linewidth=0.0, spine=False):  
+    def heatmap(self, garc_id, data, positions=None, width=None, raxis_range=(550, 600), cmap=None, vmin=None, vmax=None, edgecolor="#303030", linewidth=0.0, spine=False):  
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1]
         size  = self._garc_dict[garc_id].size - 1
@@ -508,7 +510,9 @@ class Gcircle:
                 new_positions.append(start + ((end-start) * p/size))
             positions = new_positions
         
-        if type(width) == float or type(width) == int:
+        if width is None:
+            width = [positions[1] - positions[0]] * len(data) 
+        elif type(width) == float or type(width) == int:
             width = [(end-start) * width/size] * len(data)  
         else:
             new_width = [] 
@@ -527,8 +531,6 @@ class Gcircle:
             cmap = Gcircle.cmaps[self.cmap_cycle % len(Gcircle.cmaps)] 
             self.cmap_cycle += 1
 
-        width = positions[1]-positions[0]
-        
         if vmax is None:
             max_value = max(data)
         else:
