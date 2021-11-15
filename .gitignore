@@ -2,3 +2,9 @@
 /*/*/*.maf
 /*/*/*.gbff
 *.pyc
+*.swp
+/.ipynb_checkpoints/
+/__pycache__/
+/build/
+/dist/
+/pycircos.egg-info/
