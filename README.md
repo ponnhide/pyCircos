@@ -285,6 +285,6 @@ The Garc class object provides some analytical methods to support users analyze 
 ## Example code
 Prease see the notebooks in the 'tutorial' directrory.
 I also provides the executable tutorial codes in Google Colaboratory.
-- tutorial1: https://drive.google.com/file/d/1x-07TLtW3J3x2VwRv8x8gzbiQjVGKoTd/view?usp=sharing
-- tutorial2: https://drive.google.com/file/d/1nZzR_tIORf9Vldm_TiJWLQsG_rfUOmW3/view?usp=sharing
-- tutorial3: https://drive.google.com/file/d/174XsJLPKyv2LpSwl_bSlEEHMRGi2FcNf/view?usp=sharing
+- tutorial1: https://colab.research.google.com/drive/1xmAnv7AHWUTA2HWfjqV1lFWkFMSLJHG0?usp=sharing
+- tutorial2: https://colab.research.google.com/drive/1RYSo4aXpDIZlSQ9EhO2kPCeF8FOwyvXv?usp=sharing
+- tutorial3: https://colab.research.google.com/drive/1EPxCQCgOouVxtXcGyxu2ZqQvfucVnOJ-?usp=sharing
