@@ -2,7 +2,7 @@
 Circos is one of the most popular software for visualizing genomic similarities and features. However, its execution process is complicated and requires multiple original config files for the visualizations. Additionally, Circos is written in Perl, which limits its integration with other software for biological analysis. On the other hand, Python has been applied for various biological software packages. Therefore, by combining these packages, researchers can complete most of the required analysis. Nevertheless, Python lacks a library for drawing Circos plots,  even though Circos software has been developed for more than a decade. Here, we provide a python Matplotlib based circular genome visualization package '"pyCircos." Users easily and quickly visualize genomic features and comparative genome analysis results by specifying annotated sequence files such as GenBank files. 
 
 ## Gallery
-<img src="img/example.png" width="400x400">
+<img src="img/example.png" width="800x800">
 
 ## Dependencies
 
