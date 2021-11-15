@@ -1,6 +1,9 @@
 # pyCircos
 Circos is one of the most popular software for visualizing genomic similarities and features. However, its execution process is complicated and requires multiple original config files for the visualizations. Additionally, Circos is written in Perl, which limits its integration with other software for biological analysis. On the other hand, Python has been applied for various biological software packages. Therefore, by combining these packages, researchers can complete most of the required analysis. Nevertheless, Python lacks a library for drawing Circos plots,  even though Circos software has been developed for more than a decade. Here, we provide a python Matplotlib based circular genome visualization package '"pyCircos." Users easily and quickly visualize genomic features and comparative genome analysis results by specifying annotated sequence files such as GenBank files. 
 
+## Gallery
+<img src="img/example.png" width="400x400">
+
 ## Dependencies
 
 - python 3.7later
@@ -279,6 +282,9 @@ The Garc class object provides some analytical methods to support users analyze 
 - .**calc_nnskew(n1=*str*, n2=*str*, window_size=*int*, step_size=*int*)**  
   *n1* and *n2* are one of the nucleotide base letters of "ATGC". Calculate *n*,*m* skew (n-m)/(n+m) for multiple windows along the sequence. If *Garc object.record* is None, the method will not work.
 
-
 ## Example code
 Prease see the notebooks in the 'tutorial' directrory.
+I also provides the executable tutorial codes in Google Colaboratory.
+- tutorial1: https://drive.google.com/file/d/1x-07TLtW3J3x2VwRv8x8gzbiQjVGKoTd/view?usp=sharing
+- tutorial2: https://drive.google.com/file/d/1nZzR_tIORf9Vldm_TiJWLQsG_rfUOmW3/view?usp=sharing
+- tutoriak3: https://drive.google.com/file/d/174XsJLPKyv2LpSwl_bSlEEHMRGi2FcNf/view?usp=sharing
