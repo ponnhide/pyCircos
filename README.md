@@ -16,7 +16,7 @@ Circos is one of the most popular software for visualizing genomic similarities 
 
 2. Move to pyCircos directory and Install pyCircos using the following command.  
 
-   `python setup.py instal` 
+   `python setup.py install` 
 
 ## Usage
 
