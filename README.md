@@ -51,7 +51,7 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
 
    
 
-- **.lineplot (garc_id=*str*, data=*list* or *numpy.ndarray* , positions=*list* or *numpy.ndarray*, raxis_range=*tuple*, rlim=*tuple, linestyle=*str*, linecolor=*str* or *tuple*, linewidth=*int*)**  
+- __.lineplot (garc_id=*str*, data=*list* or *numpy.ndarray* , positions=*list* or *numpy.ndarray*, raxis_range=*tuple*, rlim=*tuple, linestyle=*str*, linecolor=*str* or *tuple*, linewidth=*int*)__  
   Plot a line in the sector corresponding to the arc of the Garc class object specified by *garc_id*. 
 
   - **garc_id**: *str* (defaut: *None*)  
