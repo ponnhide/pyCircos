@@ -29,18 +29,15 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
 #### Parameters 
 
 - **.garc_dict**: *dict* (default:None)
-
   Dictionary of the Garc class objects in *Gcircle object*. The keys of the dictionary are id values of the Garc class objects.
 
 - .**figsize**: *tuple* (dfault:)
-
   Figure size for the circular map.
 
 #### Methods
 
 - **.add_garc (garc_object=*Garc class object*)**  
   Add a new Garc class object into *garc_dict*.
-  
   - **garc_object**: *Garc class object* (default:None)  
     Garc class object to be added.
   
@@ -70,7 +67,7 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
   - **linestyle**: *str* (default: "solid")  
     Line style. Possible line styles can be reffered from https://matplotlib.org/stable/gallery/lines_bars_and_markers/linestyles.html
   - **linecolor**: *str or tuple* representing color code (default: None)  
-    Color of the line plot. If *linecolor* value is not given, the color will be set according to the default color set of matplotlib. To specify the opasity for a line color, please use  (*r, g, b*, *a*) format.
+    Color of the line plot. If *linecolor* value is not given, the color will be set according to the default color set of matplotlib. To specify the opasity for a line color, please use  (*r, g, b*, *a*) or #_XXXXXXXX_ format.
   - **linewidth**: *float* (default: 1)  
     Line width.
 
@@ -231,37 +228,26 @@ The following parameters, which are mainly used for the visualization of the arc
 
 - **arc_id**: *str* (default None)  
   Unique identifier for the Garc class object. Suppose *id* value is not given. An original unique ID is automatically given for *Garc object*. 
-  
 - **record**: *Bio.SeqRecord class object* or NCBI accession number (default: None)  
   Bio.SeqRecord class object or NCBI accession number of an annotated sequence. If a  NCBI accession number is given, the GeBank reord of the accesion number will be loaded from NCBI public database. 
-  
 - **size**: *float* (default: 1000)  
   Width of the arc rectangle. If *record* is given, the value is set by the sequence length of the record. The real arc rectangle width in the circle is determined by the ratio of *size* to the sum of the size and interspace values of the Garc class objects in the Gcircle class object. 
-  
 - **interspace**: *float* (default: 0)  
   Distance to the adjacent arc rectangle on the right. The real interspace size in the circle is determined by the ratio of *size* to the sum of the size and interspace values of the Garc class objects in the Gcircle class object. 
-  
 - **raxis_range**: *tuple* *(top=int, bottom=int)* (default: (500, 550))   
   Radial axis range where the arc rectangle is drawn.
-  
 - **facecolor**: *str* or *tuple* representing color code (default: *None*)  
   Face color for the arc rectangle. If *facecolor* is not given, the color will be selected from the default color set provided in the pyCircos module. 
-  
 - **edgecolor**: *str* or *tuple* representing color code (default: "#303030")  
   Edge color for the arc rectangle. If *edgecolor* is not given, the color will be selected from the default color set provided in the pyCircos module. 
-  
 - **linewidth**: *int* (default: 0)   
   Edge line width of the arc rectangle. 
-  
 - **label**: *str* (default: *arc_id*)  
   Label of the arc rectangle.  
-  
 - **labelposition**: *int* (default:0)  
   Relative label height from the center of the arc rectangle.  
-  
 - **labelsize**: *int* (default:0)  
-  Font size of the label  
-  
+  Font size of the label.
 - **label_visible**: *bool* (defaule: *False*)  
   If True, *label* of the Garc object is shown on the arc rectangle.
   
