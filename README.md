@@ -118,7 +118,7 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Marker shape. Possible marker shapes can be reffered from https://matplotlib.org/stable/gallery/lines_bars_and_markers/marker_reference.html. 
   - **markersize**: *float* or *list* of *float* (default: *None*)  
     Size(s) of the marker(s).
-  - **facecolor**:  *str, tuple* representing color code or *list* of color code (default: None)
+  - **facecolor**:  *str, tuple* representing color code or *list* of color code (default: None)  
     Face color(s) of the markers. If value type is *list*, the lenght of *facecolor* should be the same as the data length.
   - **edgecolor**: *str or tuple* representing color code  (default: None)  
     Edge color of the markers
@@ -145,7 +145,7 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Same parameter with *raxis_range* of lineplot().
   - **rlim**: *tuple (top=int, bottom=int)* (default:None)   
     Same parameter with *rlim* of lineplot().
-  - **facecolor**: *str, tuple* representing color code or *list* of color code (default: None)  
+  - **facecolor**: *str, tuple* representing color code or *list* of color code (default: None)   
     Facecolor(s) of the bars. If value type is *list*, the lenght of *facecolor* should be the same as the data length.
   - **edgecolor**: *str or tuple* representing color code  (default: None)   
     Edge color of the bars
@@ -254,7 +254,7 @@ The following parameters, which are mainly used for the visualization of the arc
   
 #### Methods
 The Garc class object provides some analytical methods to support users analyze genomic characters. 
-- **.calc_density(positions=*list*, window_size=*int*, step_size=*int*)**  
+- **.calc_density(positions=*list*, window_size=*int*)**  
   Converts *positions* consisting of x-coordinates into a list of density values scanned in a sliding window.
   - **positions**: *list* of *int* or *tuple*  
     List of x corrdinate values or tuple consisting of two x coordinate values. Each coordinate value should be in the range 0 to *size* of *Garc object*.
