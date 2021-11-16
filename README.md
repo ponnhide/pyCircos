@@ -86,7 +86,7 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Same parameter with *positions* of lineplot().
   - **raxis_range**: *tuple* *(top=int, bottom=int)* (default: (550, 650))   
     Same parameter with *raxis_range* of lineplot().  
-  - **rlim**: *tuple (top=int, bottom=int)* (default:None)   
+  - **rlim**: *tuple (top=int, bottom=int)* (default: (min(_data_), max(_data_))   
     Same parameter with *rlim* of lineplot().
   - **base_value**: *float* (default: 0)  
     Base line height in data coordinates. The area between the base line and the data line is filled by *facecolor*.
@@ -112,7 +112,7 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Same parameter with *positions* of lineplot().
   - **raxis_range**: *tuple* *(top=int, bottom=int)* (default: (550, 650))   
     Same parameter with *raxis_range* of lineplot().
-  - **rlim**: *tuple (top=int, bottom=int)* (default: *None*)   
+  - **rlim**: *tuple (top=int, bottom=int)* (default: (min(_data_), max(_data_))   
     Same parameter with *rlim* of lineplot().
   - **makershape**: *str* (default: "o")  
     Marker shape. Possible marker shapes can be reffered from https://matplotlib.org/stable/gallery/lines_bars_and_markers/marker_reference.html. 
@@ -137,17 +137,17 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Same parameter with *garc_id* of lineplot().
   - **data**: *list* or numpy.ndarray (default: *None*)  
     Numerical data to be drawn by bar plots. 
-  - **positions**: *list* or *numpy.ndarray* (default: None)  
+  - **positions**: *list* or *numpy.ndarray* (default: _None_)  
     Same parameter with *positions* of lineplot(). The center of the base bases become in *positions*.
   - **width**: *float*  or *list* of *float* (default: *garc\_object.size/len(data)*)  
     Width(s) of the bars.
   - **raxis_range**: *tuple* *(top=int, bottom=int)* (default: (550, 650))   
     Same parameter with *raxis_range* of lineplot().
-  - **rlim**: *tuple (top=int, bottom=int)* (default:None)   
+  - **rlim**: *tuple (top=int, bottom=int)* (default: (min(_data_), max(_data_))   
     Same parameter with *rlim* of lineplot().
   - **facecolor**: *str, tuple* representing color code or *list* of color code (default: None)   
     Facecolor(s) of the bars. If value type is *list*, the lenght of *facecolor* should be the same as the data length.
-  - **edgecolor**: *str or tuple* representing color code  (default: None)   
+  - **edgecolor**: *str or tuple* representing color code  (default: _None_)   
     Edge color of the bars
   - **linewidth**: *float* (default: 1.0)  
     Edge line width of the bars.
