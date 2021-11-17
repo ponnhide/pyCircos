@@ -24,7 +24,7 @@ pyCircos provides the “Gcircle class”  and "Garc class". A "Gcircle" class o
 
 ### Gcircle class 
 
-A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a drawing space. Any drawing object (line plot, scatter plot, barplot, heatmap, and chordplot) can be placed in the space by specifying the base height (from 0 to 1000) and the corresponding Garc class object.
+A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a drawing space. Any graph (line plot, scatter plot, barplot, heatmap, and chordplot) can be placed on the space by specifying the _raxis\_range_ (from 0 to 1000) and the corresponding Garc class object.
 
 #### Parameters 
 
