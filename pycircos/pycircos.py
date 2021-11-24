@@ -14,6 +14,7 @@ import matplotlib.path    as mpath
 import matplotlib.patches as mpatches
 from Bio import SeqIO
 import Bio
+from typing import List, Dict, Tuple
 
 matplotlib.rcParams["figure.max_open_warning"] = 0
 matplotlib.rcParams['ps.fonttype']       = 42
@@ -187,20 +188,20 @@ class Gcircle:
         if name == "garc_dict":
             return self._garc_dict
     
-    def __init__(self, figsize=(8,8)):
-        self._garc_dict = {} 
-        self.figsize     = figsize
-        self.figure      = plt.figure(figsize=figsize)
-        self.color_cycle = 0 
+    def __init__(self, figsize: Tuple[int, int] =(8,8)) -> None:
+        self._garc_dict: Dict = {} 
+        self.figsize: Tuple[int, int]  = figsize
+        self.figure: plt.Figure  = plt.figure(figsize=figsize)
+        self.color_cycle: int = 0 
 
     def add_garc(self, garc):
         self._garc_dict[garc.arc_id] = garc
 
-    def set_garcs(self):
-        sum_length       = sum(list(map(lambda x:  self._garc_dict[x]["size"], list(self._garc_dict.keys()))))
-        sum_interspace   = sum(list(map(lambda x:  self._garc_dict[x]["interspace"], list(self._garc_dict.keys()))))
-        start = 0.0 
-        end   = 2 * np.pi - sum_interspace
+    def set_garcs(self) -> None:
+        sum_length  = sum(list(map(lambda x:  self._garc_dict[x]["size"], list(self._garc_dict.keys()))))
+        sum_interspace = sum(list(map(lambda x:  self._garc_dict[x]["interspace"], list(self._garc_dict.keys()))))
+        start: float = 0.0 
+        end: float = 2 * np.pi - sum_interspace
         #self.theta_list  = np.linspace(0.0, 2 * np.pi - sum_interspace, sum_length, endpoint=True)
         
         s = 0
@@ -618,7 +619,7 @@ class Gcircle:
         if sstart == ostart: 
             pass 
         else:
-            Path      = mpath.Path
+            Path = mpath.Path
             path_data = [(Path.MOVETO,  (sstart, stop)),
                          (Path.CURVE3,  (sstart, center)),     
                          (Path.CURVE3,  (oend,   etop)),

@@ -8,3 +8,4 @@
 /build/
 /dist/
 /pycircos.egg-info/
+.vscode/
