@@ -270,7 +270,7 @@ The Garc class object provides some analytical methods to support users analyze 
 
 ## Example code
 Prease see the notebooks in the 'tutorial' directrory.
-I also provides the executable tutorial codes in Google Colaboratory.
+I also provide the executable tutorial codes in Google Colaboratory.
 - tutorial1: https://colab.research.google.com/drive/1xmAnv7AHWUTA2HWfjqV1lFWkFMSLJHG0?usp=sharing
 - tutorial2: https://colab.research.google.com/drive/1RYSo4aXpDIZlSQ9EhO2kPCeF8FOwyvXv?usp=sharing
 - tutorial3: https://colab.research.google.com/drive/1EPxCQCgOouVxtXcGyxu2ZqQvfucVnOJ-?usp=sharing
