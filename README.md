@@ -9,17 +9,11 @@ Circos is one of the most popular software for visualizing genomic similarities 
 - python 3.7later
 
 ## Installation
+For normal users, we recommended you to install the official release as follows.   
+`pip install python-circos`
 
-1. Download pyCircos package from the GitHub repository.   
-
-   ```git clone https://github.com/ponnhide/pyCircos.git```
-
-2. Move to pyCircos directory and Install pyCircos using the following command.  
-
-   `python setup.py install` 
-   
-You can also install it using the following single command:  
-`pip install https://github.com/ponnhide/pycircos.git`
+If you want to use developmental version, it can be installed using the following single command:  
+`pip install git+https://github.com/ponnhide/pyCircos.git`
 
 ## Usage
 
@@ -44,15 +38,16 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
   - **garc_object**: *Garc class object* (default:None)  
     Garc class object to be added.
   
-  **return** *None*
+  **return** *None*   
   
-    
-  
-- **.set_garcs()**  
+
+- **.set_garcs(start=0, end=360)**  
   Visualize the arc rectangles of the Garc class objects in *.garc_dict* on the drawing space. After the execution of this method, a new Garc class object cannot be added to *garc_dict* and *figure* parameter representing maplotlib.pyplot.figure object will be created in *Gcircle object*. 
   **return** *None* 
-
-   
+  - **start**: *int* (defaut: *0*)  
+    Start angle of the circos plot. The value range is -360 ~ 360.
+  - **end**: *int* (default: *360*)  
+    End angle of the circos plot. The value range is -360 ~ 360.
 
 - __.lineplot (garc_id=*str*, data=*list* or *numpy.ndarray* , positions=*list* or *numpy.ndarray*, raxis_range=*tuple*, rlim=*tuple, linestyle=*str*, linecolor=*str* or *tuple*, linewidth=*int*)__  
   Plot a line in the sector corresponding to the arc of the Garc class object specified by *garc_id*. 
@@ -75,7 +70,6 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Line width.
 
   **return** *None*
-
 
 
 - **.fillplot (garc_id=*str*, data=*list* or *numpy.ndarray* , positions=*list* or *numpy.ndarray*, raxis_range=*tuple*, rlim=*tuple*, base_value=*float*, facecolor=*str* or *tuple*, linecolor=*str* or *tuple*, linewidth=*int*)**  
@@ -101,7 +95,6 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Edge line width.
   
   **return** *None*
-
 
 
 - **.scatterplot (garc_id=*str*, data=*list* or *numpy.ndarray* , positions=*list* or *numpy.ndarray*, raxis_range=*tuple*, rlim=*tuple*, markershape=*str*, facecolor=*str* or *tuple*, edgecolor =*str* or *tuple*, linewidth=*int*, markersize=*int*)**  
@@ -131,7 +124,6 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
   **return** *None*
 
 
-
 - **.barplot (garc_id=*str*, data=*list* or *numpy.ndarray* , positions=*list* or *numpy.ndarray*, width=*float* or *list*, raxis_range=*tuple*, rlim=*tuple*, base_value=*int*, faceolor=*str* or *tuple*, edgecolor=*str* or *tuple*)** 
 
   Plot bars in the sector corresponding to the arc of the Garc class object specified by *garc_id*.
@@ -158,7 +150,6 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
   **return** *None*
 
 
-
 - **.heatmap (garc_id=*str*, data=*list* or *numpy.ndarray*, positions=*list* or *numpy.ndarray*,  width=*float* or *list*,  raxis_range=*tuple*, cmap=*str*, vmin=*float*, vmax=*float*)**  
   Visualize magnitudes of data values by color scale in the sector corresponding to the arc of the Garc class object specified by *garc_id*.  
   
@@ -181,8 +172,7 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
 
   **return** *None*
 
-  
-  
+    
 - **.chordplot(arc_loc1=*tuple*, arc_loc2=*tuple*, facecolor=*str* or *tuple*, edgecolor=*str* or *tuple*, linewidth=*int*)**
   Visualize inter-relation ships between data. 
 
@@ -200,9 +190,8 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
     Edge line width of the link.
   
   **return** *None*
-  
-  
-  
+   
+ 
 - .**featureplot (garc_id=*str*, feature_type=*str*, soruce=*list* of *Bio.SeqFeature object*, raxis_range=*tuple*, faceolor=*str* or *tuple*)**  
   Visualize sequence features with bar plots in the sector corresponding to the arc of the Garc class object specified by *garc_id*.
 
@@ -221,7 +210,6 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
   **return** *None*
 
 
-
 ### Garc class
 
 A Garc class object can be created by ```Garc()``` command.   
@@ -236,7 +224,7 @@ The following parameters, which are mainly used for the visualization of the arc
 - **size**: *float* (default: 1000)  
   Width of the arc rectangle. If *record* is given, the value is set by the sequence length of the record. The real arc rectangle width in the circle is determined by the ratio of *size* to the sum of the size and interspace values of the Garc class objects in the Gcircle class object. 
 - **interspace**: *float* (default: 0)  
-  Distance to the adjacent arc rectangle on the right. The real interspace size in the circle is determined by the ratio of *size* to the sum of the size and interspace values of the Garc class objects in the Gcircle class object. 
+  Distance angle to the adjacent arc rectangle on the right. The real interspace size in the circle is determined by the ratio of *size* to the sum of the size and interspace values of the Garc class objects in the Gcircle class object. 
 - **raxis_range**: *tuple* *(top=int, bottom=int)* (default: (500, 550))   
   Radial axis range where the arc rectangle is drawn.
 - **facecolor**: *str* or *tuple* representing color code (default: *None*)  

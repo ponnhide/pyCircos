@@ -196,13 +196,13 @@ class Gcircle:
     def add_garc(self, garc):
         self._garc_dict[garc.arc_id] = garc
 
-    def set_garcs(self):
+    def set_garcs(self, start=0, end=360):
         sum_length       = sum(list(map(lambda x:  self._garc_dict[x]["size"], list(self._garc_dict.keys()))))
         sum_interspace   = sum(list(map(lambda x:  self._garc_dict[x]["interspace"], list(self._garc_dict.keys()))))
-        start = 0.0 
-        end   = 2 * np.pi - sum_interspace
+        start = 2 * np.pi * start / 360
+        end   = (2 * np.pi * end / 360) - sum_interspace
         #self.theta_list  = np.linspace(0.0, 2 * np.pi - sum_interspace, sum_length, endpoint=True)
-        
+
         s = 0
         sum_interspace = 0 
         for key in self._garc_dict.keys():
