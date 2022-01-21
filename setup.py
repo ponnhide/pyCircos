@@ -6,19 +6,19 @@
 DESCRIPTION = "circosplot for matplotlib"
 LONG_DESCRIPTION = ""
 
-DISTNAME         = 'pycircos'
+DISTNAME         = 'python-circos'
 MAINTAINER       = 'Hideto Mori'
-MAINTAINER_EMAIL = 'morityunasfc.keio.ac.jp/hidto7592agmail.com'
-URL              = 'https://github.com/ponnhide/patchworklib'
+MAINTAINER_EMAIL = 'hidto7592@gmail.com'
+URL              = 'https://github.com/ponnhide/pyCircos'
 LICENSE          = 'GNU General Public License v3.0'
-DOWNLOAD_URL     = 'https://github.com/ponnhide/patchworklib'
-VERSION          = '0.0.0'
+DOWNLOAD_URL     = 'https://github.com/ponnhide/pyCircos'
+VERSION          = '0.2.0'
 PYTHON_REQUIRES  = ">=3.7"
 
 INSTALL_REQUIRES = [
-    'matplotlib>=3.3',
+    'matplotlib>=3.4',
+    'biopython>=1.78',
 ]
-
 
 PACKAGES = [
     'pycircos'
@@ -29,9 +29,7 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
-    'License :: OSI Approved :: GNU General Public License v3.0',
-    'Topic :: Bioinformatics',
-    'Operating System :: OS Independent',
+    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
 ]
 
 

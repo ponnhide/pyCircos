@@ -19,6 +19,19 @@ If you want to use developmental version, it can be installed using the followin
 
 pyCircos provides the “Gcircle class”  and "Garc class". A "Gcircle" class object  holds  the dictionary of Garc class objefcts and provides functions to place Garc classs object on the circular map. Each Garc class object manages numeric and genomic data to be visualized on the circular map.
 
+### News
+<details>
+<summary> <b>Version 0.2.0 is released. The `fig` parameter is added for Gcircle.__init__, so it is now possible to specify your own figure object. </b> </summary>
+
+If you want to arrange multiple circos plots, I reccomend to use [patchworklib](https://github.com/ponnhide/patchworklib).  
+Please see the following example code.  
+https://colab.research.google.com/drive/1tkn7pxRqh9By5rTFqRbVNDVws-o-ySz9?usp=sharing
+
+**Example result of multiple circos plots**
+<img src="img/pycircos_patchwork.png" width="800x800">
+
+</details>
+
 ### Gcircle class 
 
 A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a drawing space. Any graph (line plot, scatter plot, barplot, heatmap, and chordplot) can be placed on the space by specifying the _raxis\_range_ (from 0 to 1000) and the corresponding Garc class object.
