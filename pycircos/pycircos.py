@@ -1114,7 +1114,7 @@ class Gcircle:
                         ]
             codes, verts = list(zip(*path_data)) 
             path  = mpath.Path(verts, codes)
-            patch = mpatches.PathPatch(path, facecolor=facecolor, linewidth=linewidth, zorder=0)
+            patch = mpatches.PathPatch(path, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, zorder=0)
             self.ax.add_patch(patch)
 
     def tickplot(self, garc_id, tick_interval=1000, length=5, width=1.0, direction="outer"):  
