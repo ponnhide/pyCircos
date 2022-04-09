@@ -2,7 +2,7 @@
 Circos is one of the most popular software for visualizing genomic similarities and features. However, its execution process is complicated and requires multiple original config files for the visualizations. Additionally, Circos is written in Perl, which limits its integration with other software for biological analysis. On the other hand, Python has been applied for various biological software packages. Therefore, by combining these packages, researchers can complete most of the required analysis. Nevertheless, Python lacks a library for drawing Circos plots,  even though Circos software has been developed for more than a decade. Here, we provide a python Matplotlib based circular genome visualization package '"pyCircos." Users easily and quickly visualize genomic features and comparative genome analysis results by specifying annotated sequence files such as GenBank files. 
 
 ## Gallery
-<img src="img/example.png" width="800x800">
+<img src="img/tree-example.png" width="400x400">
 
 ## Dependencies
 
@@ -20,6 +20,15 @@ If you want to use developmental version, it can be installed using the followin
 pyCircos provides the “Gcircle class”  and "Garc class". A "Gcircle" class object  holds  the dictionary of Garc class objefcts and provides functions to place Garc classs object on the circular map. Each Garc class object manages numeric and genomic data to be visualized on the circular map.
 
 ### News
+#### Version 0.3.0 is released. 
+- Tarc class and Tcircle class are added.     
+Tarc class and Tcircle class is implemented as subclass of Garc and Gcircle class, respectivily.  
+By using these class, you can draw circular phylogenetic tree as the following example. 
+
+<img src="img/tree_example.png" width="800x800">
+
+You can execute the example code to draw the circular phylogenetic tee on the [Google colab](..).
+
 <details>
 <summary> <b>Version 0.2.0 is released. The `fig` parameter is added for Gcircle.__init__, so it is now possible to specify your own figure object. </b> </summary>
 
@@ -206,8 +215,7 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
    
  
 - .**featureplot (garc_id=*str*, feature_type=*str*, soruce=*list* of *Bio.SeqFeature object*, raxis_range=*tuple*, faceolor=*str* or *tuple*)**  
-  Visualize sequence features with bar plots in the sector corresponding to the arc of the Garc class object specified by *garc_id*.
-
+  Visualize sequence features with bar plots in the sector corresponding to the arc of the Garc class object specified by *garc_id*.  
   - **garc_id** :*str* (defaut: *None*)  
     Same parameter with *garc_id* of lineplot().
   - **feature_type**: *str* (default: "all")  
@@ -220,6 +228,63 @@ A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a draw
   - **facecolor**: *str or tuple* representing color code  (default: None)    
     Face color of the feature bars.
   
+  **return** *None*
+
+### Tcircle class
+
+Tcircle class is the subclass of Gcircle. All methods implemented in the Gcircle class also can be used. 
+Then, the two additional methods `set_tarc`, `plot_tree` and  `plot_highlight` is provided in the Tcircle class.
+
+#### Methods
+- **.add_tarc(tarc=*str*)**:
+  Add a new Tarc or Garc class object into tarc_dict.
+  - tarc : Tarc class object (default:None)
+    Tarc class object to be added.
+
+  **return** *None*
+ 
+
+- **.plot_tree(tarc_id=*str*, rlim=*tuple*, cladevisual_dict=*dict*, highlight_dict=*dict*, linecolor=*str*, linewidth=*float*)**:  
+  Drawa circular phylogenetic tree. 
+　- **tarc_id**: *str*
+    ID of the Tarc class object. The ID should be in Tcircle
+  - **object.tarc_dict**: *dict*
+  - **rlim** : **tuple** (top=int, bottom=int)
+    The top and bottom r limits in data coordinates. The default vlaues is (0, 700).
+    If the first value is less than second value, tree will be outward direction.
+    If the first value is larger than second value, tree will be inward direction.
+  - **cladevisual_dict** : *dict* 
+    Dictionay composed of pairs of clade name and a sub-dict holding parameters   
+    to visualize the clade. A sub-dict is composed of the following key-value pairs:  
+    - **size**: *int* or *float*
+      Size of dot. The default value is 5.
+    - **color**: *float* or *str* replresenting color code.
+      Face color of dot. The default value is '#303030'.
+    - **edgecolor**: *float* or *str* replresenting color code.
+      Edge line color of dot. The default value is '#303030'.
+    - **linewidth**: *int* or *float*
+      Edge line width of dot. The default value is 0.5.  
+
+  **return** *None*
+
+
+- **.plot_tree(tarc_id=*str*, highlight_dict=*dict*)**:  
+  Add highlight for specif clade under the given internal clade.
+  - **highlight_dict**: *dict* 
+    Dictionay composed of pairs of internal clade name and a sub-dict.  
+    Instead of clade name, tuples of teminal clade names can also be used.
+    A sub-dict is composed of the following key-value pairs:
+    - **color**: *str* 
+      Color of highlight for clades. The default value is "#000000".
+    - **alpha**: *flaot* 
+      Alpha of highlight for clades. The default vlalue is 0.25.
+    - **label**: *str*
+      Label. The default vlalue is None.
+    - **fontsize**: int or float 
+      Fontsize of label. The default vlalue is 10.
+    - **y**: *int* or *float*
+      Y location of the text. The default vlalue is the bottom edge of the highliht.
+
   **return** *None*
 
 
@@ -278,3 +343,4 @@ I also provide the executable tutorial codes in Google Colaboratory.
 - tutorial1: https://colab.research.google.com/drive/1xmAnv7AHWUTA2HWfjqV1lFWkFMSLJHG0?usp=sharing
 - tutorial2: https://colab.research.google.com/drive/1RYSo4aXpDIZlSQ9EhO2kPCeF8FOwyvXv?usp=sharing
 - tutorial3: https://colab.research.google.com/drive/1EPxCQCgOouVxtXcGyxu2ZqQvfucVnOJ-?usp=sharing
+- tutorial4 (Drawing pylogenetic tree)

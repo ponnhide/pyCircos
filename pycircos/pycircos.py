@@ -43,7 +43,6 @@ class Garc:
 
     def __init__(self, arc_id=None, record=None, size=1000, interspace=3, raxis_range=(500, 550), facecolor=None, edgecolor="#303030", linewidth=0.75, label=None, labelposition=0, labelsize=10, label_visible=False):
         """
-        
 
         Parameters
         ----------
@@ -64,7 +63,7 @@ class Garc:
             values of the Garc class objects in the Gcircle class object.
             The default is 1000.
         interspace : float, optional
-            Distance angle (units?) to the adjacent arc section in clockwise 
+            Distance angle (deg) to the adjacent arc section in clockwise 
             sequence. The actual interspace size in the circle is determined by
             the actual arc section width in the resultant circle is determined
             by the ratio of size to the combined sum of the size and interspace
@@ -74,7 +73,7 @@ class Garc:
             Radial axis range where line plot is drawn.
             The default is (550, 600).
         facecolor : str or tuple representing color code, optional
-            Color for filling.. The default is None.
+            Color for filling. The default color is set automatically. 
         edgecolor : str or tuple representing color code, optional
             Edge color of the filled area. The default is "#303030".
         linewidth : float, optional
@@ -327,10 +326,19 @@ class Gcircle:
         if name == "garc_dict":
             return self._garc_dict
     
-    def __init__(self, figsize=(8,8)):
+    def __init__(self,  fig=None, figsize=None):
         self._garc_dict = {} 
-        self.figsize     = figsize
-        self.figure      = plt.figure(figsize=figsize)
+        if fig is None:
+            if figsize is None:
+                figsize = (8,8) 
+            self.figure = plt.figure(figsize=figsize)
+            self.fig_is_ext = False
+        else:
+            if figsize is None:
+                figsize = (6,6) 
+            self.figure = fig
+            self.fig_is_ext = True
+        self.figsize = figsize
         self.color_cycle = 0 
 
     def add_garc(self, garc):
@@ -374,7 +382,6 @@ class Gcircle:
         sum_interspace   = sum(list(map(lambda x:  self._garc_dict[x]["interspace"], list(self._garc_dict.keys()))))
         start = 2 * np.pi * start / 360
         end   = (2 * np.pi * end / 360) - sum_interspace
-        #self.theta_list  = np.linspace(0.0, 2 * np.pi - sum_interspace, sum_length, endpoint=True)
 
         s = 0
         sum_interspace = 0 
@@ -383,14 +390,14 @@ class Gcircle:
             self._garc_dict[key].coordinates    = [None, None]
             self._garc_dict[key].coordinates[0] = sum_interspace + start + ((end-start) * s/sum_length) #self.theta_list[s:s+self._garc_dict[key]["size"]+1]
             self._garc_dict[key].coordinates[1] = sum_interspace + start + ((end-start) * (s+size)/sum_length)
-            #if s+self._garc_dict[key].size+1 > sum_length:
-            #    self._garc_dict[key].coordinates[1] = sum_interspace + start + ((end-start) * (s+size+1-sum_length)/sum_length)
-            #    self._garc_dict[key].coordinates + self.theta_list[:s+size+1-sum_length]
             s = s + size
             sum_interspace += self._garc_dict[key].interspace
-            #print(key, self._garc_dict[key].coordinates) 
-        self.figure = plt.figure(figsize=self.figsize)
-        self.ax     = plt.subplot(111, polar=True)
+        
+        #self.figure = plt.figure(figsize=self.figsize)
+        if self.fig_is_ext:
+            self.ax = self.figure.add_axes([0, 0, self.figsize[0], self.figsize[1]], polar=True)
+        else:
+            self.ax = self.figure.add_axes([0, 0, 1, 1], polar=True)
         self.ax.set_theta_zero_location("N")
         self.ax.set_theta_direction(-1)
         self.ax.set_ylim(0,1000)
@@ -772,8 +779,8 @@ class Gcircle:
         """
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1]
-        size  = self._garc_dict[garc_id].size - 1
-        positions_all = np.linspace(start, end, len(data), endpoint=True)
+        size  = self._garc_dict[garc_id].size 
+        positions_all = np.linspace(start, end, len(data), endpoint=False)
         if positions is None:
             positions = positions_all
         else:
@@ -901,8 +908,8 @@ class Gcircle:
         
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1]
-        size  = self._garc_dict[garc_id].size - 1
-        positions_all = np.linspace(start, end, len(data), endpoint=True)
+        size  = self._garc_dict[garc_id].size 
+        positions_all = np.linspace(start, end, len(data), endpoint=False)
         if positions is None:
             positions = positions_all
         else:
@@ -1117,17 +1124,75 @@ class Gcircle:
             patch = mpatches.PathPatch(path, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, zorder=0)
             self.ax.add_patch(patch)
 
-    def tickplot(self, garc_id, tick_interval=1000, length=5, width=1.0, direction="outer"):  
-        start = self.locus_dict[garc_id].coordinates[0] 
-        end   = self.locus_dict[garc_id].coordinates[-1] 
-        size  = self.locus_dict[garc_id].size-1
-        for i in range(0, size+1, tick_interval):
-            for tick in ticks:
-                if direction == "outer":
-                    self.ax.plot([start + ((end-start) * i/size), start + ((end-start) * i/size)], [bottom, bottom+length], color=color, linewidth=width)  
-                if direction == "inner":
-                    self.ax.plot([start + ((end-start) * i/size), start + ((end-start) * i/size)], [bottom, bottom-length], color=color, linewidth=width)
-   
+    def tickplot(self, garc_id, raxis_range=None, tickinterval=1000, tickpositions=None, ticklabels=None, tickwidth=1, tickcolor="#303030", ticklabeldirection="outer"):  
+        """
+        Plot ticks on the arc of the Garc class object
+        
+        Parameters
+        ----------
+        garc_id : str 
+            ID of the Garc class object. The ID should be in Gcircle 
+            object.garc_dict. 
+        raxis_range : tuple (top=int, bottom=int)
+            Radial axis range where tick plot is drawn.
+            If `direction` is "outer", 
+            the default is `(Garc_object.raxis_range[1], Garc_object.raxis_range[1] + 0.05 * abs(Garc_object.raxis_range[1]-Garc_object.raxis_range[0]))`
+        tickinterval : int
+            Tick interval.
+            The default value is 1000. If `tickpositions` value is given, this value will be ignored.
+        tickpositions : list of int 
+            Positions on the arc of the Garc class object. 
+            If you set ticks on your specified positons, plase use this parameter instead of `tickinterval`
+            The values should be less than `Garc_object.size`.
+        ticklabels : list of int or list or str
+            Labels for ticks on the arc of the Garc class object.
+            The default value is same with `tickpositions`.
+        tickwidth : float
+            tick width. The default is 1.0.
+        tickcolor : str or float representing color code
+            tick color, The default is "#303030"
+        ticklabeldirection : str ("outer" or "inner") 
+            tick label direction
+        
+        Returns
+        -------
+        None
+        """
+        
+        start = self._garc_dict[garc_id].coordinates[0] 
+        end   = self._garc_dict[garc_id].coordinates[-1]
+        size  = self._garc_dict[garc_id].size - 1
+        positions_all = np.linspace(start, end, self._garc_dict[garc_id].size, endpoint=True)
+        
+        if raxis_range is None:
+            raxis_range = (self._garc_dict[garc_id].raxis_range[1],  self._garc_dict[garc_id].raxis_range[1] + 0.5 * abs(self._garc_dict[garc_id].raxis_range[1]-self._garc_dict[garc_id].raxis_range[0]))
+       
+        if tickpositions is None:
+            tickpositions = [pos for pos in range(0, self._garc_dict[garc_id].size, tickinterval)]
+
+        if ticklabels is None:
+            ticklabels = [None] * len(tickpositions) 
+        
+        elif ticklabels == "None":
+            ticklabels = tickpositions 
+        
+        for pos, label in zip(tickpositions, ticklabels):
+            self.ax.plot([positions_all[pos], positions_all[pos]], raxis_range, linewidth=tickwidth, color=tickcolor)
+            if label is None:
+                pass 
+            else:
+                rot = (self._garc_dict[garc_id].coordinates[0] + self._garc_dict[garc_id].coordinates[1]) / 2
+                rot = rot*360/(2*np.pi)
+                if 90 < rot < 270:
+                    rot = 180-rot
+                else:
+                    rot = -1 * rot 
+                if ticklabeldirection == "outer":
+                    self.ax.text(positions_all[pos], raxis_range[1]+1, str(label), rotation=rot, ha="center", va="bottom", fontsize=self._garc_dict[garc_id].labelsize)
+                
+                if ticklabeldirection == "inner":
+                    self.ax.text(positions_all[pos], raxis_range[0]-1, str(label), rotation=rot, ha="center", va="top", fontsize=self._garc_dict[garc_id].labelsize)
+
     def save(self, file_name="test", format="pdf", dpi=None):
         self.figure.patch.set_alpha(0.0) 
         if format == "pdf" and dpi is None:
