@@ -27,7 +27,7 @@ By using these class, you can draw circular phylogenetic tree as the following e
 
 <img src="img/tree-example.png" width="400x400">
 
-You can execute the example code to draw the circular phylogenetic tee on the [Google colab](..).
+You can execute the example code to draw the circular phylogenetic tee on the [Google colab](https://colab.research.google.com/drive/140m2jpQpgSZwSlP-3u3Oj8IcJUbP2NGD?usp=sharing).
 
 <details>
 <summary> <b>Version 0.2.0 is released. The `fig` parameter is added for Gcircle.__init__, so it is now possible to specify your own figure object. </b> </summary>
@@ -343,4 +343,4 @@ I also provide the executable tutorial codes in Google Colaboratory.
 - tutorial1: https://colab.research.google.com/drive/1xmAnv7AHWUTA2HWfjqV1lFWkFMSLJHG0?usp=sharing
 - tutorial2: https://colab.research.google.com/drive/1RYSo4aXpDIZlSQ9EhO2kPCeF8FOwyvXv?usp=sharing
 - tutorial3: https://colab.research.google.com/drive/1EPxCQCgOouVxtXcGyxu2ZqQvfucVnOJ-?usp=sharing
-- tutorial4 (Drawing pylogenetic tree)
+- tutorial4 (Drawing pylogenetic tree): https://colab.research.google.com/drive/140m2jpQpgSZwSlP-3u3Oj8IcJUbP2NGD?usp=sharing

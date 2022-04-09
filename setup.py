@@ -12,7 +12,7 @@ MAINTAINER_EMAIL = 'hidto7592@gmail.com'
 URL              = 'https://github.com/ponnhide/pyCircos'
 LICENSE          = 'GNU General Public License v3.0'
 DOWNLOAD_URL     = 'https://github.com/ponnhide/pyCircos'
-VERSION          = '0.2.0'
+VERSION          = '0.3.0'
 PYTHON_REQUIRES  = ">=3.7"
 
 INSTALL_REQUIRES = [
