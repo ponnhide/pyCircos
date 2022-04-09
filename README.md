@@ -25,7 +25,7 @@ pyCircos provides the “Gcircle class”  and "Garc class". A "Gcircle" class o
 Tarc class and Tcircle class is implemented as subclass of Garc and Gcircle class, respectivily.  
 By using these class, you can draw circular phylogenetic tree as the following example. 
 
-<img src="img/tree-example.png" width="800x800">
+<img src="img/tree-example.png" width="400x400">
 
 You can execute the example code to draw the circular phylogenetic tee on the [Google colab](..).
 
