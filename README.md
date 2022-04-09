@@ -37,7 +37,7 @@ Please see the following example code.
 https://colab.research.google.com/drive/1tkn7pxRqh9By5rTFqRbVNDVws-o-ySz9?usp=sharing
 
 **Example result of multiple circos plots**
-<img src="img/pycircos_patchwork.png" width="800x800">
+<img src="img/pycircos_patchwork.png" width="400x400">
 
 </details>
 
