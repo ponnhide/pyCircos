@@ -1124,7 +1124,7 @@ class Gcircle:
             patch = mpatches.PathPatch(path, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, zorder=0)
             self.ax.add_patch(patch)
 
-    def tickplot(self, garc_id, raxis_range=None, tickinterval=1000, tickpositions=None, ticklabels=None, tickwidth=1, tickcolor="#303030", ticklabelsize=10, ticklabelcolor="#303030", ticklabelmargin=10, tickdirection="outer"):
+    def tickplot(self, garc_id, raxis_range=None, tickinterval=1000, tickpositions=None, ticklabels=None, tickwidth=1, tickcolor="#303030", ticklabelsize=10, ticklabelcolor="#303030", ticklabelmargin=10, tickdirection="outer", ticklabelorientation="vertical"):
         """
         Plot ticks on the arc of the Garc class object
         
@@ -1160,6 +1160,8 @@ class Gcircle:
             tick label margin. The default is 10.
         tickdirection : str ("outer" or "inner")
             tick direction. The default is "outer"
+        ticklabelorientation: str ("vertical" or "horizontal")
+            tick label orientation. The default is "vertical"
         
         Returns
         -------
@@ -1192,18 +1194,45 @@ class Gcircle:
             if label is None:
                 pass 
             else:
-                current_loc = start + ((end - start) * (pos / size))
-                ticklabel_rot = 90 - 360 * (current_loc / (2 * np.pi))
-                if -np.pi <= current_loc < 0 or np.pi <= current_loc < 2 * np.pi:
-                    ticklabel_rot += 180
+                ticklabel_rot = self._get_label_rotation(start + ((end - start) * (pos / size)), ticklabelorientation)
+                if ticklabelorientation == "horizontal":
+                    label_width = ticklabelsize * 2
+                elif ticklabelorientation == "vertical":
+                    label_width = ticklabelsize * len(str(label))
 
-                label_width = len(str(label)) * ticklabelsize
                 if tickdirection == "outer":
                     y_pos = raxis_range[1] + (label_width + ticklabelmargin)
                 elif tickdirection == "inner":
                     y_pos = raxis_range[0] - (label_width + ticklabelmargin)
 
                 self.ax.text(positions_all[pos], y_pos, str(label), rotation=ticklabel_rot, ha="center", va="center", fontsize=ticklabelsize, color=ticklabelcolor)
+    
+    def _get_label_rotation(self, position, orientation="horizontal"):
+        """
+        Get label rotation from label radian position 
+        
+        Parameters
+        ----------
+        position : float 
+            Label radian position (-2 * np.pi <= position <= 2 * np.pi)
+        orientation: str ("vertical" or "horizontal")
+            Label orientation, The default is "horizontal"
+        
+        Returns
+        -------
+        rotation : float
+            Label rotation
+        """
+        position_degree = position * (180 / np.pi) #-360 <= position_degree <= 360
+        if orientation == "horizontal":
+            rotation = 0 - position_degree
+            if -270 <= position_degree < -90 or 90 <= position_degree < 270:
+                rotation += 180
+        elif orientation == "vertical":
+            rotation = 90 - position_degree
+            if -180 <= position_degree < 0 or 180 <= position_degree < 360:
+                rotation += 180
+        return rotation
 
     def save(self, file_name="test", format="pdf", dpi=None):
         self.figure.patch.set_alpha(0.0) 
