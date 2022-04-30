@@ -1124,7 +1124,7 @@ class Gcircle:
             patch = mpatches.PathPatch(path, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, zorder=0)
             self.ax.add_patch(patch)
 
-    def tickplot(self, garc_id, raxis_range=None, tickinterval=1000, tickpositions=None, ticklabels=None, tickwidth=1, tickcolor="#303030", ticklabeldirection="outer"):  
+    def tickplot(self, garc_id, raxis_range=None, tickinterval=1000, tickpositions=None, ticklabels=None, tickwidth=1, tickcolor="#303030", ticklabelsize=10, ticklabelcolor="#303030", ticklabelmargin=10, tickdirection="outer", ticklabelorientation="vertical"):
         """
         Plot ticks on the arc of the Garc class object
         
@@ -1135,8 +1135,9 @@ class Gcircle:
             object.garc_dict. 
         raxis_range : tuple (top=int, bottom=int)
             Radial axis range where tick plot is drawn.
-            If `direction` is "outer", 
-            the default is `(Garc_object.raxis_range[1], Garc_object.raxis_range[1] + 0.05 * abs(Garc_object.raxis_range[1]-Garc_object.raxis_range[0]))`
+            If `direction` is "inner", the default is `(r0 - 0.5 * abs(r1 -r0), r0)`.
+            If `direction` is "outer", the default is `(r1, r1 + 0.5 * abs(r1 -r0))`.
+            r0, r1 = Garc_object.raxis_range[0], Garc_object.raxis_range[1]
         tickinterval : int
             Tick interval.
             The default value is 1000. If `tickpositions` value is given, this value will be ignored.
@@ -1151,24 +1152,36 @@ class Gcircle:
             tick width. The default is 1.0.
         tickcolor : str or float representing color code
             tick color, The default is "#303030"
-        ticklabeldirection : str ("outer" or "inner") 
-            tick label direction
+        ticklabelsize: float
+            tick label fontsize. The default is 10.
+        ticklabelcolor: str
+            tick label color, The default is "#303030"
+        ticklabelmargin: float
+            tick label margin. The default is 10.
+        tickdirection : str ("outer" or "inner")
+            tick direction. The default is "outer"
+        ticklabelorientation: str ("vertical" or "horizontal")
+            tick label orientation. The default is "vertical"
         
         Returns
         -------
         None
         """
-        
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1]
-        size  = self._garc_dict[garc_id].size - 1
-        positions_all = np.linspace(start, end, self._garc_dict[garc_id].size, endpoint=True)
+        size  = self._garc_dict[garc_id].size + 1
+        positions_all = np.linspace(start, end, size, endpoint=True)
         
         if raxis_range is None:
-            raxis_range = (self._garc_dict[garc_id].raxis_range[1],  self._garc_dict[garc_id].raxis_range[1] + 0.5 * abs(self._garc_dict[garc_id].raxis_range[1]-self._garc_dict[garc_id].raxis_range[0]))
-       
+            r0, r1 = self._garc_dict[garc_id].raxis_range
+            tickheight = 0.5 * abs(r1 - r0)
+            if tickdirection == "outer":
+                raxis_range = (r1, r1 + tickheight)
+            elif tickdirection == "inner":
+                raxis_range = (r0 - tickheight, r0)
+
         if tickpositions is None:
-            tickpositions = [pos for pos in range(0, self._garc_dict[garc_id].size, tickinterval)]
+            tickpositions = [pos for pos in range(0, size, tickinterval)]
 
         if ticklabels is None:
             ticklabels = [None] * len(tickpositions) 
@@ -1181,17 +1194,45 @@ class Gcircle:
             if label is None:
                 pass 
             else:
-                rot = (self._garc_dict[garc_id].coordinates[0] + self._garc_dict[garc_id].coordinates[1]) / 2
-                rot = rot*360/(2*np.pi)
-                if 90 < rot < 270:
-                    rot = 180-rot
-                else:
-                    rot = -1 * rot 
-                if ticklabeldirection == "outer":
-                    self.ax.text(positions_all[pos], raxis_range[1]+1, str(label), rotation=rot, ha="center", va="bottom", fontsize=self._garc_dict[garc_id].labelsize)
-                
-                if ticklabeldirection == "inner":
-                    self.ax.text(positions_all[pos], raxis_range[0]-1, str(label), rotation=rot, ha="center", va="top", fontsize=self._garc_dict[garc_id].labelsize)
+                ticklabel_rot = self._get_label_rotation(start + ((end - start) * (pos / size)), ticklabelorientation)
+                if ticklabelorientation == "horizontal":
+                    label_width = ticklabelsize * 2
+                elif ticklabelorientation == "vertical":
+                    label_width = ticklabelsize * len(str(label))
+
+                if tickdirection == "outer":
+                    y_pos = raxis_range[1] + (label_width + ticklabelmargin)
+                elif tickdirection == "inner":
+                    y_pos = raxis_range[0] - (label_width + ticklabelmargin)
+
+                self.ax.text(positions_all[pos], y_pos, str(label), rotation=ticklabel_rot, ha="center", va="center", fontsize=ticklabelsize, color=ticklabelcolor)
+    
+    def _get_label_rotation(self, position, orientation="horizontal"):
+        """
+        Get label rotation from label radian position 
+        
+        Parameters
+        ----------
+        position : float 
+            Label radian position (-2 * np.pi <= position <= 2 * np.pi)
+        orientation: str ("vertical" or "horizontal")
+            Label orientation, The default is "horizontal"
+        
+        Returns
+        -------
+        rotation : float
+            Label rotation
+        """
+        position_degree = position * (180 / np.pi) #-360 <= position_degree <= 360
+        if orientation == "horizontal":
+            rotation = 0 - position_degree
+            if -270 <= position_degree < -90 or 90 <= position_degree < 270:
+                rotation += 180
+        elif orientation == "vertical":
+            rotation = 90 - position_degree
+            if -180 <= position_degree < 0 or 180 <= position_degree < 360:
+                rotation += 180
+        return rotation
 
     def save(self, file_name="test", format="pdf", dpi=None):
         self.figure.patch.set_alpha(0.0) 
