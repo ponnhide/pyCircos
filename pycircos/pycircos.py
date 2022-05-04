@@ -5,7 +5,6 @@ import sys
 import math
 import urllib
 import tempfile
-import requests
 import collections
 import numpy as np
 import matplotlib
@@ -43,7 +42,6 @@ class Garc:
 
     def __init__(self, arc_id=None, record=None, size=1000, interspace=3, raxis_range=(500, 550), facecolor=None, edgecolor="#303030", linewidth=0.75, label=None, labelposition=0, labelsize=10, label_visible=False):
         """
-
         Parameters
         ----------
         arc_id : str, optional
@@ -52,10 +50,10 @@ class Garc:
             generated for Garc object. The default is None.
         record : Bio.SeqRecord class object or NCBI accession number, optional
             Bio.SeqRecord class object or NCBI accession number of an annotated
-            sequence. If a NCBI accession number is given, the GeBank reord of 
-            the accesion number will be loaded from NCBI public database.
+            sequence. If a NCBI accession number is given, the GenBank record of 
+            the accession number will be loaded from NCBI public database.
             The default is None.
-        size : float, optional
+        size : int, optional
             Width of the arc section. If record is provided, the value is 
             instead set by the sequence length of the record. In reality
             the actual arc section width in the resultant circle is determined
@@ -70,8 +68,7 @@ class Garc:
             values of the Garc class objects in the Gcircle class object.
             The default is 3.
         raxis_range : tuple (top=int, bottom=int), optional
-            Radial axis range where line plot is drawn.
-            The default is (550, 600).
+            Radial axis range where line plot is drawn. The default is (500, 550).
         facecolor : str or tuple representing color code, optional
             Color for filling. The default color is set automatically. 
         edgecolor : str or tuple representing color code, optional
@@ -97,8 +94,7 @@ class Garc:
 
         Returns
         -------
-        None.
-
+        None
         """
         self._parental_gcircle = None
         if arc_id == None:
@@ -186,7 +182,6 @@ class Garc:
         -------
         densities : list
             A list consisting of density values.
-
         """
         densities = [] 
         positions.sort()
@@ -233,8 +228,8 @@ class Garc:
             The default is "C".
         window_size : int, optional
             Size of the sliding window. The default is 1000.
-        step_size : float, optional
-            (unknown functionality). The default is window_size.
+        step_size : int, optional
+            Size of the sliding step. The default is window_size.
 
         Raises
         ------
@@ -285,8 +280,8 @@ class Garc:
             The default is "C".
         window_size : int, optional
             Size of the sliding window. The default is 1000.
-        step_size : float, optional
-            (unknown functionality). The default is window_size.
+        step_size : int, optional
+            Size of the sliding step. The default is window_size.
 
         Raises
         ------
@@ -318,6 +313,12 @@ class Garc:
         return gc_skews 
     
 class Gcircle:
+    """
+    A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a 
+    drawing space. Any graph (line plot, scatter plot, barplot, heatmap, and chordplot) 
+    can be placed on the space by specifying the raxis_range (from 0 to 1000) and 
+    the corresponding Garc class object.
+    """
     colors = ["#f44336","#e91e63","#9c27b0","#673ab7","#3f51b5","#2196f3","#00bcd4","#009688","#4caf50","#8bc34a","#cddc39","#ffeb3b","#ffc107","#ff9800","#ff5722","#795548","#9e9e9e","#607d8b"]
     #colors = ["#4E79A7","#F2BE2B","#E15759","#76B7B2","#59A14F","#EDC948","#B07AA1","#FF9DA7","#9C755F","#BAB0AC"]
     cmaps  = [plt.cm.Reds, plt.cm.Blues, plt.cm.Greens, plt.cm.Greys]  
@@ -327,6 +328,14 @@ class Gcircle:
             return self._garc_dict
     
     def __init__(self,  fig=None, figsize=None):
+        """
+        Parameters
+        ----------
+        fig : matplotlib.pyplot.figure object, optional
+            Matplotlib Figure class object
+        figsize : tuple, optional
+            Figure size for the circular map
+        """
         self._garc_dict = {} 
         if fig is None:
             if figsize is None:
@@ -347,13 +356,12 @@ class Gcircle:
 
         Parameters
         ----------
-        garc : Garc class object (default:None)
+        garc : Garc class object
             Garc class object to be added.
 
         Returns
         -------
-        None.
-
+        None
         """
         self._garc_dict[garc.arc_id] = garc
 
@@ -375,8 +383,7 @@ class Gcircle:
 
         Returns
         -------
-        None.
-
+        None
         """
         sum_length       = sum(list(map(lambda x:  self._garc_dict[x]["size"], list(self._garc_dict.keys()))))
         sum_interspace   = sum(list(map(lambda x:  self._garc_dict[x]["interspace"], list(self._garc_dict.keys()))))
@@ -427,7 +434,28 @@ class Gcircle:
                 height = bottom + height/2 + self._garc_dict[key].labelposition
                 self.ax.text(pos + width/2, height, self._garc_dict[key].label, rotation=rot, ha="center", va="center", fontsize=self._garc_dict[key].labelsize)
     
-    def setspine(self, garc_id, raxis_range=None, facecolor="#30303000", edgecolor="#303030", linewidth=0.75):
+    def setspine(self, garc_id, raxis_range=(550, 600), facecolor="#30303000", edgecolor="#303030", linewidth=0.75):
+        """
+        Set spines in the sector corresponding to the arc of 
+        the Garc class object specified by garc_id.
+
+        Parameters
+        ----------
+        garc_id : str 
+            ID of the Garc class object. The ID should be in Gcircle object.garc_dict.
+        raxis_range : tuple (top=int, bottom=int)
+            Radial axis range where line plot is drawn. The default is (550, 600).
+        facecolor : str or tuple representing color code, optional
+            Color for spines area. The default is "#30303000".
+        edgecolor : str or tuple representing color code, optional
+            Edge color of the spines boundary area. The default is "#303030".
+        linewidth : float, optional
+            Edge line width of spines boundary area. The default is 0.75.
+        
+        Returns
+        -------
+        None
+        """
         pos     = self._garc_dict[garc_id].coordinates[0] 
         width   = self._garc_dict[garc_id].coordinates[-1] - self._garc_dict[garc_id].coordinates[0]
         height  = abs(raxis_range[1] - raxis_range[0])
@@ -442,8 +470,7 @@ class Gcircle:
         Parameters
         ----------
         garc_id : str 
-            ID of the Garc class object. The ID should be in Gcircle
-            object.garc_dict.
+            ID of the Garc class object. The ID should be in Gcircle object.garc_dict.
         data : list or numpy.ndarray
             Numerical data to used for plot generation.
         positions : list or numpy.ndarray 
@@ -462,23 +489,24 @@ class Gcircle:
             not given, the maximum value and the minimum value in data will be 
             set to top and bottom, respectively. The default is None.
         linestyle : str, optional
-            Line style. Possible line styles are documented at
-            https://matplotlib.org/stable/gallery/lines_bars_and_markers/linestyles.html.
-            The default is "solid".
+            Line style. The default is "solid".
+            Possible line styles are documented at
+            https://matplotlib.org/stable/gallery/lines_bars_and_markers/linestyles.html
+            
         linecolor : str or tuple representing color code, optional
             Color of the line plot. If linecolor value is not given, the color 
             will be set according to the default color set of matplotlib. To 
-            specify the opacity for a line color, please use (r, g, b, a) or 
-            #XXXXXXXX format. The default is None.
+            specify the opacity for a line color, please use `(r,g,b,a)` or 
+            `#XXXXXXXX` format. The default is None.
         linewidth : float, optional
             Edge line width. The default is 1.0.
-        spine : TYPE, optional
-            TBD. The default is False.
+        spine : bool, optional
+            If True, spines of the Garc object is shown on the arc section.
+            The default is False.
 
         Returns
         -------
-        None.
-
+        None
         """
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1]
@@ -538,8 +566,7 @@ class Gcircle:
         Parameters
         ----------
         garc_id : str 
-            ID of the Garc class object. The ID should be in Gcircle 
-            object.garc_dict.
+            ID of the Garc class object. The ID should be in Gcircle object.garc_dict.
         data : list or numpy.ndarray
             Numerical data to used for plot generation.
         positions : list or numpy.ndarray 
@@ -549,26 +576,26 @@ class Gcircle:
             object specified by garc_id. By the method execution, the
             coordinates are converted to proper angle coordinates. If positions
             are not given, proper coordinates values are generated according to
-            the length of data.. The default is None.
+            the length of data. The default is None.
         raxis_range : tuple (top=int, bottom=int), optional
-            Radial axis range where line plot is drawn. The default is 
-            (550, 600).
+            Radial axis range where line plot is drawn. The default is (550, 600).
         rlim : tuple (top=int, bottom=int)
             The top and bottom r limits in data coordinates. If rlim value is
             not given, the maximum value and the minimum value in data will be 
             set to top and bottom, respectively. 
-            The default is (min(data), max(data).
+            The default is `(min(data), max(data))`.
         base_value : float, optional
             Base line height in data coordinates. The area between the base 
             line and the data line is filled by facecolor. The default is None.
         facecolor : str or tuple representing color code, optional
-            Color for filling.. The default is None.
+            Color for filling. The default is None.
         edgecolor : str or tuple representing color code, optional
             Edge color of the filled area. The default is "#303030".
         linewidth : float, optional
             Edge line width. The default is 0.0.
-        spine : TYPE, optional
-            TBD. The default is False.
+        spine : bool, optional
+            If True, spines of the Garc object is shown on the arc section.
+            The default is False.
 
         Returns
         -------
@@ -637,8 +664,7 @@ class Gcircle:
         Parameters
         ----------
         garc_id : str 
-            ID of the Garc class object. The ID should be in Gcircle 
-            object.garc_dict.
+            ID of the Garc class object. The ID should be in Gcircle object.garc_dict.
         data : list or numpy.ndarray
             Numerical data to used for plot generation.
         positions : list or numpy.ndarray 
@@ -648,20 +674,19 @@ class Gcircle:
             object specified by garc_id. By the method execution, the
             coordinates are converted to proper angle coordinates. If positions
             are not given, proper coordinates values are generated according to
-            the length of data.. The default is None.
+            the length of data. The default is None.
         raxis_range : tuple (top=int, bottom=int), optional
-            Radial axis range where line plot is drawn. The default is 
-            (550, 600).
+            Radial axis range where line plot is drawn. The default is (550, 600).
         rlim : tuple (top=int, bottom=int)
             The top and bottom r limits in data coordinates. If rlim value is
             not given, the maximum value and the minimum value in data will be 
             set to top and bottom, respectively. 
-            The default is (min(data), max(data).
+            The default is `(min(data), max(data))`.
         markershape : str, optional
-            Marker shape. Possible marker are listed at
-            https://matplotlib.org/stable/gallery/lines_bars_and_markers/marker_reference.html.
-            The default is "o".
-        markersize: float or list of float, optional
+            Marker shape. The default is "o".
+            Possible marker are listed at
+            https://matplotlib.org/stable/gallery/lines_bars_and_markers/marker_reference.html
+        markersize : float or list of float, optional
             Size(s) of the marker(s). The default is 5.
         facecolor : str or tuple representing color code or list thereof, optional
             Face color(s) of the markers. If value type is list, the length of
@@ -671,13 +696,13 @@ class Gcircle:
             Edge color of the markers. The default is "#303030".
         linewidth : float, optional
             Edge line width of the markers. The default is 0.0.
-        spine : TYPE, optional
-            TBD. The default is False.
+        spine : bool, optional
+            If True, spines of the Garc object is shown on the arc section.
+            The default is False.
 
         Returns
         -------
-        None.
-
+        None
         """
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1]
@@ -738,8 +763,7 @@ class Gcircle:
         Parameters
         ----------
         garc_id : str 
-            ID of the Garc class object. The ID should be in Gcircle 
-            object.garc_dict.
+            ID of the Garc class object. The ID should be in Gcircle object.garc_dict.
         data : list or numpy.ndarray
             Numerical data to used for plot generation.
         positions : list or numpy.ndarray 
@@ -749,10 +773,11 @@ class Gcircle:
             object specified by garc_id. By the method execution, the
             coordinates are converted to proper angle coordinates. If positions
             are not given, proper coordinates values are generated according to
-            the length of data.. The default is None.
+            the length of data. The default is None.
+        width : float or list of float
+            Width(s) of the bars. The default is `garc_object.size / len(data)`.
         raxis_range : tuple (top=int, bottom=int), optional
-            Radial axis range where line plot is drawn.
-            The default is (550, 600).
+            Radial axis range where line plot is drawn. The default is (550, 600).
         rlim : tuple (top=int, bottom=int)
             The top and bottom r limits in data coordinates. If rlim value is
             not given, the maximum value and the minimum value in data will be 
@@ -769,13 +794,13 @@ class Gcircle:
             Edge color of the bars. The default is "#303030".
         linewidth : float, optional
             Edge line width of the bars. The default is 0.0.
-        spine : TYPE, optional
-            TBD. The default is False.
+        spine : bool, optional
+            If True, spines of the Garc object is shown on the arc section.
+            The default is False.
 
         Returns
         -------
-        None.
-
+        None
         """
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1]
@@ -869,8 +894,7 @@ class Gcircle:
         Parameters
         ----------
         garc_id : str 
-            ID of the Garc class object. The ID should be in Gcircle 
-            object.garc_dict.
+            ID of the Garc class object. The ID should be in Gcircle object.garc_dict.
         data : list or numpy.ndarray
             Numerical data to used for plot generation.
         positions : list or numpy.ndarray 
@@ -882,12 +906,11 @@ class Gcircle:
             are not given, proper coordinates values are generated according to
             the length of data. The default is None.
         width : float or list of float, optional
-            Width(s) of the bars. The default is garc_object.size/len(data).
+            Width(s) of the bars. The default is `garc_object.size / len(data)`.
         raxis_range : tuple (top=int, bottom=int), optional
-            Radial axis range where line plot is drawn. The default is 
-            (550, 600).
+            Radial axis range where heatmap is drawn. The default is (550, 600).
         cmap : str representing matplotlib colormap name or
-        matplotlib.colors.Colormap object, optional
+            matplotlib.colors.Colormap object, optional
             The mapping from data values to color space. The default is 'Reds'.
         vmin : float, optional
             Minimum data threshold for color scale. The default is min(data).
@@ -897,15 +920,14 @@ class Gcircle:
             Edge color of the bars. The default is "#303030".
         linewidth : float, optional
             Edge line width of the bars. The default is 0.0.
-        spine : TYPE, optional
-            TBD. The default is False.
+        spine : bool, optional
+            If True, spines of the Garc object is shown on the arc section.
+            The default is False.
 
         Returns
         -------
-        None.
-
+        None
         """
-        
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1]
         size  = self._garc_dict[garc_id].size 
@@ -957,7 +979,7 @@ class Gcircle:
         if spine == True:
             self.setspine(garc_id, raxis_range)
     
-    def featureplot(self, garc_id, feature_type=None, source=None, raxis_range=(550, 600), facecolor=None, edgecolor="#303030", spine=False):  
+    def featureplot(self, garc_id, feature_type=None, source=None, raxis_range=(550, 600), facecolor=None, edgecolor="#303030", linewidth=0.0, spine=False):  
         """
         Visualize sequence features with bar plots in the sector corresponding
         to the arc of the Garc class object specified by garc_id.
@@ -965,8 +987,7 @@ class Gcircle:
         Parameters
         ----------
         garc_id : str 
-            ID of the Garc class object. The ID should be in Gcircle 
-            object.garc_dict.
+            ID of the Garc class object. The ID should be in Gcircle object.garc_dict.
         feature_type : str, optional
             Biological nature of the Bio.Seqfeature class objects (Any value is
             acceptable, but GenBank format requires registering a biological 
@@ -979,21 +1000,22 @@ class Gcircle:
             used. The default is record.features of the Garc class object
             specified by grac_id.
         raxis_range : tuple (top=int, bottom=int), optional
-            Radial axis range where line plot is drawn.
-            The default is (550, 600).
+            Radial axis range where feature plot is drawn. The default is (550, 600).
         facecolor : str or tuple representing color code or list thereof, optional
             Facecolor(s) of the bars. If value type is list, the length of 
             facecolor should be the same as the data length.
             The default is None.
         edgecolor : str or tuple representing color code, optional
             Edge color of the bars. The default is "#303030".
-        spine : TYPE, optional
-            TBD. The default is False.
+        linewidth : float, optional
+            Edge line width of the bars. The default is 0.0.
+        spine : bool, optional
+            If True, spines of the Garc object is shown on the arc section.
+            The default is False.
 
         Returns
         -------
-        None.
-
+        None
         """
         start = self._garc_dict[garc_id].coordinates[0] 
         end   = self._garc_dict[garc_id].coordinates[-1] 
@@ -1031,7 +1053,7 @@ class Gcircle:
         if facecolor is None:
             facecolor = Gcircle.colors[self.color_cycle % len(Gcircle.colors)] 
             self.color_cycle += 1
-        self.ax.bar(positions, [abs(top-bottom)] * len(positions) , width=widths, bottom=bottom, color=facecolor, align="edge", linewidth=0)
+        self.ax.bar(positions, [abs(top-bottom)] * len(positions) , width=widths, bottom=bottom, color=facecolor, edgecolor=edgecolor, linewidth=linewidth, align="edge")
         if spine == True:
             self.setspine(garc_id, raxis_range)
     
@@ -1042,44 +1064,47 @@ class Gcircle:
         Parameters
         ----------
         start_list : tuple
-            First data location of linked data. 
+            Start data location of linked data.  
             The tuple is composed of four parameters:
-                arc_id: the ID of the first Garc class object to be compared.
-                    The ID should be in Gcircle object.garc_dict.
-                object.garc_dict.
-                edge_position1: the minimal x coordinates on the Garc class 
-                    object when the plot is drawn on the rectangular
-                    coordinates.
-                edge_position2: the maximal x coordinates on the Garc class 
-                    object when the plot is drawn on the rectangular
-                    coordinates.
-                raxis_position: the base height for the drawing cord.
+
+            - `arc_id` : `str`  
+                The ID of the first Garc class object to be compared.
+                The ID should be in Gcircle object.garc_dict.
+            - `edge_position1` : `int`  
+                The minimal x coordinates on the Garc class object 
+                when the plot is drawn on the rectangular coordinates.
+            - `edge_position2` : `int`  
+                The maximal x coordinates on the Garc class object 
+                when the plot is drawn on the rectangular coordinates.
+            - `raxis_position` : `int`  
+                The base height for the drawing chord.
+
         end_list : tuple
-            First data location of linked data. 
+            End data location of linked data.  
             The tuple is composed of four parameters:
-                arc_id: the ID of the second Garc class object to be compared.
-                    The ID should be in Gcircle object.garc_dict. 
-                object.garc_dict.
-                edge_position1: the minimal x coordinates on the Garc class 
-                    object when the plot is drawn on the rectangular
-                    coordinates.
-                edge_position2: the maximal x coordinates on the Garc class 
-                    object when the plot is drawn on the rectangular
-                    coordinates.
-                raxis_position: the base height for the drawing cord.
-         facecolor : str or tuple representing color code or list thereof, optional
-             Facecolor(s) of the bars. If value type is list, the length of 
-             facecolor should be the same as the data length.
-             The default is None.
+
+            - `arc_id` : `str`  
+                The ID of the second Garc class object to be compared.
+                The ID should be in Gcircle object.garc_dict. 
+            - `edge_position1` : `int`  
+                The minimal x coordinates on the Garc class object 
+                when the plot is drawn on the rectangular coordinates.
+            - `edge_position2` : `int`  
+                The maximal x coordinates on the Garc class object 
+                when the plot is drawn on the rectangular coordinates.
+            - `raxis_position` : `int`  
+                The base height for the drawing chord.
+
+        facecolor : str or tuple representing color code, optional
+            Facecolor of the link. The default is None.
         edgecolor : str or tuple representing color code, optional
-            Edge color of the bars. The default is "#303030".
+            Edge color of the link. The default is "#303030".
         linewidth : float, optional
-            Edge line width of the bars. The default is 0.0.
+            Edge line width of the link. The default is 0.0.
 
         Returns
         -------
-        None.
-
+        None
         """
         garc_id1 = start_list[0]
         garc_id2 = end_list[0]
@@ -1131,37 +1156,36 @@ class Gcircle:
         Parameters
         ----------
         garc_id : str 
-            ID of the Garc class object. The ID should be in Gcircle 
-            object.garc_dict. 
+            ID of the Garc class object. The ID should be in Gcircle object.garc_dict. 
         raxis_range : tuple (top=int, bottom=int)
-            Radial axis range where tick plot is drawn.
-            If `direction` is "inner", the default is `(r0 - 0.5 * abs(r1 -r0), r0)`.
-            If `direction` is "outer", the default is `(r1, r1 + 0.5 * abs(r1 -r0))`.
-            r0, r1 = Garc_object.raxis_range[0], Garc_object.raxis_range[1]
+            Radial axis range where tick plot is drawn.  
+            If direction is "inner", the default is `(r0 - 0.5 * abs(r1 -r0), r0)`.  
+            If direction is "outer", the default is `(r1, r1 + 0.5 * abs(r1 -r0))`.  
+            `r0, r1 = Garc_object.raxis_range[0], Garc_object.raxis_range[1]`
         tickinterval : int
             Tick interval.
-            The default value is 1000. If `tickpositions` value is given, this value will be ignored.
+            The default is 1000. If `tickpositions` value is given, this value will be ignored.
         tickpositions : list of int 
             Positions on the arc of the Garc class object. 
-            If you set ticks on your specified positons, plase use this parameter instead of `tickinterval`
+            If you set ticks on your specified positions, please use this parameter instead of tickinterval
             The values should be less than `Garc_object.size`.
         ticklabels : list of int or list or str
             Labels for ticks on the arc of the Garc class object.
-            The default value is same with `tickpositions`.
+            The default is same with tickpositions.
         tickwidth : float
-            tick width. The default is 1.0.
+            Tick width. The default is 1.0.
         tickcolor : str or float representing color code
-            tick color, The default is "#303030"
-        ticklabelsize: float
-            tick label fontsize. The default is 10.
-        ticklabelcolor: str
-            tick label color, The default is "#303030"
-        ticklabelmargin: float
-            tick label margin. The default is 10.
+            Tick color. The default is "#303030"
+        ticklabelsize : float
+            Tick label fontsize. The default is 10.
+        ticklabelcolor : str
+            Tick label color, The default is "#303030".
+        ticklabelmargin : float
+            Tick label margin. The default is 10.
         tickdirection : str ("outer" or "inner")
-            tick direction. The default is "outer"
-        ticklabelorientation: str ("vertical" or "horizontal")
-            tick label orientation. The default is "vertical"
+            Tick direction. The default is "outer".
+        ticklabelorientation : str ("vertical" or "horizontal")
+            Tick label orientation. The default is "vertical".
         
         Returns
         -------
@@ -1215,7 +1239,7 @@ class Gcircle:
         ----------
         position : float 
             Label radian position (-2 * np.pi <= position <= 2 * np.pi)
-        orientation: str ("vertical" or "horizontal")
+        orientation : str ("vertical" or "horizontal")
             Label orientation, The default is "horizontal"
         
         Returns
@@ -1235,6 +1259,22 @@ class Gcircle:
         return rotation
 
     def save(self, file_name="test", format="pdf", dpi=None):
+        """
+        Save image of Gcircle class figure object
+
+        Parameters
+        ----------
+        file_name : str, optional
+            File name of figure. The default is "test".
+        format : str, optional
+            File format of figure. The default is "pdf"
+        dpi : int, optional
+            Dpi of figure. The default is None.
+
+        Returns
+        -------
+        None
+        """
         self.figure.patch.set_alpha(0.0) 
         if format == "pdf" and dpi is None:
             self.figure.savefig(file_name + ".pdf", bbox_inches="tight")
