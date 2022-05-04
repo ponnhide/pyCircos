@@ -2,10 +2,10 @@ name: Publish API Docs
 
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths: ["pycircos/**.py"]
   pull_request:
-    branches: [main]
+    branches: [master]
     paths: ["pycircos/**.py"]
   workflow_dispatch:
 
