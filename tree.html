@@ -1,0 +1,1401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pycircos.tree API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pycircos.tree</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import math
+import numpy as np 
+from Bio import Phylo
+from pycircos.pycircos import Garc
+from pycircos.pycircos import Gcircle 
+
+class Tarc(Garc):
+    def __init__(self, arc_id=None, tree=None, format=&#34;newick&#34;, interspace=3, raxis_range=(900, 950), facecolor=None, edgecolor=&#34;#303030&#34;, linewidth=0, label=None, labelposition=0, labelsize=10, label_visible=False):
+        &#34;&#34;&#34;
+        Parameters
+        ----------
+        arc_id : str, optional
+            Unique identifier for the Garc class object. In the event an id
+            value is not provided, an original unique ID is automatically 
+            generated for Garc object. The default is None.
+        tree : str
+            File name of phylogenetic tree
+        format : str 
+            Format of phylogenetic tree. The default is &#34;newick&#34;.
+        interspace : float, optional
+            Distance angle (deg) to the adjacent arc section in clockwise 
+            sequence. The actual interspace size in the circle is determined by
+            the actual arc section width in the resultant circle is determined
+            by the ratio of size to the combined sum of the size and interspace
+            values of the Garc class objects in the Gcircle class object.
+            The default is 3.
+        raxis_range : tuple (top=int, bottom=int), optional
+            Radial axis range where line plot is drawn. The default is (900, 950).
+        facecolor : str or tuple representing color code, optional
+            Color for filling. The default is None.
+        edgecolor : str or tuple representing color code, optional
+            Edge color of the filled area. The default is &#34;#303030&#34;.
+        linewidth : float, optional
+            Edge line width. The default is 0.
+        label : str, optional
+            Label of the arc section. The default is None.
+        labelposition : int, optional
+            Relative label height from the center of the arc section.
+            The default is 0.
+        labelsize : int, optional
+            Font size of the label. The default is 10.
+        label_visible : bool, optional
+            If True, label of the Garc object is shown on the arc section.
+            The default is False.
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        self.tree = Phylo.read(tree, format)
+        self.size = len(self.tree.get_terminals()) 
+        self._tree_plotted = 0  
+        self._parental_gcircle = None
+        if arc_id == None:
+            self.arc_id = str(Garc._arcnum) 
+        else:
+            self.arc_id = arc_id
+         
+        self.interspace  = 2 * np.pi * (interspace / 360)
+        self.raxis_range = raxis_range 
+        self.facecolor   = facecolor 
+        self.edgecolor   = edgecolor
+        self.linewidth   = linewidth
+        
+        if label is None:
+            self.label = arc_id
+        else:
+            self.label = label
+
+        self.label_visible = label_visible
+        self.labelposition = labelposition
+        self.labelsize     = labelsize
+        
+        self._get_col_positions() 
+        self._get_row_positions()
+
+        Garc._arcnum += 1
+            
+    def _get_col_positions(self):
+        taxa   = self.tree.get_terminals()
+        depths = self.tree.depths()
+        max_label_width = max(len(str(taxon)) for taxon in taxa)
+        drawing_width   = 100 - max_label_width - 1
+        if max(depths.values()) == 0:
+            depths = tree.depths(unit_branch_lengths=True)
+        fudge_margin         = math.log(len(taxa), 2)
+        cols_per_branch_unit = (drawing_width - fudge_margin) / float(max(depths.values()))
+        positions            = {clade: blen * cols_per_branch_unit + 1.0 for clade, blen in depths.items()}
+        self._col_positions   = positions
+
+    def _get_row_positions(self):
+        taxa = self.tree.get_terminals()
+        positions = {taxon: 2 * idx for idx, taxon in enumerate(taxa)}
+        def calc_row(clade):
+            for subclade in clade:
+                if subclade not in positions:
+                    calc_row(subclade)
+            positions[clade] = (
+                positions[clade.clades[0]] + positions[clade.clades[-1]]
+            ) // 2
+        calc_row(self.tree.root)
+        self._row_positions = positions
+       
+        self.clade_dict       = {} 
+        self.terminal_dict    = {} 
+        self.nonterminal_dict = {} 
+        keys = list(self._row_positions.keys()) 
+        keys.sort(key=lambda x: self._row_positions[x]) 
+        for key in keys:
+            if key in taxa:
+                self.terminal_dict[key.name] = key
+            else:
+                self.nonterminal_dict[key.name] = key
+            self.clade_dict[key.name] = key
+
+    def _convert(self, thetalim, rlim):
+        col_values = list(self._col_positions.values()) 
+        row_values = list(self._row_positions.values()) 
+        row_min, row_max = np.min(row_values), np.max(row_values) 
+        col_min, col_max = np.min(col_values), np.max(col_values)
+        
+        theta_positions = [thetalim[0] + (v * abs(thetalim[1]-thetalim[0])/abs(row_min-row_max)) for v in row_values]
+        if rlim[0] &lt; rlim[1]:
+            r_positions = [rlim[0] + (v * abs(rlim[1]-rlim[0])/abs(col_min-col_max)) for v in col_values]
+        else:
+            r_positions = [rlim[0] - (v * abs(rlim[1]-rlim[0])/abs(col_min-col_max)) for v in col_values]
+        self._theta_dict = dict(zip(list(self._row_positions.keys()) ,theta_positions)) 
+        self._r_dict     = dict(zip(list(self._col_positions.keys()) ,r_positions))
+    
+    def _plot_tree(self, ax, thetalim=None, rlim=None, cladevisual_dict=None, highlight_dict=None, linewidth=None, linecolor=None):
+        if linewidth is None:
+            linewidth = 0.5
+        
+        if linecolor is None:
+            linecolor = &#34;k&#34;
+        
+        if cladevisual_dict is None:
+            cladevisual_dict = {} 
+        
+        self._tree_rlim = rlim
+        if rlim[0] &lt; rlim[1]:
+            self._tree_direction = &#34;inner&#34;
+        else:
+            self._tree_direction = &#34;outer&#34;
+        
+        self._convert(thetalim, rlim)
+        s   = []
+        c   = []
+        ecs = []
+        lws = []
+        for clade in self._theta_dict:
+            if clade.name not in cladevisual_dict:
+                cladevisual_dict[clade.name] = {}
+            cladevisual_dict[clade.name].setdefault(&#34;size&#34;,0) 
+            cladevisual_dict[clade.name].setdefault(&#34;color&#34;,&#34;k&#34;)
+            cladevisual_dict[clade.name].setdefault(&#34;edgecolor&#34;,&#34;k&#34;)
+            cladevisual_dict[clade.name].setdefault(&#34;linewidth&#34;,0.1)
+            s.append(cladevisual_dict[clade.name][&#34;size&#34;])
+            c.append(cladevisual_dict[clade.name][&#34;color&#34;])
+            ecs.append(cladevisual_dict[clade.name][&#34;edgecolor&#34;])
+            lws.append(cladevisual_dict[clade.name][&#34;linewidth&#34;])
+        ax.scatter(self._theta_dict.values(), [self._r_dict[clade] for clade in self._theta_dict], s=s, c=c, edgecolors=ecs, linewidths=lws, zorder=1100) 
+        for clade in self._theta_dict:
+            subclades   = clade.clades
+            if len(subclades) &gt; 0:
+                sc_thetas   = [self._theta_dict[sc] for sc in subclades] 
+                minsc_theta = min(sc_thetas) 
+                maxsc_theta = max(sc_thetas) 
+                thetas = np.linspace(minsc_theta, maxsc_theta, 100) 
+                rs     = [self._r_dict[clade]] * len(thetas) 
+                ax.plot(thetas, rs, lw=linewidth, color=linecolor, zorder=0) 
+                for sc, sc_theta in zip(subclades, sc_thetas):
+                    ax.plot([sc_theta, sc_theta], [self._r_dict[sc], self._r_dict[clade]], lw=linewidth, color=linecolor, zorder=0)
+        
+        if highlight_dict is not None:
+            self.plot_highlight(ax, highlight_dict) 
+        self._tree_plotted = 1
+
+    def _plot_highlight(self, ax, highlight_dict=None): 
+        if self._tree_plotted == 0:
+            raise ValueError(&#34;Please run `plot_tree` before running `plot_highlight`&#34;) 
+
+        for clade_names in highlight_dict:
+            highlight_dict[clade_names].setdefault(&#34;color&#34;, &#34;#000000&#34;)
+            highlight_dict[clade_names].setdefault(&#34;alpha&#34;, 0.25)
+            highlight_dict[clade_names].setdefault(&#34;label&#34;, None)
+            highlight_dict[clade_names].setdefault(&#34;y&#34;, None)
+            highlight_dict[clade_names].setdefault(&#34;fontsize&#34;, self.labelsize)
+            
+            color    = highlight_dict[clade_names][&#34;color&#34;]
+            alpha    = highlight_dict[clade_names][&#34;alpha&#34;]
+            label    = highlight_dict[clade_names][&#34;label&#34;]
+            fontsize = highlight_dict[clade_names][&#34;fontsize&#34;]
+            yloc     = highlight_dict[clade_names][&#34;y&#34;]
+
+            if type(clade_names) is tuple:
+                ca     = self.tree.common_ancestor([self.clade_dict[name] for name in clade_names])
+                clades = [self.clade_dict[name] for name in clade_names]
+            else:
+                ca     = self.clade_dict[clade_names]  
+                clades = ca.get_terminals() 
+
+            c_thetas   = [self._theta_dict[c] for c in clades] 
+            minc_theta = min(c_thetas) 
+            maxc_theta = max(c_thetas) 
+            
+            if self._tree_direction == &#34;inner&#34;:
+                c_rs       = [self._r_dict[c] for c in clades] 
+                maxc_r     = max(c_rs) 
+                width = minc_theta - maxc_theta 
+                loc   = (minc_theta + maxc_theta) / 2 
+                ax.bar([loc], [self._tree_rlim[1] - self._r_dict[ca]], bottom=self._r_dict[ca], width=width, color=color, alpha=alpha, linewidth=0, zorder=1000 + maxc_r)
+                if highlight_dict[clade_names][&#34;label&#34;] is None:
+                    pass 
+                else: 
+                    rot = loc*360/(2*np.pi)
+                    if 90 &lt; rot &lt; 270:
+                        rot = 180-rot
+                    else:
+                        rot = -1 * rot
+                    if yloc is None:
+                        yloc = self._tree_rlim[1] - abs(self._tree_rlim[1]-self._tree_rlim[0]) * 0.1
+                    ax.text(loc, yloc, str(label), rotation=rot, ha=&#34;center&#34;, va=&#34;center&#34;, fontsize=fontsize, zorder=1000 + maxc_r + 0.1)
+
+            else:
+                c_rs       = [self._r_dict[c] for c in clades] 
+                minc_r     = min(c_rs) 
+                width = minc_theta - maxc_theta 
+                loc   = (minc_theta + maxc_theta) / 2 
+                ax.bar([loc], [self._r_dict[ca] - self._tree_rlim[1]], bottom=self._tree_rlim[1], width=width, color=color, alpha=alpha, linewidth=0, zorder=1000 + (-1 * minc_r))
+                if highlight_dict[clade_names][&#34;label&#34;] is None:
+                    pass 
+                else: 
+                    rot = loc*360/(2*np.pi)
+                    if 90 &lt; rot &lt; 270:
+                        rot = 180-rot
+                    else:
+                        rot = -1 * rot 
+                    if yloc is None:
+                        yloc = self._tree_rlim[1] + abs(self._tree_rlim[1]-self._tree_rlim[0]) * 0.1
+                    ax.text(loc, yloc, str(label), rotation=rot, ha=&#34;center&#34;, va=&#34;center&#34;, fontsize=fontsize, zorder=1000 + (-1 * minc_r) + 0.1)
+
+class Tcircle(Gcircle):
+    &#34;&#34;&#34;
+    Tcircle class is the subclass of Gcircle. All methods implemented in the 
+    Gcircle class also can be used. Then, the two additional methods set_tarc, 
+    plot_tree and plot_highlight is provided in the Tcircle class.
+    &#34;&#34;&#34;
+    def __init__(self,  fig=None, figsize=None):
+        &#34;&#34;&#34;
+        Parameters
+        ----------
+        fig : matplotlib.pyplot.figure object, optional
+            Matplotlib Figure class object
+        figsize : tuple, optional
+            Figure size for the circular map
+        &#34;&#34;&#34;
+        super().__init__(fig=fig, figsize=figsize)
+    
+    def __getattr__(self, name):
+        if name == &#34;tarc_dict&#34;:
+            return self._garc_dict
+
+    def add_tarc(self, tarc):
+        &#34;&#34;&#34;
+        Add a new Tarc or Garc class object into tarc_dict.
+
+        Parameters
+        ----------
+        tarc : Tarc or Garc class object
+            Tarc or Garc class object to be added.
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        self._garc_dict[tarc.arc_id] = tarc
+
+    def set_tarcs(self, start=0, end=360):
+        &#34;&#34;&#34;
+        Visualize the arc rectangles of the Tarc class objects in .garc_dict on
+        the drawing space. After the execution of this method, a new Tarc class
+        object cannot be added to garc_dict and figure parameter representing
+        matplotlib.pyplot.figure object will be created in Tcircle object.
+
+        Parameters
+        ----------
+        start : int, optional
+            Start angle of the circos plot. The value range is -360 ~ 360.
+            The default is 0.
+        end : int, optional
+            End angle of the circos plot. The value range is -360 ~ 360.
+            The default is 360.
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        sum_length       = sum(list(map(lambda x:  self._garc_dict[x][&#34;size&#34;], list(self._garc_dict.keys()))))
+        sum_interspace   = sum(list(map(lambda x:  self._garc_dict[x][&#34;interspace&#34;], list(self._garc_dict.keys()))))
+        start = 2 * np.pi * start / 360
+        end   = (2 * np.pi * end / 360) - sum_interspace
+
+        s = 0
+        sum_interspace = 0 
+        for key in self._garc_dict.keys():
+            size = self._garc_dict[key].size
+            self._garc_dict[key].coordinates    = [None, None]
+            self._garc_dict[key].coordinates[0] = sum_interspace + start + ((end-start) * s/sum_length)
+            self._garc_dict[key].coordinates[1] = sum_interspace + start + ((end-start) * (s+size)/sum_length)
+            s = s + size
+            sum_interspace += self._garc_dict[key].interspace
+        
+        if self.fig_is_ext:
+            self.ax = self.figure.add_axes([0, 0, self.figsize[0], self.figsize[1]], polar=True)
+        else:
+            self.ax = self.figure.add_axes([0, 0, 1, 1], polar=True)
+        self.ax.set_theta_zero_location(&#34;N&#34;)
+        self.ax.set_theta_direction(-1)
+        self.ax.set_ylim(0,1000)
+        self.ax.spines[&#39;polar&#39;].set_visible(False)
+        self.ax.xaxis.set_ticks([])
+        self.ax.xaxis.set_ticklabels([])
+        self.ax.yaxis.set_ticks([])
+        self.ax.yaxis.set_ticklabels([])  
+                
+        for i, key in enumerate(self._garc_dict.keys()):
+            pos       = self._garc_dict[key].coordinates[0] 
+            width     = self._garc_dict[key].coordinates[-1] - self._garc_dict[key].coordinates[0]
+            height    = abs(self._garc_dict[key].raxis_range[1] - self._garc_dict[key].raxis_range[0])
+            bottom    = self._garc_dict[key].raxis_range[0]
+            facecolor = self._garc_dict[key].facecolor
+            edgecolor = self._garc_dict[key].edgecolor
+            linewidth = self._garc_dict[key].linewidth
+            if facecolor is None:
+                facecolor = (0, 0, 0, 0)
+            
+            if facecolor == (0, 0, 0, 0) and linewidth == 0:
+                pass 
+            else:
+                self.ax.bar([pos], [height], bottom=bottom, width=width, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, align=&#34;edge&#34;)
+            
+            if self._garc_dict[key].label_visible == True:
+                rot = (self._garc_dict[key].coordinates[0] + self._garc_dict[key].coordinates[1]) / 2
+                rot = rot*360/(2*np.pi)
+                if 90 &lt; rot &lt; 270:
+                    rot = 180-rot
+                else:
+                    rot = -1 * rot 
+                height = bottom + height/2 + self._garc_dict[key].labelposition
+                self.ax.text(pos + width/2, height, self._garc_dict[key].label, rotation=rot, ha=&#34;center&#34;, va=&#34;center&#34;, fontsize=self._garc_dict[key].labelsize)
+    
+    def plot_tree(self, tarc_id, rlim=(0,700), cladevisual_dict=None, highlight_dict=None, linecolor=&#34;#303030&#34;, linewidth=0.5):
+        &#34;&#34;&#34;
+        Draw circular phylogenetic tree
+
+        Parameters
+        ---------
+        tarc_id : str 
+            ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.
+        rlim : tuple (top=int, bottom=int)
+            The top and bottom r limits in data coordinates. The default is (0, 700).  
+        cladevisual_dict : dict 
+            Dictionary composed of pairs of clade name and a sub-dict holding 
+            parameters to visualize the clade. A sub-dict is composed of 
+            the following key-value pairs:
+
+            - `size` : `float`  
+                Size of dot. The default is 5.  
+            - `color` : `float or str` representing color code.  
+                Face color of dot. The default is &#34;#303030&#34;.  
+            - `edgecolor` : `float or str` representing color code.  
+                Edge line color of dot. The default is &#34;#303030&#34;.  
+            - `linewidth` : `float`  
+                Edge line width of dot. The default is 0.5.  
+
+        highlight_dict : dict 
+            Dictionary composed of pairs of internal clade name and a sub-dict.
+            Instead of clade name, tuples of terminal clade names can also be
+            A sub-dict is composed of the following key-value pairs:
+
+            - `color` : `str`  
+                Color of highlight for clades. The default is &#34;#000000&#34;.
+            - `alpha` : `float`  
+                Alpha of highlight for clades. The default is 0.25.
+            - `label` : `str`  
+                Label. The default is None.
+            - `fontsize` : `float`  
+                Fontsize of label. The default is 10.
+            - `y` : `float`  
+                Y location of the text. The default is the bottom edge of the highlight.
+        
+        linecolor : str or tuple representing color code, optional
+            Color of the tree line. The default is &#34;#303030&#34;.
+        linewidth : float
+            Line width of tree. The default is 0.5.
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34; 
+        start      = self._garc_dict[tarc_id].coordinates[0] 
+        end        = self._garc_dict[tarc_id].coordinates[-1]
+        positions  = np.linspace(start, end, self._garc_dict[tarc_id].size, endpoint=False)
+        positions  = positions + abs(positions[1]-positions[0]) * 0.5 
+        start, end = positions[0], positions[-1] 
+        self._garc_dict[tarc_id]._plot_tree(self.ax, thetalim=(start, end), rlim=rlim, cladevisual_dict=cladevisual_dict, highlight_dict=highlight_dict, linecolor=linecolor, linewidth=linewidth)
+    
+    def plot_highlight(self, tarc_id, highlight_dict=None):
+        &#34;&#34;&#34;
+        Add highlight for specific clade under the given internal clade
+
+        Parameters
+        ----------
+        tarc_id : str 
+            ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.
+        highlight_dict : dict 
+            Dictionary composed of pairs of internal clade name and a sub-dict.
+            Instead of clade name, tuples of terminal clade names can also be used.
+            A sub-dict is composed of the following key-value pairs:
+
+            - `color` : `str`  
+                Color of highlight for clades. The default is &#34;#000000&#34;.
+            - `alpha` : `float`  
+                Alpha of highlight for clades. The default is 0.25.
+            - `label` : `str`  
+                Label. The default is None.
+            - `fontsize` : `float`  
+                Fontsize of label. The default is 10.
+            - `y` : `float`  
+                Y location of the text. The default is the bottom edge of the highlight.
+        
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        self._garc_dict[tarc_id]._plot_highlight(self.ax, highlight_dict=highlight_dict)
+
+if __name__ == &#34;__main__&#34;:
+    pass 
+    &#34;&#34;&#34;
+    tree = next(Phylo.parse(&#34;../tutorial/sample_data/hmptree.xml&#34;, &#34;phyloxml&#34;)) 
+    col_positions = get_col_positions(tree) 
+    row_positions = get_row_positions(tree)
+    
+    import numpy as np 
+    import matplotlib.pyplot as plt
+    fig = plt.figure(figsize=(5,5)) 
+    ax  = fig.add_axes([0, 0, 1, 1], polar=True)
+    theta_dict, r_dict = convert(tree, col_positions, row_positions, (0, np.pi), (0,10))
+    
+    #ax.scatter(theta_dict.values(), [r_dict[clade] for clade in theta_dict], s=1, color=&#34;k&#34;) 
+    
+    plot_lines(ax, theta_dict, r_dict) 
+
+    ax.set_ylim([0,10])
+    fig.savefig(&#34;test.pdf&#34;, bbox_inches=&#34;tight&#34;)
+    &#34;&#34;&#34;</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pycircos.tree.Tarc"><code class="flex name class">
+<span>class <span class="ident">Tarc</span></span>
+<span>(</span><span>arc_id=None, tree=None, format='newick', interspace=3, raxis_range=(900, 950), facecolor=None, edgecolor='#303030', linewidth=0, label=None, labelposition=0, labelsize=10, label_visible=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>arc_id</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Unique identifier for the Garc class object. In the event an id
+value is not provided, an original unique ID is automatically
+generated for Garc object. The default is None.</dd>
+<dt><strong><code>tree</code></strong> :&ensp;<code>str</code></dt>
+<dd>File name of phylogenetic tree</dd>
+<dt><strong><code>format</code></strong> :&ensp;<code>str </code></dt>
+<dd>Format of phylogenetic tree. The default is "newick".</dd>
+<dt><strong><code>interspace</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Distance angle (deg) to the adjacent arc section in clockwise
+sequence. The actual interspace size in the circle is determined by
+the actual arc section width in the resultant circle is determined
+by the ratio of size to the combined sum of the size and interspace
+values of the Garc class objects in the Gcircle class object.
+The default is 3.</dd>
+<dt><strong><code>raxis_range</code></strong> :&ensp;<code>tuple (top=int, bottom=int)</code>, optional</dt>
+<dd>Radial axis range where line plot is drawn. The default is (900, 950).</dd>
+<dt><strong><code>facecolor</code></strong> :&ensp;<code>str</code> or <code>tuple representing color code</code>, optional</dt>
+<dd>Color for filling. The default is None.</dd>
+<dt><strong><code>edgecolor</code></strong> :&ensp;<code>str</code> or <code>tuple representing color code</code>, optional</dt>
+<dd>Edge color of the filled area. The default is "#303030".</dd>
+<dt><strong><code>linewidth</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Edge line width. The default is 0.</dd>
+<dt><strong><code>label</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Label of the arc section. The default is None.</dd>
+<dt><strong><code>labelposition</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Relative label height from the center of the arc section.
+The default is 0.</dd>
+<dt><strong><code>labelsize</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Font size of the label. The default is 10.</dd>
+<dt><strong><code>label_visible</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, label of the Garc object is shown on the arc section.
+The default is False.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Tarc(Garc):
+    def __init__(self, arc_id=None, tree=None, format=&#34;newick&#34;, interspace=3, raxis_range=(900, 950), facecolor=None, edgecolor=&#34;#303030&#34;, linewidth=0, label=None, labelposition=0, labelsize=10, label_visible=False):
+        &#34;&#34;&#34;
+        Parameters
+        ----------
+        arc_id : str, optional
+            Unique identifier for the Garc class object. In the event an id
+            value is not provided, an original unique ID is automatically 
+            generated for Garc object. The default is None.
+        tree : str
+            File name of phylogenetic tree
+        format : str 
+            Format of phylogenetic tree. The default is &#34;newick&#34;.
+        interspace : float, optional
+            Distance angle (deg) to the adjacent arc section in clockwise 
+            sequence. The actual interspace size in the circle is determined by
+            the actual arc section width in the resultant circle is determined
+            by the ratio of size to the combined sum of the size and interspace
+            values of the Garc class objects in the Gcircle class object.
+            The default is 3.
+        raxis_range : tuple (top=int, bottom=int), optional
+            Radial axis range where line plot is drawn. The default is (900, 950).
+        facecolor : str or tuple representing color code, optional
+            Color for filling. The default is None.
+        edgecolor : str or tuple representing color code, optional
+            Edge color of the filled area. The default is &#34;#303030&#34;.
+        linewidth : float, optional
+            Edge line width. The default is 0.
+        label : str, optional
+            Label of the arc section. The default is None.
+        labelposition : int, optional
+            Relative label height from the center of the arc section.
+            The default is 0.
+        labelsize : int, optional
+            Font size of the label. The default is 10.
+        label_visible : bool, optional
+            If True, label of the Garc object is shown on the arc section.
+            The default is False.
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        self.tree = Phylo.read(tree, format)
+        self.size = len(self.tree.get_terminals()) 
+        self._tree_plotted = 0  
+        self._parental_gcircle = None
+        if arc_id == None:
+            self.arc_id = str(Garc._arcnum) 
+        else:
+            self.arc_id = arc_id
+         
+        self.interspace  = 2 * np.pi * (interspace / 360)
+        self.raxis_range = raxis_range 
+        self.facecolor   = facecolor 
+        self.edgecolor   = edgecolor
+        self.linewidth   = linewidth
+        
+        if label is None:
+            self.label = arc_id
+        else:
+            self.label = label
+
+        self.label_visible = label_visible
+        self.labelposition = labelposition
+        self.labelsize     = labelsize
+        
+        self._get_col_positions() 
+        self._get_row_positions()
+
+        Garc._arcnum += 1
+            
+    def _get_col_positions(self):
+        taxa   = self.tree.get_terminals()
+        depths = self.tree.depths()
+        max_label_width = max(len(str(taxon)) for taxon in taxa)
+        drawing_width   = 100 - max_label_width - 1
+        if max(depths.values()) == 0:
+            depths = tree.depths(unit_branch_lengths=True)
+        fudge_margin         = math.log(len(taxa), 2)
+        cols_per_branch_unit = (drawing_width - fudge_margin) / float(max(depths.values()))
+        positions            = {clade: blen * cols_per_branch_unit + 1.0 for clade, blen in depths.items()}
+        self._col_positions   = positions
+
+    def _get_row_positions(self):
+        taxa = self.tree.get_terminals()
+        positions = {taxon: 2 * idx for idx, taxon in enumerate(taxa)}
+        def calc_row(clade):
+            for subclade in clade:
+                if subclade not in positions:
+                    calc_row(subclade)
+            positions[clade] = (
+                positions[clade.clades[0]] + positions[clade.clades[-1]]
+            ) // 2
+        calc_row(self.tree.root)
+        self._row_positions = positions
+       
+        self.clade_dict       = {} 
+        self.terminal_dict    = {} 
+        self.nonterminal_dict = {} 
+        keys = list(self._row_positions.keys()) 
+        keys.sort(key=lambda x: self._row_positions[x]) 
+        for key in keys:
+            if key in taxa:
+                self.terminal_dict[key.name] = key
+            else:
+                self.nonterminal_dict[key.name] = key
+            self.clade_dict[key.name] = key
+
+    def _convert(self, thetalim, rlim):
+        col_values = list(self._col_positions.values()) 
+        row_values = list(self._row_positions.values()) 
+        row_min, row_max = np.min(row_values), np.max(row_values) 
+        col_min, col_max = np.min(col_values), np.max(col_values)
+        
+        theta_positions = [thetalim[0] + (v * abs(thetalim[1]-thetalim[0])/abs(row_min-row_max)) for v in row_values]
+        if rlim[0] &lt; rlim[1]:
+            r_positions = [rlim[0] + (v * abs(rlim[1]-rlim[0])/abs(col_min-col_max)) for v in col_values]
+        else:
+            r_positions = [rlim[0] - (v * abs(rlim[1]-rlim[0])/abs(col_min-col_max)) for v in col_values]
+        self._theta_dict = dict(zip(list(self._row_positions.keys()) ,theta_positions)) 
+        self._r_dict     = dict(zip(list(self._col_positions.keys()) ,r_positions))
+    
+    def _plot_tree(self, ax, thetalim=None, rlim=None, cladevisual_dict=None, highlight_dict=None, linewidth=None, linecolor=None):
+        if linewidth is None:
+            linewidth = 0.5
+        
+        if linecolor is None:
+            linecolor = &#34;k&#34;
+        
+        if cladevisual_dict is None:
+            cladevisual_dict = {} 
+        
+        self._tree_rlim = rlim
+        if rlim[0] &lt; rlim[1]:
+            self._tree_direction = &#34;inner&#34;
+        else:
+            self._tree_direction = &#34;outer&#34;
+        
+        self._convert(thetalim, rlim)
+        s   = []
+        c   = []
+        ecs = []
+        lws = []
+        for clade in self._theta_dict:
+            if clade.name not in cladevisual_dict:
+                cladevisual_dict[clade.name] = {}
+            cladevisual_dict[clade.name].setdefault(&#34;size&#34;,0) 
+            cladevisual_dict[clade.name].setdefault(&#34;color&#34;,&#34;k&#34;)
+            cladevisual_dict[clade.name].setdefault(&#34;edgecolor&#34;,&#34;k&#34;)
+            cladevisual_dict[clade.name].setdefault(&#34;linewidth&#34;,0.1)
+            s.append(cladevisual_dict[clade.name][&#34;size&#34;])
+            c.append(cladevisual_dict[clade.name][&#34;color&#34;])
+            ecs.append(cladevisual_dict[clade.name][&#34;edgecolor&#34;])
+            lws.append(cladevisual_dict[clade.name][&#34;linewidth&#34;])
+        ax.scatter(self._theta_dict.values(), [self._r_dict[clade] for clade in self._theta_dict], s=s, c=c, edgecolors=ecs, linewidths=lws, zorder=1100) 
+        for clade in self._theta_dict:
+            subclades   = clade.clades
+            if len(subclades) &gt; 0:
+                sc_thetas   = [self._theta_dict[sc] for sc in subclades] 
+                minsc_theta = min(sc_thetas) 
+                maxsc_theta = max(sc_thetas) 
+                thetas = np.linspace(minsc_theta, maxsc_theta, 100) 
+                rs     = [self._r_dict[clade]] * len(thetas) 
+                ax.plot(thetas, rs, lw=linewidth, color=linecolor, zorder=0) 
+                for sc, sc_theta in zip(subclades, sc_thetas):
+                    ax.plot([sc_theta, sc_theta], [self._r_dict[sc], self._r_dict[clade]], lw=linewidth, color=linecolor, zorder=0)
+        
+        if highlight_dict is not None:
+            self.plot_highlight(ax, highlight_dict) 
+        self._tree_plotted = 1
+
+    def _plot_highlight(self, ax, highlight_dict=None): 
+        if self._tree_plotted == 0:
+            raise ValueError(&#34;Please run `plot_tree` before running `plot_highlight`&#34;) 
+
+        for clade_names in highlight_dict:
+            highlight_dict[clade_names].setdefault(&#34;color&#34;, &#34;#000000&#34;)
+            highlight_dict[clade_names].setdefault(&#34;alpha&#34;, 0.25)
+            highlight_dict[clade_names].setdefault(&#34;label&#34;, None)
+            highlight_dict[clade_names].setdefault(&#34;y&#34;, None)
+            highlight_dict[clade_names].setdefault(&#34;fontsize&#34;, self.labelsize)
+            
+            color    = highlight_dict[clade_names][&#34;color&#34;]
+            alpha    = highlight_dict[clade_names][&#34;alpha&#34;]
+            label    = highlight_dict[clade_names][&#34;label&#34;]
+            fontsize = highlight_dict[clade_names][&#34;fontsize&#34;]
+            yloc     = highlight_dict[clade_names][&#34;y&#34;]
+
+            if type(clade_names) is tuple:
+                ca     = self.tree.common_ancestor([self.clade_dict[name] for name in clade_names])
+                clades = [self.clade_dict[name] for name in clade_names]
+            else:
+                ca     = self.clade_dict[clade_names]  
+                clades = ca.get_terminals() 
+
+            c_thetas   = [self._theta_dict[c] for c in clades] 
+            minc_theta = min(c_thetas) 
+            maxc_theta = max(c_thetas) 
+            
+            if self._tree_direction == &#34;inner&#34;:
+                c_rs       = [self._r_dict[c] for c in clades] 
+                maxc_r     = max(c_rs) 
+                width = minc_theta - maxc_theta 
+                loc   = (minc_theta + maxc_theta) / 2 
+                ax.bar([loc], [self._tree_rlim[1] - self._r_dict[ca]], bottom=self._r_dict[ca], width=width, color=color, alpha=alpha, linewidth=0, zorder=1000 + maxc_r)
+                if highlight_dict[clade_names][&#34;label&#34;] is None:
+                    pass 
+                else: 
+                    rot = loc*360/(2*np.pi)
+                    if 90 &lt; rot &lt; 270:
+                        rot = 180-rot
+                    else:
+                        rot = -1 * rot
+                    if yloc is None:
+                        yloc = self._tree_rlim[1] - abs(self._tree_rlim[1]-self._tree_rlim[0]) * 0.1
+                    ax.text(loc, yloc, str(label), rotation=rot, ha=&#34;center&#34;, va=&#34;center&#34;, fontsize=fontsize, zorder=1000 + maxc_r + 0.1)
+
+            else:
+                c_rs       = [self._r_dict[c] for c in clades] 
+                minc_r     = min(c_rs) 
+                width = minc_theta - maxc_theta 
+                loc   = (minc_theta + maxc_theta) / 2 
+                ax.bar([loc], [self._r_dict[ca] - self._tree_rlim[1]], bottom=self._tree_rlim[1], width=width, color=color, alpha=alpha, linewidth=0, zorder=1000 + (-1 * minc_r))
+                if highlight_dict[clade_names][&#34;label&#34;] is None:
+                    pass 
+                else: 
+                    rot = loc*360/(2*np.pi)
+                    if 90 &lt; rot &lt; 270:
+                        rot = 180-rot
+                    else:
+                        rot = -1 * rot 
+                    if yloc is None:
+                        yloc = self._tree_rlim[1] + abs(self._tree_rlim[1]-self._tree_rlim[0]) * 0.1
+                    ax.text(loc, yloc, str(label), rotation=rot, ha=&#34;center&#34;, va=&#34;center&#34;, fontsize=fontsize, zorder=1000 + (-1 * minc_r) + 0.1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pycircos.pycircos.Garc" href="pycircos.html#pycircos.pycircos.Garc">Garc</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pycircos.pycircos.Garc" href="pycircos.html#pycircos.pycircos.Garc">Garc</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pycircos.pycircos.Garc.calc_density" href="pycircos.html#pycircos.pycircos.Garc.calc_density">calc_density</a></code></li>
+<li><code><a title="pycircos.pycircos.Garc.calc_nnratio" href="pycircos.html#pycircos.pycircos.Garc.calc_nnratio">calc_nnratio</a></code></li>
+<li><code><a title="pycircos.pycircos.Garc.calc_nnskew" href="pycircos.html#pycircos.pycircos.Garc.calc_nnskew">calc_nnskew</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pycircos.tree.Tcircle"><code class="flex name class">
+<span>class <span class="ident">Tcircle</span></span>
+<span>(</span><span>fig=None, figsize=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Tcircle class is the subclass of Gcircle. All methods implemented in the
+Gcircle class also can be used. Then, the two additional methods set_tarc,
+plot_tree and plot_highlight is provided in the Tcircle class.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>fig</code></strong> :&ensp;<code>matplotlib.pyplot.figure object</code>, optional</dt>
+<dd>Matplotlib Figure class object</dd>
+<dt><strong><code>figsize</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>Figure size for the circular map</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Tcircle(Gcircle):
+    &#34;&#34;&#34;
+    Tcircle class is the subclass of Gcircle. All methods implemented in the 
+    Gcircle class also can be used. Then, the two additional methods set_tarc, 
+    plot_tree and plot_highlight is provided in the Tcircle class.
+    &#34;&#34;&#34;
+    def __init__(self,  fig=None, figsize=None):
+        &#34;&#34;&#34;
+        Parameters
+        ----------
+        fig : matplotlib.pyplot.figure object, optional
+            Matplotlib Figure class object
+        figsize : tuple, optional
+            Figure size for the circular map
+        &#34;&#34;&#34;
+        super().__init__(fig=fig, figsize=figsize)
+    
+    def __getattr__(self, name):
+        if name == &#34;tarc_dict&#34;:
+            return self._garc_dict
+
+    def add_tarc(self, tarc):
+        &#34;&#34;&#34;
+        Add a new Tarc or Garc class object into tarc_dict.
+
+        Parameters
+        ----------
+        tarc : Tarc or Garc class object
+            Tarc or Garc class object to be added.
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        self._garc_dict[tarc.arc_id] = tarc
+
+    def set_tarcs(self, start=0, end=360):
+        &#34;&#34;&#34;
+        Visualize the arc rectangles of the Tarc class objects in .garc_dict on
+        the drawing space. After the execution of this method, a new Tarc class
+        object cannot be added to garc_dict and figure parameter representing
+        matplotlib.pyplot.figure object will be created in Tcircle object.
+
+        Parameters
+        ----------
+        start : int, optional
+            Start angle of the circos plot. The value range is -360 ~ 360.
+            The default is 0.
+        end : int, optional
+            End angle of the circos plot. The value range is -360 ~ 360.
+            The default is 360.
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        sum_length       = sum(list(map(lambda x:  self._garc_dict[x][&#34;size&#34;], list(self._garc_dict.keys()))))
+        sum_interspace   = sum(list(map(lambda x:  self._garc_dict[x][&#34;interspace&#34;], list(self._garc_dict.keys()))))
+        start = 2 * np.pi * start / 360
+        end   = (2 * np.pi * end / 360) - sum_interspace
+
+        s = 0
+        sum_interspace = 0 
+        for key in self._garc_dict.keys():
+            size = self._garc_dict[key].size
+            self._garc_dict[key].coordinates    = [None, None]
+            self._garc_dict[key].coordinates[0] = sum_interspace + start + ((end-start) * s/sum_length)
+            self._garc_dict[key].coordinates[1] = sum_interspace + start + ((end-start) * (s+size)/sum_length)
+            s = s + size
+            sum_interspace += self._garc_dict[key].interspace
+        
+        if self.fig_is_ext:
+            self.ax = self.figure.add_axes([0, 0, self.figsize[0], self.figsize[1]], polar=True)
+        else:
+            self.ax = self.figure.add_axes([0, 0, 1, 1], polar=True)
+        self.ax.set_theta_zero_location(&#34;N&#34;)
+        self.ax.set_theta_direction(-1)
+        self.ax.set_ylim(0,1000)
+        self.ax.spines[&#39;polar&#39;].set_visible(False)
+        self.ax.xaxis.set_ticks([])
+        self.ax.xaxis.set_ticklabels([])
+        self.ax.yaxis.set_ticks([])
+        self.ax.yaxis.set_ticklabels([])  
+                
+        for i, key in enumerate(self._garc_dict.keys()):
+            pos       = self._garc_dict[key].coordinates[0] 
+            width     = self._garc_dict[key].coordinates[-1] - self._garc_dict[key].coordinates[0]
+            height    = abs(self._garc_dict[key].raxis_range[1] - self._garc_dict[key].raxis_range[0])
+            bottom    = self._garc_dict[key].raxis_range[0]
+            facecolor = self._garc_dict[key].facecolor
+            edgecolor = self._garc_dict[key].edgecolor
+            linewidth = self._garc_dict[key].linewidth
+            if facecolor is None:
+                facecolor = (0, 0, 0, 0)
+            
+            if facecolor == (0, 0, 0, 0) and linewidth == 0:
+                pass 
+            else:
+                self.ax.bar([pos], [height], bottom=bottom, width=width, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, align=&#34;edge&#34;)
+            
+            if self._garc_dict[key].label_visible == True:
+                rot = (self._garc_dict[key].coordinates[0] + self._garc_dict[key].coordinates[1]) / 2
+                rot = rot*360/(2*np.pi)
+                if 90 &lt; rot &lt; 270:
+                    rot = 180-rot
+                else:
+                    rot = -1 * rot 
+                height = bottom + height/2 + self._garc_dict[key].labelposition
+                self.ax.text(pos + width/2, height, self._garc_dict[key].label, rotation=rot, ha=&#34;center&#34;, va=&#34;center&#34;, fontsize=self._garc_dict[key].labelsize)
+    
+    def plot_tree(self, tarc_id, rlim=(0,700), cladevisual_dict=None, highlight_dict=None, linecolor=&#34;#303030&#34;, linewidth=0.5):
+        &#34;&#34;&#34;
+        Draw circular phylogenetic tree
+
+        Parameters
+        ---------
+        tarc_id : str 
+            ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.
+        rlim : tuple (top=int, bottom=int)
+            The top and bottom r limits in data coordinates. The default is (0, 700).  
+        cladevisual_dict : dict 
+            Dictionary composed of pairs of clade name and a sub-dict holding 
+            parameters to visualize the clade. A sub-dict is composed of 
+            the following key-value pairs:
+
+            - `size` : `float`  
+                Size of dot. The default is 5.  
+            - `color` : `float or str` representing color code.  
+                Face color of dot. The default is &#34;#303030&#34;.  
+            - `edgecolor` : `float or str` representing color code.  
+                Edge line color of dot. The default is &#34;#303030&#34;.  
+            - `linewidth` : `float`  
+                Edge line width of dot. The default is 0.5.  
+
+        highlight_dict : dict 
+            Dictionary composed of pairs of internal clade name and a sub-dict.
+            Instead of clade name, tuples of terminal clade names can also be
+            A sub-dict is composed of the following key-value pairs:
+
+            - `color` : `str`  
+                Color of highlight for clades. The default is &#34;#000000&#34;.
+            - `alpha` : `float`  
+                Alpha of highlight for clades. The default is 0.25.
+            - `label` : `str`  
+                Label. The default is None.
+            - `fontsize` : `float`  
+                Fontsize of label. The default is 10.
+            - `y` : `float`  
+                Y location of the text. The default is the bottom edge of the highlight.
+        
+        linecolor : str or tuple representing color code, optional
+            Color of the tree line. The default is &#34;#303030&#34;.
+        linewidth : float
+            Line width of tree. The default is 0.5.
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34; 
+        start      = self._garc_dict[tarc_id].coordinates[0] 
+        end        = self._garc_dict[tarc_id].coordinates[-1]
+        positions  = np.linspace(start, end, self._garc_dict[tarc_id].size, endpoint=False)
+        positions  = positions + abs(positions[1]-positions[0]) * 0.5 
+        start, end = positions[0], positions[-1] 
+        self._garc_dict[tarc_id]._plot_tree(self.ax, thetalim=(start, end), rlim=rlim, cladevisual_dict=cladevisual_dict, highlight_dict=highlight_dict, linecolor=linecolor, linewidth=linewidth)
+    
+    def plot_highlight(self, tarc_id, highlight_dict=None):
+        &#34;&#34;&#34;
+        Add highlight for specific clade under the given internal clade
+
+        Parameters
+        ----------
+        tarc_id : str 
+            ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.
+        highlight_dict : dict 
+            Dictionary composed of pairs of internal clade name and a sub-dict.
+            Instead of clade name, tuples of terminal clade names can also be used.
+            A sub-dict is composed of the following key-value pairs:
+
+            - `color` : `str`  
+                Color of highlight for clades. The default is &#34;#000000&#34;.
+            - `alpha` : `float`  
+                Alpha of highlight for clades. The default is 0.25.
+            - `label` : `str`  
+                Label. The default is None.
+            - `fontsize` : `float`  
+                Fontsize of label. The default is 10.
+            - `y` : `float`  
+                Y location of the text. The default is the bottom edge of the highlight.
+        
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        self._garc_dict[tarc_id]._plot_highlight(self.ax, highlight_dict=highlight_dict)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pycircos.pycircos.Gcircle" href="pycircos.html#pycircos.pycircos.Gcircle">Gcircle</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pycircos.tree.Tcircle.add_tarc"><code class="name flex">
+<span>def <span class="ident">add_tarc</span></span>(<span>self, tarc)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a new Tarc or Garc class object into tarc_dict.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>tarc</code></strong> :&ensp;<code><a title="pycircos.tree.Tarc" href="#pycircos.tree.Tarc">Tarc</a></code> or <code>Garc class object</code></dt>
+<dd>Tarc or Garc class object to be added.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_tarc(self, tarc):
+    &#34;&#34;&#34;
+    Add a new Tarc or Garc class object into tarc_dict.
+
+    Parameters
+    ----------
+    tarc : Tarc or Garc class object
+        Tarc or Garc class object to be added.
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    self._garc_dict[tarc.arc_id] = tarc</code></pre>
+</details>
+</dd>
+<dt id="pycircos.tree.Tcircle.set_tarcs"><code class="name flex">
+<span>def <span class="ident">set_tarcs</span></span>(<span>self, start=0, end=360)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Visualize the arc rectangles of the Tarc class objects in .garc_dict on
+the drawing space. After the execution of this method, a new Tarc class
+object cannot be added to garc_dict and figure parameter representing
+matplotlib.pyplot.figure object will be created in Tcircle object.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>start</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Start angle of the circos plot. The value range is -360 ~ 360.
+The default is 0.</dd>
+<dt><strong><code>end</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>End angle of the circos plot. The value range is -360 ~ 360.
+The default is 360.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_tarcs(self, start=0, end=360):
+    &#34;&#34;&#34;
+    Visualize the arc rectangles of the Tarc class objects in .garc_dict on
+    the drawing space. After the execution of this method, a new Tarc class
+    object cannot be added to garc_dict and figure parameter representing
+    matplotlib.pyplot.figure object will be created in Tcircle object.
+
+    Parameters
+    ----------
+    start : int, optional
+        Start angle of the circos plot. The value range is -360 ~ 360.
+        The default is 0.
+    end : int, optional
+        End angle of the circos plot. The value range is -360 ~ 360.
+        The default is 360.
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    sum_length       = sum(list(map(lambda x:  self._garc_dict[x][&#34;size&#34;], list(self._garc_dict.keys()))))
+    sum_interspace   = sum(list(map(lambda x:  self._garc_dict[x][&#34;interspace&#34;], list(self._garc_dict.keys()))))
+    start = 2 * np.pi * start / 360
+    end   = (2 * np.pi * end / 360) - sum_interspace
+
+    s = 0
+    sum_interspace = 0 
+    for key in self._garc_dict.keys():
+        size = self._garc_dict[key].size
+        self._garc_dict[key].coordinates    = [None, None]
+        self._garc_dict[key].coordinates[0] = sum_interspace + start + ((end-start) * s/sum_length)
+        self._garc_dict[key].coordinates[1] = sum_interspace + start + ((end-start) * (s+size)/sum_length)
+        s = s + size
+        sum_interspace += self._garc_dict[key].interspace
+    
+    if self.fig_is_ext:
+        self.ax = self.figure.add_axes([0, 0, self.figsize[0], self.figsize[1]], polar=True)
+    else:
+        self.ax = self.figure.add_axes([0, 0, 1, 1], polar=True)
+    self.ax.set_theta_zero_location(&#34;N&#34;)
+    self.ax.set_theta_direction(-1)
+    self.ax.set_ylim(0,1000)
+    self.ax.spines[&#39;polar&#39;].set_visible(False)
+    self.ax.xaxis.set_ticks([])
+    self.ax.xaxis.set_ticklabels([])
+    self.ax.yaxis.set_ticks([])
+    self.ax.yaxis.set_ticklabels([])  
+            
+    for i, key in enumerate(self._garc_dict.keys()):
+        pos       = self._garc_dict[key].coordinates[0] 
+        width     = self._garc_dict[key].coordinates[-1] - self._garc_dict[key].coordinates[0]
+        height    = abs(self._garc_dict[key].raxis_range[1] - self._garc_dict[key].raxis_range[0])
+        bottom    = self._garc_dict[key].raxis_range[0]
+        facecolor = self._garc_dict[key].facecolor
+        edgecolor = self._garc_dict[key].edgecolor
+        linewidth = self._garc_dict[key].linewidth
+        if facecolor is None:
+            facecolor = (0, 0, 0, 0)
+        
+        if facecolor == (0, 0, 0, 0) and linewidth == 0:
+            pass 
+        else:
+            self.ax.bar([pos], [height], bottom=bottom, width=width, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, align=&#34;edge&#34;)
+        
+        if self._garc_dict[key].label_visible == True:
+            rot = (self._garc_dict[key].coordinates[0] + self._garc_dict[key].coordinates[1]) / 2
+            rot = rot*360/(2*np.pi)
+            if 90 &lt; rot &lt; 270:
+                rot = 180-rot
+            else:
+                rot = -1 * rot 
+            height = bottom + height/2 + self._garc_dict[key].labelposition
+            self.ax.text(pos + width/2, height, self._garc_dict[key].label, rotation=rot, ha=&#34;center&#34;, va=&#34;center&#34;, fontsize=self._garc_dict[key].labelsize)</code></pre>
+</details>
+</dd>
+<dt id="pycircos.tree.Tcircle.plot_tree"><code class="name flex">
+<span>def <span class="ident">plot_tree</span></span>(<span>self, tarc_id, rlim=(0, 700), cladevisual_dict=None, highlight_dict=None, linecolor='#303030', linewidth=0.5)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw circular phylogenetic tree</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>tarc_id</code></strong> :&ensp;<code>str </code></dt>
+<dd>ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.</dd>
+<dt><strong><code>rlim</code></strong> :&ensp;<code>tuple (top=int, bottom=int)</code></dt>
+<dd>The top and bottom r limits in data coordinates. The default is (0, 700).</dd>
+<dt><strong><code>cladevisual_dict</code></strong> :&ensp;<code>dict </code></dt>
+<dd>
+<p>Dictionary composed of pairs of clade name and a sub-dict holding
+parameters to visualize the clade. A sub-dict is composed of
+the following key-value pairs:</p>
+<ul>
+<li><code>size</code> : <code>float</code><br>
+Size of dot. The default is 5.
+</li>
+<li><code>color</code> : <code>float or str</code> representing color code.<br>
+Face color of dot. The default is "#303030".
+</li>
+<li><code>edgecolor</code> : <code>float or str</code> representing color code.<br>
+Edge line color of dot. The default is "#303030".
+</li>
+<li><code>linewidth</code> : <code>float</code><br>
+Edge line width of dot. The default is 0.5.</li>
+</ul>
+</dd>
+<dt><strong><code>highlight_dict</code></strong> :&ensp;<code>dict </code></dt>
+<dd>
+<p>Dictionary composed of pairs of internal clade name and a sub-dict.
+Instead of clade name, tuples of terminal clade names can also be
+A sub-dict is composed of the following key-value pairs:</p>
+<ul>
+<li><code>color</code> : <code>str</code><br>
+Color of highlight for clades. The default is "#000000".</li>
+<li><code>alpha</code> : <code>float</code><br>
+Alpha of highlight for clades. The default is 0.25.</li>
+<li><code>label</code> : <code>str</code><br>
+Label. The default is None.</li>
+<li><code>fontsize</code> : <code>float</code><br>
+Fontsize of label. The default is 10.</li>
+<li><code>y</code> : <code>float</code><br>
+Y location of the text. The default is the bottom edge of the highlight.</li>
+</ul>
+</dd>
+<dt><strong><code>linecolor</code></strong> :&ensp;<code>str</code> or <code>tuple representing color code</code>, optional</dt>
+<dd>Color of the tree line. The default is "#303030".</dd>
+<dt><strong><code>linewidth</code></strong> :&ensp;<code>float</code></dt>
+<dd>Line width of tree. The default is 0.5.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_tree(self, tarc_id, rlim=(0,700), cladevisual_dict=None, highlight_dict=None, linecolor=&#34;#303030&#34;, linewidth=0.5):
+    &#34;&#34;&#34;
+    Draw circular phylogenetic tree
+
+    Parameters
+    ---------
+    tarc_id : str 
+        ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.
+    rlim : tuple (top=int, bottom=int)
+        The top and bottom r limits in data coordinates. The default is (0, 700).  
+    cladevisual_dict : dict 
+        Dictionary composed of pairs of clade name and a sub-dict holding 
+        parameters to visualize the clade. A sub-dict is composed of 
+        the following key-value pairs:
+
+        - `size` : `float`  
+            Size of dot. The default is 5.  
+        - `color` : `float or str` representing color code.  
+            Face color of dot. The default is &#34;#303030&#34;.  
+        - `edgecolor` : `float or str` representing color code.  
+            Edge line color of dot. The default is &#34;#303030&#34;.  
+        - `linewidth` : `float`  
+            Edge line width of dot. The default is 0.5.  
+
+    highlight_dict : dict 
+        Dictionary composed of pairs of internal clade name and a sub-dict.
+        Instead of clade name, tuples of terminal clade names can also be
+        A sub-dict is composed of the following key-value pairs:
+
+        - `color` : `str`  
+            Color of highlight for clades. The default is &#34;#000000&#34;.
+        - `alpha` : `float`  
+            Alpha of highlight for clades. The default is 0.25.
+        - `label` : `str`  
+            Label. The default is None.
+        - `fontsize` : `float`  
+            Fontsize of label. The default is 10.
+        - `y` : `float`  
+            Y location of the text. The default is the bottom edge of the highlight.
+    
+    linecolor : str or tuple representing color code, optional
+        Color of the tree line. The default is &#34;#303030&#34;.
+    linewidth : float
+        Line width of tree. The default is 0.5.
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34; 
+    start      = self._garc_dict[tarc_id].coordinates[0] 
+    end        = self._garc_dict[tarc_id].coordinates[-1]
+    positions  = np.linspace(start, end, self._garc_dict[tarc_id].size, endpoint=False)
+    positions  = positions + abs(positions[1]-positions[0]) * 0.5 
+    start, end = positions[0], positions[-1] 
+    self._garc_dict[tarc_id]._plot_tree(self.ax, thetalim=(start, end), rlim=rlim, cladevisual_dict=cladevisual_dict, highlight_dict=highlight_dict, linecolor=linecolor, linewidth=linewidth)</code></pre>
+</details>
+</dd>
+<dt id="pycircos.tree.Tcircle.plot_highlight"><code class="name flex">
+<span>def <span class="ident">plot_highlight</span></span>(<span>self, tarc_id, highlight_dict=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add highlight for specific clade under the given internal clade</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>tarc_id</code></strong> :&ensp;<code>str </code></dt>
+<dd>ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.</dd>
+<dt><strong><code>highlight_dict</code></strong> :&ensp;<code>dict </code></dt>
+<dd>
+<p>Dictionary composed of pairs of internal clade name and a sub-dict.
+Instead of clade name, tuples of terminal clade names can also be used.
+A sub-dict is composed of the following key-value pairs:</p>
+<ul>
+<li><code>color</code> : <code>str</code><br>
+Color of highlight for clades. The default is "#000000".</li>
+<li><code>alpha</code> : <code>float</code><br>
+Alpha of highlight for clades. The default is 0.25.</li>
+<li><code>label</code> : <code>str</code><br>
+Label. The default is None.</li>
+<li><code>fontsize</code> : <code>float</code><br>
+Fontsize of label. The default is 10.</li>
+<li><code>y</code> : <code>float</code><br>
+Y location of the text. The default is the bottom edge of the highlight.</li>
+</ul>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_highlight(self, tarc_id, highlight_dict=None):
+    &#34;&#34;&#34;
+    Add highlight for specific clade under the given internal clade
+
+    Parameters
+    ----------
+    tarc_id : str 
+        ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.
+    highlight_dict : dict 
+        Dictionary composed of pairs of internal clade name and a sub-dict.
+        Instead of clade name, tuples of terminal clade names can also be used.
+        A sub-dict is composed of the following key-value pairs:
+
+        - `color` : `str`  
+            Color of highlight for clades. The default is &#34;#000000&#34;.
+        - `alpha` : `float`  
+            Alpha of highlight for clades. The default is 0.25.
+        - `label` : `str`  
+            Label. The default is None.
+        - `fontsize` : `float`  
+            Fontsize of label. The default is 10.
+        - `y` : `float`  
+            Y location of the text. The default is the bottom edge of the highlight.
+    
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    self._garc_dict[tarc_id]._plot_highlight(self.ax, highlight_dict=highlight_dict)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pycircos.pycircos.Gcircle" href="pycircos.html#pycircos.pycircos.Gcircle">Gcircle</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pycircos.pycircos.Gcircle.add_garc" href="pycircos.html#pycircos.pycircos.Gcircle.add_garc">add_garc</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.barplot" href="pycircos.html#pycircos.pycircos.Gcircle.barplot">barplot</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.chord_plot" href="pycircos.html#pycircos.pycircos.Gcircle.chord_plot">chord_plot</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.featureplot" href="pycircos.html#pycircos.pycircos.Gcircle.featureplot">featureplot</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.fillplot" href="pycircos.html#pycircos.pycircos.Gcircle.fillplot">fillplot</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.heatmap" href="pycircos.html#pycircos.pycircos.Gcircle.heatmap">heatmap</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.lineplot" href="pycircos.html#pycircos.pycircos.Gcircle.lineplot">lineplot</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.save" href="pycircos.html#pycircos.pycircos.Gcircle.save">save</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.scatterplot" href="pycircos.html#pycircos.pycircos.Gcircle.scatterplot">scatterplot</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.set_garcs" href="pycircos.html#pycircos.pycircos.Gcircle.set_garcs">set_garcs</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.setspine" href="pycircos.html#pycircos.pycircos.Gcircle.setspine">setspine</a></code></li>
+<li><code><a title="pycircos.pycircos.Gcircle.tickplot" href="pycircos.html#pycircos.pycircos.Gcircle.tickplot">tickplot</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pycircos" href="index.html">pycircos</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pycircos.tree.Tarc" href="#pycircos.tree.Tarc">Tarc</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pycircos.tree.Tcircle" href="#pycircos.tree.Tcircle">Tcircle</a></code></h4>
+<ul class="">
+<li><code><a title="pycircos.tree.Tcircle.add_tarc" href="#pycircos.tree.Tcircle.add_tarc">add_tarc</a></code></li>
+<li><code><a title="pycircos.tree.Tcircle.set_tarcs" href="#pycircos.tree.Tcircle.set_tarcs">set_tarcs</a></code></li>
+<li><code><a title="pycircos.tree.Tcircle.plot_tree" href="#pycircos.tree.Tcircle.plot_tree">plot_tree</a></code></li>
+<li><code><a title="pycircos.tree.Tcircle.plot_highlight" href="#pycircos.tree.Tcircle.plot_highlight">plot_highlight</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
