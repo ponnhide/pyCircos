@@ -20,6 +20,8 @@ If you want to use developmental version, it can be installed using the followin
 pyCircos provides the “Gcircle class”  and "Garc class". A "Gcircle" class object  holds  the dictionary of Garc class objefcts and provides functions to place Garc classs object on the circular map. Each Garc class object manages numeric and genomic data to be visualized on the circular map.
 
 ### News
+- Tutorial codes are moved to https://github.com/ponnhide/pyCircos-examples .
+
 #### Version 0.3.0 is released. 
 - Tarc class and Tcircle class are added.     
 Tarc class and Tcircle class is implemented as subclass of Garc and Gcircle class, respectivily.  
