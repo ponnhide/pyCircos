@@ -240,7 +240,7 @@ Then, the two additional methods `set_tarc`, `plot_tree` and  `plot_highlight` i
 #### Methods
 - **.add_tarc(tarc=*str*)**:
   Add a new Tarc or Garc class object into tarc_dict.
-  - tarc : Tarc class object (default:None)
+  - tarc : _Tarc class object_ (default:None)
     Tarc class object to be added.
 
   **return** *None*
@@ -251,7 +251,7 @@ Then, the two additional methods `set_tarc`, `plot_tree` and  `plot_highlight` i
 　- **tarc_id**: *str*
     ID of the Tarc class object. The ID should be in Tcircle
   - **object.tarc_dict**: *dict*
-  - **rlim** : **tuple** (top=int, bottom=int)
+  - **rlim** : *tuple* (top=int, bottom=int)
     The top and bottom r limits in data coordinates. The default vlaues is (0, 700).
     If the first value is less than second value, tree will be outward direction.
     If the first value is larger than second value, tree will be inward direction.
@@ -260,11 +260,11 @@ Then, the two additional methods `set_tarc`, `plot_tree` and  `plot_highlight` i
     to visualize the clade. A sub-dict is composed of the following key-value pairs:  
     - **size**: *int* or *float*
       Size of dot. The default value is 5.
-    - **color**: *float* or *str* replresenting color code.
+    - **color**: *float* or *str* replresenting color code.  
       Face color of dot. The default value is '#303030'.
-    - **edgecolor**: *float* or *str* replresenting color code.
+    - **edgecolor**: *float* or *str* replresenting color code.  
       Edge line color of dot. The default value is '#303030'.
-    - **linewidth**: *int* or *float*
+    - **linewidth**: *int* or *float*. 
       Edge line width of dot. The default value is 0.5.  
 
   **return** *None*
@@ -272,19 +272,19 @@ Then, the two additional methods `set_tarc`, `plot_tree` and  `plot_highlight` i
 
 - **.plot_tree(tarc_id=*str*, highlight_dict=*dict*)**:  
   Add highlight for specif clade under the given internal clade.
-  - **highlight_dict**: *dict* 
+  - **highlight_dict**: *dict*   
     Dictionay composed of pairs of internal clade name and a sub-dict.  
     Instead of clade name, tuples of teminal clade names can also be used.
     A sub-dict is composed of the following key-value pairs:
-    - **color**: *str* 
+    - **color**: *str*  
       Color of highlight for clades. The default value is "#000000".
-    - **alpha**: *flaot* 
+    - **alpha**: *flaot*   
       Alpha of highlight for clades. The default vlalue is 0.25.
-    - **label**: *str*
+    - **label**: *str*  
       Label. The default vlalue is None.
-    - **fontsize**: int or float 
+    - **fontsize**: int or float   
       Fontsize of label. The default vlalue is 10.
-    - **y**: *int* or *float*
+    - **y**: *int* or *float*  
       Y location of the text. The default vlalue is the bottom edge of the highliht.
 
   **return** *None*

@@ -1,0 +1,40 @@
+name: Publish API Docs
+
+on:
+  push:
+    branches: [master]
+    paths: ["pycircos/**.py"]
+  pull_request:
+    branches: [master]
+    paths: ["pycircos/**.py"]
+  workflow_dispatch:
+
+jobs:
+  publish_api_docs:
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install requirements & pdoc3
+        run: |
+          pip install .
+          pip install pdoc3
+
+      - name: Generate API docs using pdoc3
+        run: |
+          pdoc3 ./pycircos -o ./docs --html --force -c list_class_variables_in_index=False -c sort_identifiers=False
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/pycircos

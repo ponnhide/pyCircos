@@ -16,7 +16,7 @@ class Tarc(Garc):
         tree : str
             File name of phylogenetic tree
         format : str 
-            Format of phylogenetic tree. The default value is "newick."
+            Format of phylogenetic tree. The default is "newick".
         interspace : float, optional
             Distance angle (deg) to the adjacent arc section in clockwise 
             sequence. The actual interspace size in the circle is determined by
@@ -25,10 +25,9 @@ class Tarc(Garc):
             values of the Garc class objects in the Gcircle class object.
             The default is 3.
         raxis_range : tuple (top=int, bottom=int), optional
-            Radial axis range where line plot is drawn.
-            The default is (900, 950).
+            Radial axis range where line plot is drawn. The default is (900, 950).
         facecolor : str or tuple representing color code, optional
-            Color for filling.. The default is None.
+            Color for filling. The default is None.
         edgecolor : str or tuple representing color code, optional
             Edge color of the filled area. The default is "#303030".
         linewidth : float, optional
@@ -133,7 +132,7 @@ class Tarc(Garc):
             linewidth = 0.5
         
         if linecolor is None:
-            linecolodr = "k"
+            linecolor = "k"
         
         if cladevisual_dict is None:
             cladevisual_dict = {} 
@@ -242,8 +241,21 @@ class Tarc(Garc):
                     ax.text(loc, yloc, str(label), rotation=rot, ha="center", va="center", fontsize=fontsize, zorder=1000 + (-1 * minc_r) + 0.1)
 
 class Tcircle(Gcircle):
+    """
+    Tcircle class is the subclass of Gcircle. All methods implemented in the 
+    Gcircle class also can be used. Then, the two additional methods set_tarc, 
+    plot_tree and plot_highlight is provided in the Tcircle class.
+    """
     def __init__(self,  fig=None, figsize=None):
-        super().__init__(fig=None, figsize=None)
+        """
+        Parameters
+        ----------
+        fig : matplotlib.pyplot.figure object, optional
+            Matplotlib Figure class object
+        figsize : tuple, optional
+            Figure size for the circular map
+        """
+        super().__init__(fig=fig, figsize=figsize)
     
     def __getattr__(self, name):
         if name == "tarc_dict":
@@ -255,22 +267,21 @@ class Tcircle(Gcircle):
 
         Parameters
         ----------
-        tarc : Tarc class object (default:None)
-            Tarc class object to be added.
+        tarc : Tarc or Garc class object
+            Tarc or Garc class object to be added.
 
         Returns
         -------
-        None.
-
+        None
         """
         self._garc_dict[tarc.arc_id] = tarc
 
     def set_tarcs(self, start=0, end=360):
         """
-        Visualize the arc rectangles of the Garc class objects in .garc_dict on
-        the drawing space. After the execution of this method, a new Garc class
+        Visualize the arc rectangles of the Tarc class objects in .garc_dict on
+        the drawing space. After the execution of this method, a new Tarc class
         object cannot be added to garc_dict and figure parameter representing
-        maplotlib.pyplot.figure object will be created in Gcircle object.
+        matplotlib.pyplot.figure object will be created in Tcircle object.
 
         Parameters
         ----------
@@ -283,8 +294,7 @@ class Tcircle(Gcircle):
 
         Returns
         -------
-        None.
-        
+        None
         """
         sum_length       = sum(list(map(lambda x:  self._garc_dict[x]["size"], list(self._garc_dict.keys()))))
         sum_interspace   = sum(list(map(lambda x:  self._garc_dict[x]["interspace"], list(self._garc_dict.keys()))))
@@ -342,48 +352,53 @@ class Tcircle(Gcircle):
     
     def plot_tree(self, tarc_id, rlim=(0,700), cladevisual_dict=None, highlight_dict=None, linecolor="#303030", linewidth=0.5):
         """
-        
-        Parmeters
+        Draw circular phylogenetic tree
+
+        Parameters
         ---------
         tarc_id : str 
-            ID of the Tarc class object. The ID should be in Tcircle
-            object.tarc_dict.
+            ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.
         rlim : tuple (top=int, bottom=int)
-            The top and bottom r limits in data coordinates. 
-            The default vlaues is (0, 700).
+            The top and bottom r limits in data coordinates. The default is (0, 700).  
         cladevisual_dict : dict 
-            Dictionay composed of pairs of clade name and a sub-dict holding 
+            Dictionary composed of pairs of clade name and a sub-dict holding 
             parameters to visualize the clade. A sub-dict is composed of 
             the following key-value pairs:
-                - size: int or float
-                    Size of dot. The default value is 5.
-                - color: float or str replresenting color code.
-                    Face color of dot. The default value is '#303030'.
-                - edgecolor: float or str replresenting color code.
-                    Edge line color of dot. The default value is '#303030'.
-                - linewidth: int or float
-                    Edge line width of dot. The default value is 0.5.  
+
+            - `size` : `float`  
+                Size of dot. The default is 5.  
+            - `color` : `float or str` representing color code.  
+                Face color of dot. The default is "#303030".  
+            - `edgecolor` : `float or str` representing color code.  
+                Edge line color of dot. The default is "#303030".  
+            - `linewidth` : `float`  
+                Edge line width of dot. The default is 0.5.  
+
         highlight_dict : dict 
-            Dictionay composed of pairs of internal clade name and a sub-dict.
-            Instead of clade name, tuples of teminal clade names can also be
+            Dictionary composed of pairs of internal clade name and a sub-dict.
+            Instead of clade name, tuples of terminal clade names can also be
             A sub-dict is composed of the following key-value pairs:
-                - color: "#000000" 
-                    Color of highlight for clades.
-                - alpha: flaot 
-                    Alpha of highlight for clades. The default vlalue is 0.25.
-                - label: str
-                    Label. The default vlalue is None.
-                - fontsize: int or float 
-                    Fontsize of label. The default vlalue is 10.
-                - y: int or float
-                    Y location of the text. The default vlalue is the bottom 
-                    edge of the highliht.
+
+            - `color` : `str`  
+                Color of highlight for clades. The default is "#000000".
+            - `alpha` : `float`  
+                Alpha of highlight for clades. The default is 0.25.
+            - `label` : `str`  
+                Label. The default is None.
+            - `fontsize` : `float`  
+                Fontsize of label. The default is 10.
+            - `y` : `float`  
+                Y location of the text. The default is the bottom edge of the highlight.
+        
+        linecolor : str or tuple representing color code, optional
+            Color of the tree line. The default is "#303030".
+        linewidth : float
+            Line width of tree. The default is 0.5.
+
         Returns
         -------
         None
-        
         """ 
-        
         start      = self._garc_dict[tarc_id].coordinates[0] 
         end        = self._garc_dict[tarc_id].coordinates[-1]
         positions  = np.linspace(start, end, self._garc_dict[tarc_id].size, endpoint=False)
@@ -393,29 +408,31 @@ class Tcircle(Gcircle):
     
     def plot_highlight(self, tarc_id, highlight_dict=None):
         """
+        Add highlight for specific clade under the given internal clade
+
+        Parameters
+        ----------
         tarc_id : str 
-            ID of the Tarc class object. The ID should be in Tcircle
-            object.tarc_dict.
+            ID of the Tarc class object. The ID should be in Tcircle object.tarc_dict.
         highlight_dict : dict 
-            Dictionay composed of pairs of internal clade name and a sub-dict.
-            Instead of clade name, tuples of teminal clade names can also be
+            Dictionary composed of pairs of internal clade name and a sub-dict.
+            Instead of clade name, tuples of terminal clade names can also be used.
             A sub-dict is composed of the following key-value pairs:
-                - color: "#000000" 
-                    Color of highlight for clades.
-                - alpha: flaot 
-                    Alpha of highlight for clades. The default vlalue is 0.25.
-                - label: str
-                    Label. The default vlalue is None.
-                - fontsize: int or float 
-                    Fontsize of label. The default vlalue is 10.
-                - y: int or float
-                    Y location of the text. The default vlalue is the bottom 
-                    edge of the highliht.
+
+            - `color` : `str`  
+                Color of highlight for clades. The default is "#000000".
+            - `alpha` : `float`  
+                Alpha of highlight for clades. The default is 0.25.
+            - `label` : `str`  
+                Label. The default is None.
+            - `fontsize` : `float`  
+                Fontsize of label. The default is 10.
+            - `y` : `float`  
+                Y location of the text. The default is the bottom edge of the highlight.
         
         Returns
         -------
         None
-
         """
         self._garc_dict[tarc_id]._plot_highlight(self.ax, highlight_dict=highlight_dict)
 
