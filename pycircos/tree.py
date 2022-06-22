@@ -82,7 +82,7 @@ class Tarc(Garc):
         max_label_width = max(len(str(taxon)) for taxon in taxa)
         drawing_width   = 100 - max_label_width - 1
         if max(depths.values()) == 0:
-            depths = tree.depths(unit_branch_lengths=True)
+            depths = self.tree.depths(unit_branch_lengths=True)
         fudge_margin         = math.log(len(taxa), 2)
         cols_per_branch_unit = (drawing_width - fudge_margin) / float(max(depths.values()))
         positions            = {clade: blen * cols_per_branch_unit + 1.0 for clade, blen in depths.items()}
