@@ -40,7 +40,7 @@ class Garc:
     def __getitem__(self, key):
         return self.__dict__[key] 
 
-    def __init__(self, arc_id=None, record=None, size=1000, interspace=3, raxis_range=(500, 550), facecolor=None, edgecolor="#303030", linewidth=0.75, label=None, labelposition=0, labelsize=10, label_visible=False):
+    def __init__(self, arc_id=None, record=None, size=1000, interspace=3, raxis_range=(500, 550), facecolor=None, edgecolor="#303030", linewidth=0.75, label=None, labelposition=0, labelsize=10, label_visible=False, labelcolor="#000000"):
         """
         Parameters
         ----------
@@ -147,6 +147,7 @@ class Garc:
         self.facecolor   = facecolor 
         self.edgecolor   = edgecolor
         self.linewidth   = linewidth
+        self.labelcolor  = labelcolor
         
         if label is None:
             self.label = arc_id
@@ -432,7 +433,7 @@ class Gcircle:
                 else:
                     rot = -1 * rot 
                 height = bottom + height/2 + self._garc_dict[key].labelposition
-                self.ax.text(pos + width/2, height, self._garc_dict[key].label, rotation=rot, ha="center", va="center", fontsize=self._garc_dict[key].labelsize)
+                self.ax.text(pos + width/2, height, self._garc_dict[key].label, rotation=rot, ha="center", va="center", fontsize=self._garc_dict[key].labelsize, color=self._garc_dict[key].labelcolor)
     
     def setspine(self, garc_id, raxis_range=(550, 600), facecolor="#30303000", edgecolor="#303030", linewidth=0.75):
         """
