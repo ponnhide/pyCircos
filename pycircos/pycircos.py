@@ -29,6 +29,10 @@ matplotlib.rcParams['ytick.major.pad']   = 6
 matplotlib.rcParams['xtick.major.size']  = 6
 matplotlib.rcParams['ytick.major.size']  = 6
 
+modifiers = {
+    'chrom.offset':0,
+}
+
 class Garc:
     #list100 = ["#ffcdd2","#f8bbd0","#e1bee7","#d1c4e9","#c5cae9","#bbdefb","#b3e5fc","#b2ebf2","#b2dfdb","#c8e6c9","#dcedc8","#f0f4c3","#fff9c4","#ffecb3","#ffe0b2","#ffccbc","#d7ccc8","#cfd8dc",
     colorlist = ["#ff8a80","#ff80ab","#ea80fc","#b388ff","#8c9eff","#82b1ff","#84ffff","#a7ffeb","#b9f6ca","#ccff90","#f4ff81","#ffff8d","#ffe57f","#ffd180","#ff9e80","#bcaaa4","#eeeeee","#b0bec5",
@@ -311,7 +315,29 @@ class Garc:
         self["{}{}_skew".format(n1,n2)] = gc_skews
         gc_skews = np.array(gc_skews)
         return gc_skews 
-    
+
+class ChromosomeElement(Garc):
+    def __init__(self, arc_id=None, record=None, 
+                 size=1000, interspace=3, raxis_range=(500, 550),
+                   facecolor='#c02050', edgecolor="#303030",
+                     linewidth=0.75, label=None, 
+                     labelposition=None, labelsize=10, 
+                     label_visible=True, 
+                 chromosome='chr1', start=0, end=0):
+        Garc.__init__(self, arc_id=arc_id, record=record, size=size, interspace=interspace, raxis_range=raxis_range, facecolor=facecolor, edgecolor=edgecolor, linewidth=linewidth, label=label, labelposition=labelposition, labelsize=labelsize, label_visible=label_visible)
+        self.__chromosome = chromosome
+        self.__start = start
+        self.__end = end
+        self.__angle_start = 0
+        self.__angle_end = 180
+    def get_angle(self):
+        return (self.__angle_start, self.__angle_end)
+    def set_angle(self, start, end):
+        self.__angle_start = start
+        self.__angle_end = end
+    location = property(lambda s:[s.__chromosome, s.__start, s.__end])
+    # angle = property(lambda s:s.[__angle_start, __angle_end], __set_angle)
+        
 class Gcircle:
     """
     A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a 
@@ -337,6 +363,7 @@ class Gcircle:
             Figure size for the circular map
         """
         self._garc_dict = {} 
+        self._chrom_elements = [] ##############
         if fig is None:
             if figsize is None:
                 figsize = (8,8) 
@@ -365,6 +392,77 @@ class Gcircle:
         """
         self._garc_dict[garc.arc_id] = garc
 
+    def add_chromosome_element(self, elem):
+        self._chrom_elements.append(elem)
+
+    def set_chromosome_elements(self):
+        """Put isolated objects.
+        This method should be used after chromosomal positions are determined with set_garcs() function.
+
+        """
+        # search chromosomes
+        for elem in self._chrom_elements:
+            chromosome, start, end = elem.location
+            for arc_id, obj in self._garc_dict.items():
+                if arc_id == chromosome or obj.label == chromosome:
+                    size = obj.size
+                    coord = obj.coordinates
+                    if coord is None or coord[0] is None:
+                        continue
+                    a0 = coord[0] + start / size * (coord[1] - coord[0])
+                    a1 = coord[0] + end / size * (coord[1] - coord[0])
+                    elem.set_angle(a0, a1)
+                    break
+                pass
+
+        if self.fig_is_ext:
+            self.ax = self.figure.add_axes([0, 0, self.figsize[0], self.figsize[1]], polar=True)
+        else:
+            self.ax = self.figure.add_axes([0, 0, 1, 1], polar=True)
+        rmax = max([e_.raxis_range[1] for e_ in self._chrom_elements])
+
+        self.ax.set_theta_zero_location("N")
+        self.ax.set_theta_direction(-1)
+        self.ax.set_ylim(0,rmax)#1000)
+        self.ax.spines['polar'].set_visible(False)
+        self.ax.xaxis.set_ticks([])
+        self.ax.xaxis.set_ticklabels([])
+        self.ax.yaxis.set_ticks([])
+        self.ax.yaxis.set_ticklabels([])  
+
+
+        for elem in self._chrom_elements:                
+            angles = elem.get_angle()
+            if angles is None or angles[0] is None:
+                continue
+            rot = (angles[0] + angles[1]) / 2
+            width = angles[1] - angles[0]
+            pos = rot
+            height = elem.raxis_range[1] - elem.raxis_range[0]
+            bottom = elem.raxis_range[0]
+            facecolor = elem.facecolor
+            edgecolor = elem.edgecolor
+            linewidth = elem.linewidth
+            # print(pos, height, pos - width/2)
+            self.ax.bar([pos-width/2], [height], bottom=bottom, width=width, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, align="edge")
+            if elem.label_visible == True:
+                # rot = (self._garc_dict[key].coordinates[0] + self._garc_dict[key].coordinates[1]) / 2
+                stringwidth = 0#len(elem.label) * elem.labelsize 
+                rot = rot*360/(2*np.pi)
+                if 90 < rot < 270:
+                    rot = 180-rot
+                else:
+                    rot = -1 * rot 
+                # height = bottom + height/2 + elem.labelposition
+                if elem.labelposition:
+                    ly = bottom + height/2 + elem.labelposition
+                else:
+                    ly = elem.raxis_range[1] + 25
+                # print(elem.labelposition, ly)
+                #### modified
+                self.ax.text(pos + width/2 - stringwidth / 2, ly, elem.label, rotation=rot, ha="center", va="center", fontsize=elem.labelsize)
+        pass
+
     def set_garcs(self, start=0, end=360):
         """
         Visualize the arc rectangles of the Garc class objects in .garc_dict on
@@ -385,6 +483,7 @@ class Gcircle:
         -------
         None
         """
+
         sum_length       = sum(list(map(lambda x:  self._garc_dict[x]["size"], list(self._garc_dict.keys()))))
         sum_interspace   = sum(list(map(lambda x:  self._garc_dict[x]["interspace"], list(self._garc_dict.keys()))))
         start = 2 * np.pi * start / 360
@@ -432,6 +531,7 @@ class Gcircle:
                 else:
                     rot = -1 * rot 
                 height = bottom + height/2 + self._garc_dict[key].labelposition
+                #### modified
                 self.ax.text(pos + width/2, height, self._garc_dict[key].label, rotation=rot, ha="center", va="center", fontsize=self._garc_dict[key].labelsize)
     
     def setspine(self, garc_id, raxis_range=(550, 600), facecolor="#30303000", edgecolor="#303030", linewidth=0.75):
@@ -1212,7 +1312,7 @@ class Gcircle:
         
         elif ticklabels == "None":
             ticklabels = tickpositions 
-        
+
         for pos, label in zip(tickpositions, ticklabels):
             self.ax.plot([positions_all[pos], positions_all[pos]], raxis_range, linewidth=tickwidth, color=tickcolor)
             if label is None:
@@ -1228,6 +1328,8 @@ class Gcircle:
                     y_pos = raxis_range[1] + (label_width + ticklabelmargin)
                 elif tickdirection == "inner":
                     y_pos = raxis_range[0] - (label_width + ticklabelmargin)
+
+                # y_pos -= 100
 
                 self.ax.text(positions_all[pos], y_pos, str(label), rotation=ticklabel_rot, ha="center", va="center", fontsize=ticklabelsize, color=ticklabelcolor)
     
