@@ -317,6 +317,33 @@ class Garc:
         return gc_skews 
 
 class ChromosomeElement(Garc):
+    """
+    Represents a chromosomal element within a circular genomic visualization. This class is a subclass of `Garc`, which is presumably a graphical arc element. `ChromosomeElement` extends `Garc` to specifically represent elements such as genes or markers on a chromosome.
+
+    Attributes:
+        arc_id (str, optional): An identifier for the arc. Defaults to None.
+        record (unknown type, optional): Purpose not clear from the given context. Defaults to None.
+        size (int): The size of the arc. Defaults to 1000.
+        interspace (int): The space between arcs. Defaults to 3.
+        raxis_range (tuple): A tuple specifying the radial axis range. Defaults to (500, 550).
+        facecolor (str): The fill color of the arc. Defaults to '#c02050'.
+        edgecolor (str): The color of the arc's edge. Defaults to '#303030'.
+        linewidth (float): The width of the arc's edge line. Defaults to 0.75.
+        label (str, optional): The label of the arc. Defaults to None.
+        labelposition (unknown type, optional): The position of the label. Purpose and type are not clear from the given context. Defaults to None.
+        labelsize (int): The font size of the label. Defaults to 10.
+        label_visible (bool): A flag indicating whether the label is visible. Defaults to True.
+        chromosome (str): The name of the chromosome this element belongs to. Defaults to 'chr1'.
+        start (int): The start position of the chromosomal element. Defaults to 0.
+        end (int): The end position of the chromosomal element. Defaults to 0.
+        __angle_start (int, private): The starting angle for the arc representation of the chromosomal element. Defaults to 0.
+        __angle_end (int, private): The ending angle for the arc representation of the chromosomal element. Defaults to 180.
+
+    Methods:
+        get_angle(self): Returns a tuple containing the start and end angles of the chromosomal element.
+        set_angle(self, start, end): Sets the start and end angles of the chromosomal element.
+        location (property): Returns a list containing the chromosome name, start, and end positions of the chromosomal element.
+    """    
     def __init__(self, arc_id=None, record=None, 
                  size=1000, interspace=3, raxis_range=(500, 550),
                    facecolor='#c02050', edgecolor="#303030",
@@ -336,8 +363,8 @@ class ChromosomeElement(Garc):
         self.__angle_start = start
         self.__angle_end = end
     location = property(lambda s:[s.__chromosome, s.__start, s.__end])
-    # angle = property(lambda s:s.[__angle_start, __angle_end], __set_angle)
-        
+
+
 class Gcircle:
     """
     A Gcircle class object provides a circle whose diameter is 1000 (a.u.) as a 
@@ -400,6 +427,8 @@ class Gcircle:
         This method should be used after chromosomal positions are determined with set_garcs() function.
 
         """
+        # if len(self._chrom_elements) == 0:
+        #     return
         # search chromosomes
         for elem in self._chrom_elements:
             chromosome, start, end = elem.location
