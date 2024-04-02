@@ -386,7 +386,7 @@ class ChromosomeElement(Garc):
         """
         self.__angle_start = start
         self.__angle_end = end
-    location = property(lambda s:[s.__chromosome, s.__start, s.__end], help='A property that returns the location information of the chromosomal element.')
+    location = property(lambda s:[s.__chromosome, s.__start, s.__end], doc='A property that returns the location information of the chromosomal element.')
 
 
 class Gcircle:
