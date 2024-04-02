@@ -13,6 +13,7 @@ import matplotlib.path    as mpath
 import matplotlib.patches as mpatches
 from Bio import SeqIO
 import Bio
+import typing
 
 matplotlib.rcParams["figure.max_open_warning"] = 0
 matplotlib.rcParams['ps.fonttype']       = 42
@@ -318,51 +319,74 @@ class Garc:
 
 class ChromosomeElement(Garc):
     """
-    Represents a chromosomal element within a circular genomic visualization. This class is a subclass of `Garc`, which is presumably a graphical arc element. `ChromosomeElement` extends `Garc` to specifically represent elements such as genes or markers on a chromosome.
+    Represents a chromosomal element within a circular genomic visualization. This class is a subclass of `Garc`, which is designed for creating graphical arc elements. `ChromosomeElement` specifically represents elements such as genes or markers on a chromosome, extending the functionality of `Garc` to accommodate genomic data visualization.
 
     Attributes:
-        arc_id (str, optional): An identifier for the arc. Defaults to None.
-        record (unknown type, optional): Purpose not clear from the given context. Defaults to None.
-        size (int): The size of the arc. Defaults to 1000.
-        interspace (int): The space between arcs. Defaults to 3.
-        raxis_range (tuple): A tuple specifying the radial axis range. Defaults to (500, 550).
-        facecolor (str): The fill color of the arc. Defaults to '#c02050'.
-        edgecolor (str): The color of the arc's edge. Defaults to '#303030'.
-        linewidth (float): The width of the arc's edge line. Defaults to 0.75.
-        label (str, optional): The label of the arc. Defaults to None.
-        labelposition (unknown type, optional): The position of the label. Purpose and type are not clear from the given context. Defaults to None.
-        labelsize (int): The font size of the label. Defaults to 10.
-        label_visible (bool): A flag indicating whether the label is visible. Defaults to True.
-        chromosome (str): The name of the chromosome this element belongs to. Defaults to 'chr1'.
-        start (int): The start position of the chromosomal element. Defaults to 0.
-        end (int): The end position of the chromosomal element. Defaults to 0.
-        __angle_start (int, private): The starting angle for the arc representation of the chromosomal element. Defaults to 0.
-        __angle_end (int, private): The ending angle for the arc representation of the chromosomal element. Defaults to 180.
+        arc_id (str, optional): Unique identifier for the arc. If not provided, defaults to None.
+        record (Bio.SeqRecord or None, optional): A BioPython SeqRecord object or an NCBI accession number. If an accession number is provided, the corresponding sequence is fetched from the NCBI database. Defaults to None.
+        size (int): Width of the arc. Defaults to 1000.
+        interspace (float): Space between adjacent arcs, measured in degrees in superclass but it should be ignored in set_chromosome_items function.
+        raxis_range (tuple of int): Radial axis range for the arc, specifying the start and end radii. Defaults to (500, 550).
+        facecolor (str): Fill color of the arc. Defaults to '#c02050'.
+        edgecolor (str): Color of the arc's edge. Defaults to '#303030'.
+        linewidth (float): Width of the arc's edge line. Defaults to 0.75.
+        label (str, optional): Text label for the arc. Defaults to None.
+        labelposition (float, optional): Vertical offset for the label from the center of the arc. Defaults to None.
+        labelsize (int): Font size of the label. Defaults to 10.
+        label_visible (bool): Whether the label is visible. Defaults to True.
+        chromosome (str): Name of the chromosome this element represents. Defaults to 'chr1'.
+        start (int): Start position of the chromosomal element on the chromosome. Defaults to 0.
+        end (int): End position of the chromosomal element on the chromosome. Defaults to 0.
+        __angle_start (int, private): Internal attribute representing the starting angle of the arc. Defaults to 0.
+        __angle_end (int, private): Internal attribute representing the ending angle of the arc. Defaults to 180.
 
     Methods:
-        get_angle(self): Returns a tuple containing the start and end angles of the chromosomal element.
-        set_angle(self, start, end): Sets the start and end angles of the chromosomal element.
-        location (property): Returns a list containing the chromosome name, start, and end positions of the chromosomal element.
+        get_angle(self) -> Tuple[int, int]:
+            Returns the start and end angles of the chromosomal element as a tuple.
+
+        set_angle(self, start: int, end: int):
+            Sets the start and end angles of the chromosomal element.
+
+        location (property):
+            Returns a list containing the chromosome name, start, and end positions of the chromosomal element.
     """    
-    def __init__(self, arc_id=None, record=None, 
-                 size=1000, interspace=3, raxis_range=(500, 550),
-                   facecolor='#c02050', edgecolor="#303030",
-                     linewidth=0.75, label=None, 
-                     labelposition=None, labelsize=10, 
-                     label_visible=True, 
-                 chromosome='chr1', start=0, end=0):
+    def __init__(self, arc_id:str=None, record:Bio.SeqRecord=None, 
+                 size:float=1000, interspace:float=3, raxis_range=(500, 550),
+                   facecolor:str='#c02050', edgecolor:str="#303030",
+                     linewidth:float=0.75, label:str=None, 
+                     labelposition:float=None, labelsize:float=10, 
+                     label_visible:bool=True, 
+                 chromosome:str='chr1', start:int=0, end:int=0):
         Garc.__init__(self, arc_id=arc_id, record=record, size=size, interspace=interspace, raxis_range=raxis_range, facecolor=facecolor, edgecolor=edgecolor, linewidth=linewidth, label=label, labelposition=labelposition, labelsize=labelsize, label_visible=label_visible)
-        self.__chromosome = chromosome
-        self.__start = start
-        self.__end = end
-        self.__angle_start = 0
-        self.__angle_end = 180
-    def get_angle(self):
+        self.__chromosome:str = chromosome
+        self.__start:int = start
+        self.__end:int = end
+        self.__angle_start:int = 0
+        self.__angle_end:int = 180
+    def get_angle(self)->typing.Tuple[int]:
+        """
+        Retrieves the start and end angles of the chromosomal element.
+
+        Returns
+        -------
+        tuple
+            A tuple containing two integers: the start angle and the end angle of the chromosomal element.
+        """        
         return (self.__angle_start, self.__angle_end)
-    def set_angle(self, start, end):
+    def set_angle(self, start:int, end:int):
+        """
+        Sets the start and end angles for the chromosomal element.
+
+        Parameters
+        ----------
+        start : int
+            The start angle of the chromosomal element.
+        end : int
+            The end angle of the chromosomal element.
+        """
         self.__angle_start = start
         self.__angle_end = end
-    location = property(lambda s:[s.__chromosome, s.__start, s.__end])
+    location = property(lambda s:[s.__chromosome, s.__start, s.__end], help='A property that returns the location information of the chromosomal element.')
 
 
 class Gcircle:
@@ -419,14 +443,17 @@ class Gcircle:
         """
         self._garc_dict[garc.arc_id] = garc
 
-    def add_chromosome_element(self, elem):
+    def add_chromosome_element(self, elem:ChromosomeElement)->None:
+        """
+        Add a ChromosomeElement object into element list.
+        """
         self._chrom_elements.append(elem)
 
-    def set_chromosome_elements(self):
-        """Put isolated objects.
-        This method should be used after chromosomal positions are determined with set_garcs() function.
-
+    def set_chromosome_elements(self)->None:
         """
+        This method positions and visualizes chromosome elements on the circular plot. It should be called after the chromosomal positions have been determined with the set_chromosome_element() function. The method iterates through each chromosome element, calculates its start and end angles based on its start and end positions, and then draws the element on the plot. Additionally, it sets up the plot axes, including hiding the polar axes and setting the plot limits. If the label for a chromosome element is set to be visible, it also calculates the position and rotation for the label and displays it on the plot.
+        """
+
         # if len(self._chrom_elements) == 0:
         #     return
         # search chromosomes
@@ -472,23 +499,18 @@ class Gcircle:
             facecolor = elem.facecolor
             edgecolor = elem.edgecolor
             linewidth = elem.linewidth
-            # print(pos, height, pos - width/2)
             self.ax.bar([pos-width/2], [height], bottom=bottom, width=width, facecolor=facecolor, linewidth=linewidth, edgecolor=edgecolor, align="edge")
             if elem.label_visible == True:
-                # rot = (self._garc_dict[key].coordinates[0] + self._garc_dict[key].coordinates[1]) / 2
-                stringwidth = 0#len(elem.label) * elem.labelsize 
+                stringwidth = 0
                 rot = rot*360/(2*np.pi)
                 if 90 < rot < 270:
                     rot = 180-rot
                 else:
                     rot = -1 * rot 
-                # height = bottom + height/2 + elem.labelposition
                 if elem.labelposition:
                     ly = bottom + height/2 + elem.labelposition
                 else:
                     ly = elem.raxis_range[1] + 25
-                # print(elem.labelposition, ly)
-                #### modified
                 self.ax.text(pos + width/2 - stringwidth / 2, ly, elem.label, rotation=rot, ha="center", va="center", fontsize=elem.labelsize)
         pass
 
