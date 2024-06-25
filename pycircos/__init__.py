@@ -4,3 +4,4 @@ Garc    = pc.Garc
 Gcircle = pc.Gcircle
 Tarc    = pt.Tarc
 Tcircle = pt.Tcircle
+ChromosomeElement = pc.ChromosomeElement
